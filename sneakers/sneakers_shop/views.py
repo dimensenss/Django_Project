@@ -36,7 +36,7 @@ class ShowProduct(DataMixins,DetailView):
     model = Sneakers
     template_name = 'sneakers_shop/product.html'
     context_object_name = 'post'
-    slug_url_kwarg = 'product_slug'
+    slug_url_kwarg = 'product_slug' # пользовательский слаг по умолчанию django ищет в path "slug"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

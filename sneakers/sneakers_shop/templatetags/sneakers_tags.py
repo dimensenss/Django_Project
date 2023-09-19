@@ -20,3 +20,7 @@ def show_categories(sort = None, cat_selected = None):#доделать
     else:
         cats = Category.objects.all()
     return {'cats':cats, 'cat_selected':cat_selected}
+
+@register.inclusion_tag('includes/paginator.html')
+def show_paginator(paginator, page_obj):
+    return {"paginator":paginator, 'page_obj':page_obj}
