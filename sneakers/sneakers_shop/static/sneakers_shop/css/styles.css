@@ -10870,3 +10870,9 @@ textarea.form-control-lg {
   background-position: center; /* центрирует фоновое изображение внутри элемента */
   margin-bottom: 10px; /* добавляет отступы между изображениями */
 }
+.form-error-1 ul{
+    list-style: none;
+    padding: 0;
+    color: #CC0000;
+    list-style-type: none;
+}

@@ -1,12 +1,18 @@
 import datetime
+
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+
+from .forms import RegisterUserForm, LoginUserForm
 from .models import *
-from django.views.generic import ListView, DetailView
-from .utils import DataMixins
+from django.views.generic import ListView, DetailView, CreateView
+from .utils import DataMixin
 
 
-class SneakersHome(DataMixins,ListView):
+class SneakersHome(DataMixin, ListView):
     model = Sneakers # модель
     template_name = 'sneakers_shop/index.html' # путь к шаблону (по умолчанию sneakers_list)
     context_object_name = 'sneakers' #имя коллекции для шаблона (по умолчанию objects_list)
@@ -32,7 +38,11 @@ def shop(request):
 def contacts(request):
     return HttpResponse("contacts")
 
-class ShowProduct(DataMixins,DetailView):
+def logout_user(request):
+    logout(request)
+    return redirect('home')
+
+class ShowProduct(DataMixin, DetailView):
     model = Sneakers
     template_name = 'sneakers_shop/product.html'
     context_object_name = 'post'
@@ -46,7 +56,7 @@ class ShowProduct(DataMixins,DetailView):
         return dict(list(context.items())+list(c_def.items()))
 
 
-class SneakersCategories(DataMixins,ListView):
+class SneakersCategories(DataMixin, ListView):
     model = Sneakers # модель
     template_name = 'sneakers_shop/index.html'
     context_object_name = 'sneakers'
@@ -62,6 +72,36 @@ class SneakersCategories(DataMixins,ListView):
                                       cat_selected=f"{context['sneakers'].first().cat.slug}")
 
         return dict(list(context.items())+list(c_def.items()))
+
+
+class RegisterUser(DataMixin, CreateView):
+    template_name = 'sneakers_shop/register.html'
+    success_url = reverse_lazy('login')
+    form_class = RegisterUserForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Register")
+
+        return dict(list(context.items())+list(c_def.items()))
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request,user)
+        return redirect('home')
+
+class LoginUser(DataMixin, LoginView):
+    template_name = 'sneakers_shop/login.html'
+    form_class = LoginUserForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Login")
+
+        return dict(list(context.items())+list(c_def.items()))
+
+    def get_success_url(self):
+        return reverse_lazy('home')
 
 
 def PageNotFound(request, exception):
