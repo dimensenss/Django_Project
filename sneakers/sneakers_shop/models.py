@@ -6,7 +6,8 @@ from django.urls import reverse, reverse_lazy
 class Sneakers(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
-    content = models.TextField(blank=True, verbose_name='Контент/Цена')
+    content = models.TextField(blank=True, verbose_name='Контент')
+    price = models.TextField(blank=True, verbose_name='Цена')
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name='Фото')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_update = models.DateTimeField(auto_now=True)
@@ -38,4 +39,9 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ['name', 'id']
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to="product_images/%Y/%m/%d/", verbose_name='Изображение')
+
 

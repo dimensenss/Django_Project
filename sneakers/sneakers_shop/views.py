@@ -19,7 +19,7 @@ class SneakersHome(DataMixin, ListView):
     allow_empty = False #если вернется пустой список из базы - ошибка 404
 
     def get_queryset(self):
-        return Sneakers.objects.filter(is_published = 1)
+        return Sneakers.objects.filter(is_published = 1).select_related('cat')
 
     def get_context_data(self, *, object_list=None, **kwargs): #формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs) # получить контекст который уже есть
@@ -64,12 +64,16 @@ class SneakersCategories(DataMixin, ListView):
 
     def get_queryset(self):
         return Sneakers.objects.filter(cat__slug = self.kwargs['cat_slug'],
-                                       is_published = True)
+                                       is_published = True).select_related('cat')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=f"{context['sneakers'][0].cat}",
-                                      cat_selected=f"{context['sneakers'].first().cat.slug}")
+        cats = Category.objects.get(slug = self.kwargs['cat_slug'])
+
+        c_def = self.get_user_context(title=f"{cats.name}",
+                                      cat_selected=f"{cats.slug}")
+        # c_def = self.get_user_context(title=f"{context['sneakers'][0].cat.name}",
+        #                               cat_selected=f"{context['sneakers'].first().cat.slug}")
 
         return dict(list(context.items())+list(c_def.items()))
 

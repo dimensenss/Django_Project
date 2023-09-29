@@ -4,27 +4,24 @@
 {% endblock %}
 
 {% block content %}
-<section class="py-0">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="text-center"><h1>{{post.title}}</h1></div>
-
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="col mb-5">
-
-
-{% if post.photo %}
-<img class="card-img-top image-container-img " src="{{ post.photo.url }}" alt="..." />
-{% else %}
-<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-{% endif %}
+<div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                {% if post.photo %}
+                    <img class="img-fluid" src="{{ post.photo.url }}" alt="Изображение товара">
+                {% else %}
+                    <img class="img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="Изображение товара">
+                {% endif %}
             </div>
-
-            <div class="col mb-5">
-                <h2>{{ post.content }}</h2>
+            <div class="col-md-6">
+                <p class="lead">{{ post.content }}</p>
+                {% for image in post.images.all %}
+                 <img class="img-fluid" src="{{ image.image.url }}" alt="Изображение товара">
+                {% endfor %}
+                <p class="display-4">$199.99</p>
+                <a href="#" class="btn btn-primary btn-lg">Купить сейчас</a>
             </div>
         </div>
     </div>
-</section>
-
 
 {% endblock %}
