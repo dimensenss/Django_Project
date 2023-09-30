@@ -1,27 +1,114 @@
 {% extends 'sneakers_shop/base.html' %}
 
 {% block header %}
+
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                {% if post.photo %}
-                    <img class="img-fluid" src="{{ post.photo.url }}" alt="Изображение товара">
-                {% else %}
-                    <img class="img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="Изображение товара">
-                {% endif %}
-            </div>
-            <div class="col-md-6">
-                <p class="lead">{{ post.content }}</p>
-                {% for image in post.images.all %}
-                 <img class="img-fluid" src="{{ image.image.url }}" alt="Изображение товара">
-                {% endfor %}
-                <p class="display-4">$199.99</p>
-                <a href="#" class="btn btn-primary btn-lg">Купить сейчас</a>
-            </div>
-        </div>
-    </div>
+<!--<div class="container mt-4">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--                {% if post.photo %}-->
+<!--                    <img class="img-fluid" src="{{ post.photo.url }}" alt="Изображение товара">-->
+<!--                    {% for image in post.images.all %}-->
+<!--                     <img class="img-fluid" src="{{ image.image.url }}" alt="Изображение товара">-->
+<!--                    {% endfor %}-->
+<!--                {% else %}-->
+<!--                    <img class="img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="Изображение товара">-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--            <div class="col-md-6 ">-->
+<!--                <p class="lead">{{ post.content }}</p>-->
 
+<!--                <p class="display-4">$199.99</p>-->
+<!--                <a href="#" class="btn btn-primary btn-lg">Купить сейчас</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<section id="selling-product" class="single-product">
+      <div class="container-lg">
+        <div class="row mt-5">
+          <div class="col-lg-6 col-md-6">
+    <div class="product-preview mb-3">
+        {% if post.photo %}
+        <div class="slider">
+            <!-- Основное фото -->
+            <div><img class="img-fluid" src="{{ post.photo.url }}" alt="Изображение товара"></div>
+            <!-- Дополнительные фото (цикл) -->
+            {% for image in post.images.all %}
+            <div><img class="img-fluid" src="{{ image.image.url }}" alt="Изображение товара"></div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <img class="img-fluid" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="Изображение товара">
+        {% endif %}
+    </div>
+</div>
+
+
+
+            <div class="col-lg-6 col-md-6">
+
+            <div class="product-info">
+              <div class="element-header">
+                <h3 itemprop="name" class="display-6 fst-italic mb-0">Roselle Tea</h3>
+                <div class="rating-container d-flex align-items-center">
+                  <div class="rating">
+                    <svg class="star star-fill" width="15" height="15">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                    <svg class="star star-fill" width="15" height="15">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                    <svg class="star star-fill" width="15" height="15">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                    <svg class="star star-fill" width="15" height="15">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                    <svg class="star star-fill" width="15" height="15">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="product-price pt-3 pb-3">
+                <strong class="text-primary display-6">$20.00</strong>
+              </div>
+              <p>Justo, cum feugiat imperdiet nulla molestie ac vulputate scelerisque amet. Bibendum adipiscing platea blandit sit sed quam semper rhoncus. Diam ultrices maecenas consequat eu tortor orci, cras lectus mauris, cras egestas quam venenatis neque.</p>
+              <div class="product-action">
+                <div class="product-quantity">
+
+                  <button type="submit" name="add" id="add-to-cart" class="btn btn-lg btn-dark mb-3">
+                    <span>Add to cart</span>
+                  </button>
+                </div>
+              </div>
+              <div class="meta-product py-2">
+                <div class="meta-item d-flex align-items-baseline">
+                  <h4 class="item-title fs-5 pe-2">SKU:</h4>
+                  <ul class="select-list list-unstyled d-flex">
+                    <li data-value="S" class="select-item">0012</li>
+                  </ul>
+                </div>
+                <div class="meta-item d-flex align-items-baseline">
+                  <h4 class="item-title fs-5 pe-2">Category:</h4>
+                  <ul class="select-list list-unstyled d-flex">
+                    <li data-value="S" class="select-item">
+                      <a href="#">Flavour</a>,
+                    </li>
+                    <li data-value="S" class="select-item">
+                      <a href="#">Healthy</a>,
+                    </li>
+                    <li data-value="S" class="select-item">
+                      <a href="#">Organic</a>,
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock %}
