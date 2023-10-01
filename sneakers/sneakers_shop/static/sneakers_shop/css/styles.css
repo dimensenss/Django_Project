@@ -10876,3 +10876,68 @@ textarea.form-control-lg {
     color: #CC0000;
     list-style-type: none;
 }
+.carousel {
+  position: relative;
+}
+.carousel-item img {
+  object-fit: cover;
+}
+#carousel-thumbs {
+  background: rgba(255,255,255,.3);
+  bottom: 0;
+  left: 0;
+  padding: 0 50px;
+  right: 0;
+}
+#carousel-thumbs img {
+  border: 5px solid transparent;
+  cursor: pointer;
+}
+#carousel-thumbs img:hover {
+  border-color: rgba(255,255,255,.3);
+}
+#carousel-thumbs .selected img {
+  border-color: #fff;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  width: 50px;
+}
+@media all and (max-width: 767px) {
+  .carousel-container #carousel-thumbs img {
+    border-width: 3px;
+  }
+}
+@media all and (min-width: 576px) {
+  .carousel-container #carousel-thumbs {
+    position: absolute;
+  }
+}
+@media all and (max-width: 576px) {
+  .carousel-container #carousel-thumbs {
+    background: #ccccce;
+  }
+}
+.custom-border{
+    border: 5px solid;
+}
+
+.larger-image img {
+    width: 500px; /* Установите желаемую ширину, например, 100% */
+    height: auto; /* Автоматическая высота, чтобы соответствовать пропорциям */
+}
+.price {
+    font-size: 3rem; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    color: #333; /* Цвет текста */
+    text-decoration: none; /* Убрать подчеркивание, если это гиперссылка */
+    margin-right: 10px; /* Внешний отступ справа */
+}
+
+/* Пример стиля для скидки */
+.discount {
+    font-size: 3.5rem; /* Размер шрифта скидки */
+    color: #d9534f; /* Цвет текста скидки (например, красный) */
+    text-decoration: line-through; /* Зачеркнутый текст для исходной цены */
+    margin-left: 5px; /* Внешний отступ слева */
+}
