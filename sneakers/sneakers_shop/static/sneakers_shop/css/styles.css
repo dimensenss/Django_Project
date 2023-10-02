@@ -5791,6 +5791,43 @@ textarea.form-control-lg {
   clear: both;
   content: "";
 }
+.container-test{
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction:row;
+    justify-content:space-between;
+}
+#selling-product{
+width:100%;
+}
+#content-color{
+background-color:#d6ecff;
+}
+#content-color-slider{
+background-color:#d6ecff;
+}
+.img-carousel-size{
+    max-width:150px;
+    max-height:150px;
+}
+@media only screen and (max-width: 630px){
+    .img-carousel-size{
+        max-width:80px;
+        max-height:80px;
+    }
+}
+@media only screen and (min-width: 630px) and (max-width: 768px){
+    .img-carousel-size{
+        max-width:120px;
+        max-height:120px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 992px){
+    .img-carousel-size{
+        max-width:80px;
+        max-height:80px;
+    }
+}
 
 .carousel-item {
   position: relative;
@@ -10886,7 +10923,7 @@ textarea.form-control-lg {
   background: rgba(255,255,255,.3);
   bottom: 0;
   left: 0;
-  padding: 0 50px;
+  padding: 0;
   right: 0;
 }
 #carousel-thumbs img {

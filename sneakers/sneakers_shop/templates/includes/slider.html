@@ -1,13 +1,13 @@
 {% load sneakers_tags %}
-<div class="col-lg-6 col-md-6 ">
-    <div class="product-preview mb-3 ">
+<div class="col-lg-7 col-md-6 ml-4 mr-1 pt-3 border border-2 rounded-3 border-end-0" >
+    <div class="product-preview mb-3 container-test">
         <!-- Основная карусель -->
-        <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner">
+        <div id="myCarousel" class="carousel slide" style="width:70%;" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner" >
                 <!-- Основное изображение -->
                 {% if post.photo %}
                 {% get_main_photo post as main_photo%}
-                <div class="carousel-item active">
+                <div class="carousel-item active" >
                     <img class="d-block w-100 " src="{{ main_photo }}" alt="Изображение товара" >
                 </div>
                 {% else %}
@@ -25,18 +25,18 @@
 
         <!-- Навигация по карусели (картинки внизу) -->
         {% if query.exists %}
-        <div id="carousel-thumbs" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
+        <div id="carousel-thumbs" class="carousel slide mr-3"  data-ride="carousel" style="width:25%; padding: 0;">
+            <div class="carousel-inner"  >
                 <!-- Основное изображение в навигации -->
-                <div class="row mx-0">
-                    <div class="thumb col-4 col-sm-2 px-1 py-2 selected" data-target="#myCarousel" data-slide-to="0">
-                        <img src="{{ main_photo }}" class="img-fluid" alt="Изображение товара">
+                <div class="row mx-0 border border-2  ">
+                    <div class=" selected" data-target="#myCarousel" data-slide-to="0">
+                        <img src="{{ main_photo }}" class="img-carousel-size" alt="Изображение товара">
                     </div>
                     <!-- Дополнительные изображения в навигации (перебор) -->
                     {% for image in query %}
-                    <div class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel"
+                    <div  data-target="#myCarousel"
                          data-slide-to="{{ forloop.counter }}">
-                        <img src="{{ image.image.url }}" class="img-fluid" alt="Изображение товара">
+                        <img src="{{ image.image.url }}" class="img-carousel-size" alt="Изображение товара">
                     </div>
                     {% endfor %}
                 </div>
