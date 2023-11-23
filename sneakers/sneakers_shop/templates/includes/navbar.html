@@ -1,0 +1,141 @@
+{% load static %}
+{% load sneakers_tags %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container px-2 px-lg-2">
+        <a class="navbar-brand" href="{% url 'home' %}">Shop <img
+                src="{% static 'sneakers_shop/images/logo.png' %}"/></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+                {% for d_m in cats %}
+                {% if d_m.len > 0 %} <!-- если категория пустая-->
+                {% if cat_selected == d_m.slug %}
+                <li class="nav-item disabled bg-secondary rounded dropdown">
+                    <a class="nav-link">{{d_m.name}}</a>
+                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                        <ul >
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                        <ul>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                        <ul>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                    </div>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{{ d_m.get_absolute_url }}" >
+                        {{d_m.name}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                         <ul >
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                        <ul>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                        <ul>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                        </ul>
+                    </div>
+                </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Інформація
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                        <ul>
+                            {% get_menu as menu %}
+                            {% for m in menu %}
+                            <li><a class="dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <div class="d-none d-lg-block d-xl-block d-xxl-block ">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ms-lg-4">
+
+                    <li class="nav-item">
+                        <button class="btn btn-outline-dark " type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </li>
+
+                    <li class="nav-item dropdown .d-sm-none .d-md-block ">
+                        <a class="nav-link text-primary "><i class="fa-solid fa-user"></i></a>
+                        <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                            <ul>
+
+                                <li><a class="dropdown-item" href="{% url 'cabinet' %}">Особистий кабінет</a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <!--                <li class="nav-item">-->
+                    <!--                    <a class="nav-link text-primary" href="{% url 'profile' %}">Hi, {{request.user.username}}</a>-->
+                    <!--                </li>-->
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Exit</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Reg</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log in</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд-->
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>
