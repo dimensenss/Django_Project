@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-!3$x=w^=q93*9f92y954nrih2v-%d(b^unv%@8e%lsbpb9h!4k
 DEBUG = True
 
 ALLOWED_HOSTS = []
+DEBUG_TOOLBAR_CONFIG = {
 
+}
 
 # Application definition
 

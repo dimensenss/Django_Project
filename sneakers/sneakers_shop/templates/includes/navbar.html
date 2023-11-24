@@ -1,13 +1,13 @@
 {% load static %}
 {% load sneakers_tags %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container px-2 px-lg-2">
-        <a class="navbar-brand" href="{% url 'home' %}">Shop <img
+        <a class="pt-0 h-0" href="{% url 'home' %}"><img
                 src="{% static 'sneakers_shop/images/logo.png' %}"/></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-                class="navbar-toggler-icon"></span></button>
+                ><i class="fa-solid fa-bars fa-beat-fade"></i></span></button>
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 
@@ -15,7 +15,7 @@
                 {% if d_m.len > 0 %} <!-- если категория пустая-->
                 {% if cat_selected == d_m.slug %}
                 <li class="nav-item disabled bg-secondary rounded dropdown">
-                    <a class="nav-link">{{d_m.name}}</a>
+                    <a class="nav-link a-dark">{{d_m.name}}</a>
                     <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
                         <ul >
                             <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
@@ -41,29 +41,29 @@
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="{{ d_m.get_absolute_url }}" >
+                    <a class="nav-link a-dark" href="{{ d_m.get_absolute_url }}" >
                         {{d_m.name}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
                          <ul >
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Action</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                         </ul>
                         <ul>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                         </ul>
                         <ul>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                         </ul>
                     </div>
                 </li>
@@ -72,7 +72,7 @@
                 {% endfor %}
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle a-dark" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown"
                        aria-expanded="false">
                         Інформація
@@ -81,7 +81,7 @@
                         <ul>
                             {% get_menu as menu %}
                             {% for m in menu %}
-                            <li><a class="dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a></li>
                             {% endfor %}
 
                         </ul>
@@ -92,50 +92,144 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ms-lg-4">
 
                     <li class="nav-item">
-                        <button class="btn btn-outline-dark " type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
+
+                        <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
+                                data-bs-target="#cart-modal">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill">0</span>
+                        </a>
                     </li>
-
-                    <li class="nav-item dropdown .d-sm-none .d-md-block ">
-                        <a class="nav-link text-primary "><i class="fa-solid fa-user"></i></a>
-                        <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                            <ul>
-
-                                <li><a class="dropdown-item" href="{% url 'cabinet' %}">Особистий кабінет</a></li>
-
-                            </ul>
-                        </div>
-                    </li>
-                    {% if request.user.is_authenticated %}
-                    <!--                <li class="nav-item">-->
-                    <!--                    <a class="nav-link text-primary" href="{% url 'profile' %}">Hi, {{request.user.username}}</a>-->
-                    <!--                </li>-->
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Exit</a>
+                        <a type="button" class="a-dark nav-link btn-outline" data-bs-toggle="modal"
+                                data-bs-target="#reg-modal">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
+                <div class="row">
+                    {% if request.user.is_authenticated %}
+                    <div class="col text-center">
+                        <a class="custom-btn btn-1 pt-2" href="{% url 'cabinet' %}" role="button">Перейти до профілю</a>
+                    </div>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'logout' %}">Вийти</a>
                     </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Reg</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log in</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
+                    <div class="col text-center pt-2">
+                        <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col text-center text-light">
+                        Нема аккаунта? <a class = "a-dark text-light text-decoration-underline" href="{% url 'register' %}">Регістрація</a>
+                    </div>
+                    </div>
 
-            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд-->
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                </ul>
+                    {% endif %}
+                </div>
             </div>
         </div>
-
     </div>
 </nav>
+<!-- Модальное окно -->
+<div class="modal fade" id="reg-modal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Швидкі посилання</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Строки с ссылками -->
+                <div class="row mb-2">
+                    <div class="col">
+                        <a class = "a-dark" href="#">Особистий кабінет</a>
+                    </div>
+                </div>
+                <hr class="my-1"> <!-- Серая полоса разделения -->
+                <div class="row mb-2">
+                    <div class="col">
+                        <a class = "a-dark" href="#">Ссылка 2</a>
+                    </div>
+                </div>
+                <hr class="my-1">
+                <div class="row mb-2">
+                    <div class="col">
+                        <a class = "a-dark" href="#">Ссылка 3</a>
+                    </div>
+                </div>
+                <hr class="my-1">
+                <div class="row mb-2">
+                    <div class="col">
+                        <a class = "a-dark" href="#">Ссылка 4</a>
+                    </div>
+                </div>
+                <hr class="my-1">
+
+                <div class="row">
+                    {% if request.user.is_authenticated %}
+                    <div class="col text-center">
+                        <a class="custom-btn btn-1 a-light" href="{% url 'cabinet' %}" role="button">Кабінет</a>
+                    </div>
+                    <div class="col text-center">
+                        <a class="custom-btn btn-2 a-light" href="{% url 'logout' %}" role="button">Вийти</a>
+                    </div>
+                    {% else %}
+                    <div class="col text-center pt-2">
+                        <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col text-center">
+                        Нема аккаунта? <a class = "a-dark text-decoration-underline" href="{% url 'register' %}">Регістрація</a>
+                    </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cart-modal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title " id="exampleModalLabel2">Кошик</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <td><img src=".\media\photos\2023\09\03\adidas_ZX_30.jpg" alt=""></td>
+                        <td><a class = "a-dark" href="#">Adidas ZX 30</a></td>
+                        <td>230.99$</td>
+                        <td>1 пара</td>
+                    </tr>
+                    <tr>
+                        <td><img src=".\media\photos\2023\09\03\asics_2.jpg" alt=""></td>
+                        <td><a class = "a-dark" href="#">Asics 970</a></td>
+                        <td>130.79$</td>
+                        <td>1 пара</td>
+                    </tr>
+                    <tr>
+                        <td><img src=".\media\photos\2023\09\03\nike_2.jpg" alt=""></td>
+                        <td><a class = "a-dark" href="#">Nike Lol 23</a></td>
+                        <td>530$</td>
+                        <td>1 пара</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+                        <a class="custom-btn btn-1 a-light text-center" role="button" data-bs-dismiss="modal">Продовжити покупки</a>
+                        <a class="custom-btn btn-1 a-light text-center" href="{% url 'contacts' %}" role="button">До замовлення</a>
+                </div>
+            </div>
+        </div>
+    </div>
+

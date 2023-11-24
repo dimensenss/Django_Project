@@ -1,3 +1,16 @@
+body{
+    min-width: 320px;
+    height: 100%;
+    font-family: Bahnschrift, serif !important;
+}
+img{
+    max-width: 100%;
+    height: auto;
+}
+footer {
+
+    position: relative;
+}
 .custom-header {
   background-color: #FFDAB9;
   background-image: url("../images/bg.jpg");
@@ -125,10 +138,19 @@
     margin-left: 5px; /* Внешний отступ слева */
 }
 
-/*.navbar-dark .navbar-nav a.nav-link {*/
-/*  color: #ffffff;*/
-/*  font-size: 1.1em;*/
-/*}*/
+.navbar-dark .navbar-nav a.nav-link {
+  color: #dcdcdc;
+  font-size: 1.1em;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+    color: #dcdcdc !important;
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
 .dropdown-menu-navbar {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border: none;
@@ -174,4 +196,73 @@
     width: 40vw;
     flex-wrap: wrap;
   }
+}
+
+
+
+
+.custom-btn {
+  width: 30%;
+  height: auto;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-1 {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(0deg, rgb(210, 29, 29) 0%, rgb(203, 0, 0) 100%);
+  border: none;
+}
+.btn-1:hover {
+   background: rgb(234, 0, 0);
+background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
+}
+
+.btn-2 {
+  background: rgb(107, 104, 104);
+  background: linear-gradient(0deg, rgb(75, 75, 75) 0%, rgb(79, 79, 79) 100%);
+  border: none;
+}
+.btn-2:hover {
+   background: rgb(91, 91, 91);
+    background: linear-gradient(0deg, rgb(84, 84, 84) 0%, rgb(77, 77, 77) 100%);
+}
+.a-dark {
+  text-decoration: none;
+  color: black;
+}
+.a-light {
+  text-decoration: none !important;
+  color: #ffffff !important;
+}
+
+.a-light:hover {
+    text-decoration: none;
+    color: #d9d9d9 !important;
+}
+
+.a-dark:hover {
+    text-decoration: underline !important;
+    text-decoration-color: #CC0000;
+    text-underline-offset: 10px;
+    color: #882323 !important;
+}
+
+.navbar {
+    background-color: #282829;
+    font-size: 18px;
+}
+
+.modal-body img{
+    max-width: 100px;
 }
