@@ -111,12 +111,12 @@
             <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
                 <div class="row">
                     {% if request.user.is_authenticated %}
-                    <div class="col text-center">
-                        <a class="custom-btn btn-1 pt-2" href="{% url 'cabinet' %}" role="button">Перейти до профілю</a>
+                    <div class="col text-center d-flex justify-content-center">
+                        <a class="a-dark bg-danger rounded" href="{% url 'cabinet' %}" role="button">Перейти до профілю</a>
                     </div>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{% url 'logout' %}">Вийти</a>
-                    </li>
+                    <div class="col d-flex justify-content-center">
+                        <a class=" a-light bg-secondary rounded" href="{% url 'logout' %}" role="button">Вийти</a>
+                    </div>
                     {% else %}
                     <div class="col text-center pt-2">
                         <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
@@ -167,17 +167,17 @@
                     </div>
                 </div>
                 <hr class="my-1">
-
-                <div class="row">
+<div class="container">
+                <div class="row ">
                     {% if request.user.is_authenticated %}
-                    <div class="col text-center">
+                    <div class="col  d-flex justify-content-center">
                         <a class="custom-btn btn-1 a-light" href="{% url 'cabinet' %}" role="button">Кабінет</a>
                     </div>
-                    <div class="col text-center">
+                    <div class="col d-flex justify-content-center">
                         <a class="custom-btn btn-2 a-light" href="{% url 'logout' %}" role="button">Вийти</a>
                     </div>
                     {% else %}
-                    <div class="col text-center pt-2">
+                    <div class="col pt-2 d-flex justify-content-center">
                         <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
                     </div>
                     <div class="row pt-2">
@@ -188,6 +188,7 @@
 
                     {% endif %}
                 </div>
+    </div>
             </div>
         </div>
     </div>
