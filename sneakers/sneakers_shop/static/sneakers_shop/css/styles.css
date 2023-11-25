@@ -4,7 +4,7 @@ body{
     font-family: Bahnschrift, serif !important;
 }
 img{
-    max-width: 100%;
+    max-width: 100% ;
     height: auto;
 }
 footer {
@@ -72,54 +72,35 @@ footer {
     color: #CC0000;
     list-style-type: none;
 }
-.carousel {
-  position: relative;
-}
-.carousel-item img {
-  object-fit: cover;
-}
-#carousel-thumbs {
-  background: rgba(255,255,255,.3);
-  bottom: 0;
-  left: 0;
-  padding: 0;
-  right: 0;
-}
-#carousel-thumbs img {
-  border: 5px solid transparent;
-  cursor: pointer;
-}
-#carousel-thumbs img:hover {
-  border-color: rgba(255,255,255,.3);
-}
-#carousel-thumbs .selected img {
-  border-color: #fff;
-}
-.carousel-control-prev,
-.carousel-control-next {
-  width: 50px;
-}
-@media all and (max-width: 767px) {
-  .carousel-container #carousel-thumbs img {
-    border-width: 3px;
-  }
-}
-@media all and (min-width: 576px) {
-  .carousel-container #carousel-thumbs {
-    position: absolute;
-  }
-}
-@media all and (max-width: 576px) {
-  .carousel-container #carousel-thumbs {
-    background: #ccccce;
-  }
-}
+ /* Стили для увеличения изображения при наведении */
+    #mainCarousel .carousel-inner img {
+        position: relative;
+        transition: transform 0.5s ease;
+    }
+
+    #mainCarousel .carousel-inner img:hover {
+        z-index: 1;
+        transform: scale(1.2);
+    }
+
+    /* Убираем синее выделение при клике */
+    .pointer {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Стили для выбранной миниатюры */
+    #carousel-thumbs .thumbnail.active {
+        border: 2px solid #007bff;
+        border-radius: 5px;
+    }
+
 .custom-border{
     border: 5px solid;
 }
 
 .larger-image img {
-    width: 500px; /* Установите желаемую ширину, например, 100% */
+    width: 100%; /* Установите желаемую ширину, например, 100% */
     height: auto; /* Автоматическая высота, чтобы соответствовать пропорциям */
 }
 .price {
@@ -198,11 +179,13 @@ footer {
   }
 }
 
-
+.navbar-nav .nav-link {
+    transition: all 0.3s;
+}
 
 
 .custom-btn {
-  width: 30%;
+  width: 40%;
   height: auto;
   color: #fff;
   border-radius: 5px;
@@ -212,11 +195,13 @@ footer {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  display: inline-block;
+  display: flex;
    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
    7px 7px 20px 0px rgba(0,0,0,.1),
    4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
+  align-items: center;
+  justify-content: center;
 }
 .btn-1 {
   background: rgb(255, 0, 0);
@@ -266,3 +251,41 @@ background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
 .modal-body img{
     max-width: 100px;
 }
+.my-card{
+    transition: all .3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0);
+}
+.my-card:hover{
+    box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+}
+
+.my-card img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.card-body a{
+    padding-bottom: 10px;
+    font-weight: 500;
+    display: block;
+    height: 30px;
+    overflow: hidden;
+}
+.card-body p{
+    margin: 0;
+}
+.card-body .discount-price{
+    font-weight: bold;
+    color: #ff0000;
+    font-size: 24px;
+}
+.card-body .old-price{
+    text-decoration: line-through;
+    color: #565454;
+    font-size: 16px;
+}
+
+.card-body .usual-price{
+    color: #000000;
+    font-size: 24px;
+}
+
