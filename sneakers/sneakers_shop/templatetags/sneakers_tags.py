@@ -17,7 +17,7 @@ def get_categories():
 
 @register.simple_tag(name='get_photos')
 def get_photos(post):
-    return post.images.all()[1:]
+    return post.images.all()
 
 @register.simple_tag(name='get_main_photo')
 def get_photos(post):
