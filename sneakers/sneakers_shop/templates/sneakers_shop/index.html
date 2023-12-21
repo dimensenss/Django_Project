@@ -1,6 +1,6 @@
 {% extends 'sneakers_shop/base.html' %}
 {% load static %}
-
+{% load sneakers_tags %}
 
 {% block content %}
 <!-- Section-->
@@ -17,12 +17,14 @@
             <div class="col mb-5">
                 <div class="card h-100 my-card">
                     <!-- Product image-->
-                    {% if item.photo %}
-                    <a class="a-dark" href="product/{{ item.slug }}">
-                        <img class="card-img-top image-container-img" src="{{ item.photo.url }}" alt="..."/>
+                    {% if item.images %}
+                    {% get_main_photo item as main_photo %}
+
+                    <a class="a-dark" href="/product/{{ item.slug }}">
+                        <img class="card-img-top image-container-img" src="{{ main_photo.url }}"/>
                     </a>
                     {% else %}
-                    <a class="a-dark" href="product/{{ item.slug }}">
+                    <a class="a-dark" href="/product/{{ item.slug }}">
                         <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
                     </a>
                     {% endif %}
@@ -30,7 +32,7 @@
                     <span class="card-body">
                         <div class="text-center">
                             <!-- Product name-->
-                            <h3><a class="a-dark" href="product/{{ item.slug }}">{{ item.title }}</a></h3>
+                            <h3><a class="a-dark" href="/product/{{ item.slug }}">{{ item.title }}</a></h3>
                             <!-- Product price-->
                         </div>
                         <div class="me-auto d-flex justify-content-between">

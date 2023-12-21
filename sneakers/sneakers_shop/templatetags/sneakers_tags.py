@@ -17,11 +17,12 @@ def get_categories():
 
 @register.simple_tag(name='get_photos')
 def get_photos(post):
-    return post.images.all()
+    return post.images.all()[1:]
 
 @register.simple_tag(name='get_main_photo')
 def get_photos(post):
-    return post.photo.url
+    return post.images.first().image
+
 
 @register.inclusion_tag('sneakers_shop/list_categories.html')
 def show_categories(sort = None, cat_selected = None):#доделать

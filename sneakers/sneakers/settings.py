@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'sneakers_shop.apps.SneakersShopConfig'
+    'sneakers_shop.apps.SneakersShopConfig',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'sneakers.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,3 +142,4 @@ CACHES = {
         "LOCATION": os.path.join(BASE_DIR, 'site_cache'),
     }
 }
+TAGGIT_CASE_INSENSITIVE = True

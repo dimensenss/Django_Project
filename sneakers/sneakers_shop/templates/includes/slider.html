@@ -6,10 +6,10 @@
 
         <!-- Основное изображение -->
         <div class="carousel-inner">
-            {% if post.photo %}
+            {% if post.images %}
             {% get_main_photo post as main_photo %}
             <div class="carousel-item active">
-                <img src="{{ main_photo }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
+                <img src="{{ main_photo.url }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
             </div>
             {% endif %}
 
@@ -38,7 +38,7 @@
     <div id="carousel-thumbs" class="d-none d-lg-flex flex-row w-100 mt-3">
         <!-- Основное изображение в навигации -->
         <div class="thumbnail" data-bs-target="#mainCarousel" data-bs-slide-to="0">
-            <img src="{{ main_photo }}" class="img-carousel-size" alt="Изображение товара">
+            <img src="{{ main_photo.url }}" class="img-carousel-size" alt="Изображение товара">
         </div>
         <!-- Дополнительные изображения в навигации (перебор) -->
         {% for image in query %}

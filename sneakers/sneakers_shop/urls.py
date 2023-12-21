@@ -19,4 +19,5 @@ urlpatterns = [
     path('logout/', logout_user, name = 'logout'),
     path('category/<slug:cat_slug>/', SneakersCategories.as_view(), name = 'show_cat'),
     path('product/<slug:product_slug>/', ShowProduct.as_view(), name = 'product'),
+    path('tag/<str:tag_slug>/', SneakersTags.as_view(), name = 'sneakers_by_tag'),
 ]

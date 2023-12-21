@@ -42,20 +42,19 @@
                                 <li data-value="S" class="select-item">0012</li>
                             </ul>
                         </div>
+                        {% if post.tags %}
+
                         <div class="meta-item d-flex align-items-baseline">
+
                             <h4 class="item-title fs-5 pe-2">Tags:</h4>
+
                             <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Flavour</a>,
-                                </li>
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Healthy</a>,
-                                </li>
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Organic</a>,
-                                </li>
+                                {% for tag in post.tags.all %}
+                                <a class="a-dark" href="{% url 'sneakers_by_tag' tag.slug %}">{{ tag }} &nbsp</a>
+                                {% endfor %}
                             </ul>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

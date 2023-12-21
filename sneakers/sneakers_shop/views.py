@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from taggit.models import Tag
 
 from .forms import RegisterUserForm, LoginUserForm
 from .models import *
@@ -18,13 +19,28 @@ class SneakersHome(DataMixin, ListView):
     context_object_name = 'sneakers' #имя коллекции для шаблона (по умолчанию objects_list)
     allow_empty = False #если вернется пустой список из базы - ошибка 404
 
+    tag = None
+
     def get_queryset(self):
-        return Sneakers.objects.filter(is_published = 1).select_related('cat')
+        queryset = Sneakers.objects.filter(is_published = 1)
+        return queryset
+
+
 
     def get_context_data(self, *, object_list=None, **kwargs): #формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs) # получить контекст который уже есть
-        c_def = self.get_user_context(title = 'Shop home')
+        c_def = self.get_user_context(title = 'Shop home', )
         return dict(list(context.items())+list(c_def.items()))
+
+class SneakersTags(SneakersHome):
+    tag = None
+    def get_queryset(self):
+        queryset = Sneakers.objects.filter(is_published = 1)
+        tag_slug = self.kwargs.get('tag_slug')
+        if tag_slug:
+            self.tag = get_object_or_404(Tag, slug=tag_slug)
+            queryset = queryset.filter(tags__in=[self.tag])
+        return queryset
 
 def about(request):
     context = {
@@ -72,8 +88,6 @@ class SneakersCategories(DataMixin, ListView):
 
         c_def = self.get_user_context(title=f"{cats.name}",
                                       cat_selected=f"{cats.slug}")
-        # c_def = self.get_user_context(title=f"{context['sneakers'][0].cat.name}",
-        #                               cat_selected=f"{context['sneakers'].first().cat.slug}")
 
         return dict(list(context.items())+list(c_def.items()))
 
