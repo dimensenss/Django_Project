@@ -2,13 +2,14 @@ body{
     min-width: 320px;
     height: 100%;
     font-family: Bahnschrift, serif !important;
+    min-height: 100%;
+
 }
 img{
     max-width: 100% ;
     height: auto;
 }
 footer {
-
     position: relative;
 }
 .custom-header {
@@ -75,12 +76,11 @@ footer {
  /* Стили для увеличения изображения при наведении */
     #mainCarousel .carousel-inner img {
         position: relative;
-        transition: transform 0.5s ease;
+        transition: transform 0.5s ease-in-out;
     }
 
     #mainCarousel .carousel-inner img:hover {
         z-index: 1;
-        transform: scale(1.2);
     }
 
     /* Убираем синее выделение при клике */
@@ -94,6 +94,7 @@ footer {
         border: 2px solid #007bff;
         border-radius: 5px;
     }
+
 
 .custom-border{
     border: 5px solid;
@@ -304,3 +305,79 @@ background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
     margin: auto; /* Выравнивание по центру */
     display: block; /* Избегайте дополнительного пространства вокруг изображения */
 }
+.carousel-item.active:hover img {
+    transform: scale(1.1); /* Увеличение в 1.1 раза */
+    transition: transform 0.3s ease; /* Плавный переход при изменении размера */
+}
+
+#my-gallery {
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+}
+.vanilla-zoom {
+    width: 100%;
+    display: flex;
+}
+
+.vanilla-zoom .sidebar {
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vanilla-zoom .sidebar img.small-preview{
+    width: 80%; /* Задайте нужную ширину */
+    height: 100%; /* Задайте нужную высоту */
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.vanilla-zoom .sidebar img.small-preview:last-child{
+    margin-bottom: 0;
+}
+
+.vanilla-zoom .zoomed-image {
+    flex: 1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.slider .slick-arrow{
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    font-size: 0;
+    width: 30px;
+    height: 50px;
+    border: 0;
+
+}
+.slider{
+    margin-top: 100px;
+    position: relative;
+    padding: 0 50px;
+}
+
+.slider .slick-arrow.slick-prev{
+    right: 0;
+    background: url("../images/arrow-right-solid.svg") 0 0 / 100% no-repeat;
+}
+.slider .slick-arrow.slick-next{
+    left: 0;
+    background: url("../images/arrow-left-solid.svg") 0 0 / 100% no-repeat;
+
+}
+/*.slick-slide{*/
+/*  margin:10px;*/
+/*}*/
+/*.slick-slide img{*/
+/*  width:100%;*/
+/*  border: 0px solid #fff;*/
+/*}*/
+/*.slider{*/
+/*    min-width: 0;*/
+/*      width:90%;*/
+/*  margin:0px auto;*/
+/*  margin-top: 100px;*/
+/*}*/

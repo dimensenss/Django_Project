@@ -1,0 +1,5 @@
+venv/
+__pacache__/
+.idea
+db.sqlite3
+media/

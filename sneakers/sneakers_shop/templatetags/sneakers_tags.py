@@ -43,3 +43,4 @@ def show_navbar(cat_selected, cats, request):
 @register.inclusion_tag('includes/slider.html')
 def show_slider(post):
     return {"post":post}
+
