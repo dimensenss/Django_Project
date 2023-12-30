@@ -76,7 +76,6 @@ footer {
  /* Стили для увеличения изображения при наведении */
     #mainCarousel .carousel-inner img {
         position: relative;
-        transition: transform 0.5s ease-in-out;
     }
 
     #mainCarousel .carousel-inner img:hover {
@@ -311,11 +310,15 @@ background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
     margin: auto; /* Выравнивание по центру */
     display: block; /* Избегайте дополнительного пространства вокруг изображения */
 }
-.carousel-item.active:hover img {
-    transform: scale(1.1); /* Увеличение в 1.1 раза */
-    transition: transform 0.3s ease; /* Плавный переход при изменении размера */
-}
+/*.my_image{*/
+/*    transform: scale(3); !* Увеличение в 1.1 раза *!*/
+/*    transition: transform 0.3s ease; !* Плавный переход при изменении размера *!*/
+/*}*/
+img.mfp-img:hover {
+    transform: scale(1.5);
 
+transition: transform 0.5s ease-in-out;
+}
 #my-gallery {
     margin: 0 auto;
     z-index: 2;

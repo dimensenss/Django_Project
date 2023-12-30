@@ -1,5 +1,9 @@
 {% load sneakers_tags %}
 {% load static %}
+
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
+
 <div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4">
     <!-- Основная карусель 1-->
     <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
@@ -8,15 +12,24 @@
             <div class="carousel-inner">
                 {% if post.images %}
                 {% get_photos post as query %}
+
+                {% with first_photo=query.first.image.url %}
                 <div class="carousel-item active">
-                    <img src="{{query.first.image.url }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
+                    <a class="image-popup-vertical-fit" href="{{ first_photo }}">
+                        <img src="{{ first_photo }}" class="mx-auto d-block img-fluid my_image"
+                             alt="Изображение товара">
+                    </a>
                 </div>
+                {% endwith %}
+
                 {% endif %}
 
                 <!-- Дополнительные изображения (перебор) -->
                 {% for image in query %}
                 <div class="carousel-item">
+                    <a class="image-popup-vertical-fit" href="{{ image.image.url  }}">
                     <img src="{{ image.image.url }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
+                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -45,6 +58,3 @@
 </div>
 
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="slick/slick.min.js"></script>
