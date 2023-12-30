@@ -1,24 +1,37 @@
 {% load sneakers_tags %}
 {% load static %}
-<div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4">
-    <!-- Основная карусель -->
-    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+<!--<div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4">-->
+<!--    &lt;!&ndash; Основная карусель &ndash;&gt;-->
+<!--    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">-->
 
-        <!-- Основное изображение -->
-        <div class="carousel-inner">
+<!--        &lt;!&ndash; Основное изображение &ndash;&gt;-->
+<!--        <div class="carousel-inner">-->
 
-            <div id="my-gallery" class="vanilla-zoom">
-                {% get_photos post as query %}
-                <div class="sidebar">
-                    {% for image in query %}
-                    <img src="{{ image.image.url }}" class="small-preview" alt="Изображение товара">
-                    {% endfor %}
-                </div>
-                <div class="zoomed-image"></div>
-            </div>
-        </div>
-    </div>
+<!--            <div id="my-gallery" class="vanilla-zoom">-->
+<!--                {% get_photos post as query %}-->
+<!--                <div class="sidebar">-->
+<!--                    {% for image in query %}-->
+<!--                    <img src="{{ image.image.url }}" class="small-preview" alt="Изображение товара">-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--                <div class="zoomed-image"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="{% static 'sneakers_shop/js-scripts/vanilla-zoom/vanilla-zoom.js' %}"></script>-->
+<!--<script>vanillaZoom.init('#my-gallery');</script>-->
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
+
+
+<div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4" id="content-color">
+    {% get_photos post as query %}
+
+    <a class="image-popup-vertical-fit" href="{{ 'image.image.url' }}">
+        {% for image in query %}
+        <img src="{{ image.image.url }}" class="small-preview" alt="Изображение товара">
+        {% endfor %}
+    </a>
 </div>
-
-<script src="{% static 'sneakers_shop/js-scripts/vanilla-zoom/vanilla-zoom.js' %}"></script>
-<script>vanillaZoom.init('#my-gallery');</script>

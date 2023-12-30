@@ -81,6 +81,7 @@ footer {
 
     #mainCarousel .carousel-inner img:hover {
         z-index: 1;
+
     }
 
     /* Убираем синее выделение при клике */
@@ -105,17 +106,17 @@ footer {
     height: auto; /* Автоматическая высота, чтобы соответствовать пропорциям */
 }
 .price {
-    font-size: 3rem; /* Размер шрифта */
+    font-size: 3.5rem; /* Размер шрифта */
     font-weight: bold; /* Жирный текст */
-    color: #333; /* Цвет текста */
+    color: #d9534f; /* Цвет текста */
     text-decoration: none; /* Убрать подчеркивание, если это гиперссылка */
     margin-right: 10px; /* Внешний отступ справа */
 }
 
 /* Пример стиля для скидки */
 .discount {
-    font-size: 3.5rem; /* Размер шрифта скидки */
-    color: #d9534f; /* Цвет текста скидки (например, красный) */
+    font-size: 2.5rem; /* Размер шрифта скидки */
+    color: #7a7a7a; /* Цвет текста скидки (например, красный) */
     text-decoration: line-through; /* Зачеркнутый текст для исходной цены */
     margin-left: 5px; /* Внешний отступ слева */
 }
@@ -277,17 +278,22 @@ background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
 .card-body .discount-price{
     font-weight: bold;
     color: #ff0000;
-    font-size: 24px;
+    font-size: 32px;
 }
 .card-body .old-price{
     text-decoration: line-through;
     color: #565454;
     font-size: 16px;
 }
+.card-footer .ventor-code{
+    font-size: 14px;
+    color: #504e4e;
+}
 
 .card-body .usual-price{
     color: #000000;
-    font-size: 24px;
+    font-size: 28px;
+    margin-top: 28px;
 }
 
 .img-carousel img {
@@ -381,3 +387,8 @@ background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
 /*  margin:0px auto;*/
 /*  margin-top: 100px;*/
 /*}*/
+
+.product-info h6{
+    padding-bottom: 10px;
+}
+

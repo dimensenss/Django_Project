@@ -18,30 +18,29 @@
                 <div class="card h-100 my-card">
                     <!-- Product image-->
                     {% if item.images %}
-                    {% get_main_photo item as main_photo %}
 
-                    <a class="a-dark" href="/product/{{ item.slug }}">
-                        <img class="card-img-top image-container-img" src="{{ main_photo.url }}"/>
+                    <a class="a-dark" href="{% url 'product' item.slug %}">
+                        <img class="card-img-top image-container-img" src="{{ item.images.first.image.url }}" alt = "{{ item.title }}" />
                     </a>
                     {% else %}
-                    <a class="a-dark" href="/product/{{ item.slug }}">
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
+                    <a class="a-dark" href="{% url 'product' item.slug %}">
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="{{ item.title }}"/>
                     </a>
                     {% endif %}
                     <!-- Product details-->
                     <span class="card-body">
                         <div class="text-center">
                             <!-- Product name-->
-                            <h3><a class="a-dark" href="/product/{{ item.slug }}">{{ item.title }}</a></h3>
+                            <h3><a class="a-dark" href="{% url 'product' item.slug %}">{{ item.title }}</a></h3>
                             <!-- Product price-->
                         </div>
                         <div class="me-auto d-flex justify-content-between">
                             <div>
                                 {% if item.discount %}
-                                    <p class="old-price">{{ item.price }}</p>
-                                    <p class="discount-price">{{ item.discount }}</p>
+                                    <p class="old-price">{{ item.price }} $</p>
+                                    <p class="discount-price">{{ item.discount }} $</p>
                                 {% else %}
-                                    <p class="usual-price">{{ item.price }}</p>
+                                    <p class="usual-price">{{ item.price }} $</p>
                                 {% endif %}
                             </div>
                             <div class="d-flex align-items-end">
@@ -50,7 +49,8 @@
                         </div>
                     </span>
                     <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
+                        <p class="ventor-code">Артикул: {{ item.display_id }}</p>
                     </div>
                 </div>
             </div>

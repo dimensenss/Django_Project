@@ -10,8 +10,8 @@ class Sneakers(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
-    price = models.TextField(blank=True, verbose_name='Ціна')
-    discount = models.TextField(blank=True, verbose_name='Знижка')
+    price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
+    discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Знижка')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
@@ -23,6 +23,9 @@ class Sneakers(models.Model):
 
     def get_absolute_url(self):
         return reverse('product', kwargs = {'product_slug':self.slug})
+
+    def display_id(self):
+        return f"{self.id:05}"
 
     class Meta:
         verbose_name = 'Кросівки'

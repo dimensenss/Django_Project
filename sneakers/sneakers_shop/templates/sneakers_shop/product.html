@@ -18,28 +18,31 @@
 
                 <div class="product-info">
                     <div class="element-header">
-                        <h3 itemprop="name" class="display-6 fst-italic mb-0">{{post.title}}</h3></div>
+                        <h1 itemprop="name" class="display-6 fst-italic mb-0">{{post.title}}</h1></div>
 
-                    <div class="product-price pt-3 pb-3"><span class="price">{{post.price}}</span><span
-                            class="discount">{{post.discount}}</span>
+                    <div class="product-price pt-3 pb-3">
+                        <span class="price">{{post.price}} $</span>
+                        {% if post.discount %}
+                        <span class="discount">{{post.discount}} $</span>
+                        {% endif %}
                     </div>
 
-                    <p>{{post.content}}</p>
+                    <h6>{{post.content}}</h6>
                     <div class="product-action">
                         <div class="product-quantity">
 
                             <button type="submit" name="add" id="add-to-cart" class="btn btn-lg btn-dark mb-3">
-                                <span>Add to cart</span>
+                                <span>Додати в кошик</span>
                             </button>
                         </div>
                     </div>
 
                     <div class="meta-product py-2">
                         <div class="meta-item d-flex align-items-baseline">
-                            <h4 class="item-title fs-5 pe-2">Артикул:</h4>
+                            <p class="item-title fs-5 pe-2">Артикул:</p>
 
                             <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item">0012</li>
+                                <li data-value="S" class="select-item">{{ post.display_id }}</li>
                             </ul>
                         </div>
                         {% if post.tags %}
