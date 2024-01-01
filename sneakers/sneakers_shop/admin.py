@@ -34,8 +34,8 @@ class SneakersAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('is_published', 'time_create')
     prepopulated_fields = {'slug': ('title',)}
-    fields = ('title', 'slug', 'price', 'discount', 'content', 'cat', 'is_published', 'time_create', 'tags', 'get_html_tag_list')
-    readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list')
+    fields = ('title', 'slug', 'price', 'discount',  'calculate_discount', 'content', 'cat', 'is_published', 'time_create', 'tags', 'get_html_tag_list')
+    readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 
     def get_html_content(self, object):
         if object.content:
@@ -49,9 +49,19 @@ class SneakersAdmin(admin.ModelAdmin):
     def get_html_tag_list(self, object):
         return u", ".join(o.name for o in object.tags.all())
 
+    def calculate_discount(self, object):
+        s = f"Актуальна ціна: {object.sell_price} \n "
+
+        discount = (object.price - object.discount)*100/object.price
+
+        if discount < 100:
+            s += f"Знижка: {discount} %"
+        return s
+
     get_html_content.short_description = 'Опис'
     get_html_main_photo.short_description = 'Головне фото'
     get_html_tag_list.short_description = 'Теги'
+    calculate_discount.short_description = 'Актуальна ціна'
 
 
 @admin.register(Category)

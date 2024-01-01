@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 
 
 class Sneakers(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    title = models.CharField(max_length=255, verbose_name='Назва')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
@@ -17,6 +17,13 @@ class Sneakers(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name="Категорія")
     tags = TaggableManager()
+    sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
+    def save(self, *args, **kwargs):
+        self.sell_price = self.calculate_sell_price()
+        super().save(*args, **kwargs)
+
+    def calculate_sell_price(self):
+        return self.discount if self.discount else self.price
 
     def __str__(self):
         return self.title

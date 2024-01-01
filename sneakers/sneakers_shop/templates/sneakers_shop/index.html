@@ -6,6 +6,7 @@
 <!-- Section-->
 <section class="py-0">
     <div class="container px-4 px-lg-5 mt-5">
+        {% show_filter filter %}
         <div class="text-center mb-3">
             {% if request.path == '/' %}
             <h1>Popular sneakers</h1>

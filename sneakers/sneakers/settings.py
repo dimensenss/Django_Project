@@ -39,9 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'debug_toolbar',
     'sneakers_shop.apps.SneakersShopConfig',
     'taggit',
+    'django_filters',
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'spurl',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -144,3 +150,4 @@ CACHES = {
     }
 }
 TAGGIT_CASE_INSENSITIVE = True
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

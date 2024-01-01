@@ -11,6 +11,7 @@ from .forms import RegisterUserForm, LoginUserForm
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView
 from .utils import DataMixin
+from .filters import SneakersFilter
 
 
 class SneakersHome(DataMixin, ListView):
@@ -18,19 +19,23 @@ class SneakersHome(DataMixin, ListView):
     template_name = 'sneakers_shop/index.html' # путь к шаблону (по умолчанию sneakers_list)
     context_object_name = 'sneakers' #имя коллекции для шаблона (по умолчанию objects_list)
     allow_empty = False #если вернется пустой список из базы - ошибка 404
-
     tag = None
 
+
     def get_queryset(self):
-        queryset = Sneakers.objects.filter(is_published = 1)
-        return queryset
+        _queryset = Sneakers.objects.filter(is_published = 1)
+        self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
+        _queryset = self.myFilter.qs
+        return _queryset
 
 
 
     def get_context_data(self, *, object_list=None, **kwargs): #формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs) # получить контекст который уже есть
-        c_def = self.get_user_context(title = 'Shop home', )
+        c_def = self.get_user_context(title = 'Shop home', filter = self.myFilter)
+        c_def['request'] = self.request
         return dict(list(context.items())+list(c_def.items()))
+
 
 class SneakersTags(SneakersHome):
     tag = None
@@ -79,15 +84,18 @@ class SneakersCategories(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Sneakers.objects.filter(cat__slug = self.kwargs['cat_slug'],
-                                       is_published = True).select_related('cat')
+        _queryset = Sneakers.objects.filter(cat__slug = self.kwargs['cat_slug'],is_published = True).select_related('cat')
+        self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
+        _queryset = self.myFilter.qs
+        return _queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug = self.kwargs['cat_slug'])
 
         c_def = self.get_user_context(title=f"{cats.name}",
-                                      cat_selected=f"{cats.slug}")
+                                      cat_selected=f"{cats.slug}",
+                                      filter = self.myFilter)
 
         return dict(list(context.items())+list(c_def.items()))
 
