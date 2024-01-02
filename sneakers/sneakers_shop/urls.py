@@ -9,6 +9,7 @@ from .views import *
 
 urlpatterns = [
     path('', SneakersHome.as_view(), name = 'home'), #http://127.0.0.1:8000/
+    path('search/', SneakersHome.as_view(), name = 'search'),
     path('about/', about, name = 'about'),
     path('shop/', shop, name = 'shop'),
     path('contacts/', contacts, name = 'contacts'),

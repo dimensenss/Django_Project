@@ -24,9 +24,7 @@
 
 
 {% block nav %}
-
-{% show_navbar cat_selected cats request %}
-
+{% show_navbar cat_selected cats filter %}
 {% endblock nav %}
 
 {% block header %}
@@ -45,7 +43,7 @@
 {% endblock %}
 
 
-{% show_paginator paginator.page_range page_obj request %}
+{% show_paginator paginator.page_range page_obj %}
 
 {% block footer%}
 <footer class="py-5 bg-dark navbar-fixed-bottom">

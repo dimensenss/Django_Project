@@ -38,14 +38,16 @@ def show_categories(sort=None, cat_selected=None):  # доделать
     return {'cats': cats, 'cat_selected': cat_selected}
 
 
-@register.inclusion_tag('includes/paginator.html')
-def show_paginator(paginator, page_obj, request):
+@register.inclusion_tag('includes/paginator.html', takes_context=True)
+def show_paginator(context, paginator, page_obj):
+    request = context['request'].GET.dict()
     return {"paginator": paginator, 'page_obj': page_obj, 'request': request}
 
 
-@register.inclusion_tag('includes/navbar.html')
-def show_navbar(cat_selected, cats, request):
-    return {"cat_selected": cat_selected, 'cats': cats, 'request': request}
+@register.inclusion_tag('includes/navbar.html', takes_context=True)
+def show_navbar(context, cat_selected, cats, my_filter):
+    request = context['request'].GET.dict()
+    return {"cat_selected": cat_selected, 'cats': cats, "filter": my_filter, 'request': request}
 
 
 @register.inclusion_tag('includes/slider.html')
@@ -53,12 +55,13 @@ def show_slider(post):
     return {"post": post}
 
 
-@register.inclusion_tag('includes/filter.html')
-def show_filter(my_filter):
-    return {"filter": my_filter}
+@register.inclusion_tag('includes/filter.html', takes_context=True)
+def show_filter(context, my_filter):
+    request = context['request'].GET.dict()
+    return {"filter": my_filter, 'request': request}
 
-@register.simple_tag(takes_context=True)
-def change_params(context, **kwargs):
-    query = context['request'].GET.dict()
-    query.update(kwargs)
-    return urlencode(query)
+# @register.simple_tag(takes_context=True) # метод для добавления параметра в урл запрос
+# def change_params(context, **kwargs):
+#     query = context['request'].GET.dict()
+#     query.update(kwargs)
+#     return urlencode(query)

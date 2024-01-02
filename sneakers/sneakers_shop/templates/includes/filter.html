@@ -39,7 +39,14 @@
 <!--</div>-->
 
 <div class="row">
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-between">
+        {% if request.title_search %}
+        <h4>Результати пошуку "<span class="text-success"> {{request.title_search}} </span>"&nbsp:</h4>
+        {% else %}
+        <h4></h4>
+        {% endif %}
+
+
         <a class="custom-btn btn-1 a-light" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
            aria-controls="offcanvasExample" type="Submit">
             Фільтри
@@ -60,4 +67,5 @@
             </form>
         </div>
     </div>
+
 </div>

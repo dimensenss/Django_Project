@@ -207,10 +207,11 @@ footer {
   background: rgb(255, 0, 0);
   background: linear-gradient(0deg, rgb(210, 29, 29) 0%, rgb(203, 0, 0) 100%);
   border: none;
+  margin-left: 0.5em;
 }
 .btn-1:hover {
    background: rgb(234, 0, 0);
-background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
+   background: linear-gradient(0deg, rgb(175, 22, 22) 0%, rgb(175, 22, 22) 100%);
 }
 
 .btn-2 {

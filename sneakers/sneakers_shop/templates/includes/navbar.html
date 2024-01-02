@@ -87,9 +87,24 @@
                         </ul>
                     </div>
                 </li>
+
+
             </ul>
             <div class="d-none d-lg-block d-xl-block d-xxl-block ">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ms-lg-4">
+
+                    <li class="nav-item ">
+                        <form method="get" class="offcanvas-body h-75 mt-1" action="{% url 'search' %}">
+                            <input type="text" name="{{ filter.form.title_search.name }}"
+                                   placeholder="Пошук товарів" class="form-control" value="{{request.title_search}}" >
+                            <button type="submit" class="custom-btn btn-1 a-light ">
+                                Пошук
+                            </button>
+
+                        </form>
+                    </li>
+
+
 
                     <li class="nav-item">
 
@@ -105,6 +120,7 @@
                             <i class="fa-solid fa-user"></i>
                         </a>
                     </li>
+
                 </ul>
             </div>
 
@@ -131,6 +147,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </nav>
 <!-- Модальное окно -->
