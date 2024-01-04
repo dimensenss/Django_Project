@@ -37,16 +37,6 @@ class SneakersHome(DataMixin, ListView):
         return dict(list(context.items())+list(c_def.items()))
 
 
-class SneakersTags(SneakersHome):
-    tag = None
-    def get_queryset(self):
-        queryset = Sneakers.objects.filter(is_published = 1)
-        tag_slug = self.kwargs.get('tag_slug')
-        if tag_slug:
-            self.tag = get_object_or_404(Tag, slug=tag_slug)
-            queryset = queryset.filter(tags__in=[self.tag])
-        return queryset
-
 def about(request):
     context = {
         'title': 'About',

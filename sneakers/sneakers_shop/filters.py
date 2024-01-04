@@ -1,6 +1,8 @@
 import django_filters
 from django_filters import CharFilter
 from django.db.models import Q
+from taggit.models import Tag
+
 from .models import *
 
 
@@ -26,6 +28,12 @@ class SneakersFilter(django_filters.FilterSet):
             'sell_price': 'Ціна',
         }
     )
+    tags = django_filters.ModelMultipleChoiceFilter(
+        queryset=Tag.objects.all(),
+        field_name='tags__name',
+        to_field_name='name',
+        label='Теги',
+    )
 
     def title_content_filter(self, queryset, name, value):
         keywords = [word for word in value.split() if len(word) > 2]
@@ -39,4 +47,5 @@ class SneakersFilter(django_filters.FilterSet):
 
     class Meta:
         model = Sneakers
-        fields = {'price': ['gte', 'lte']}
+        fields = {'price': ['gte', 'lte'],
+                  'tags':['exact']}

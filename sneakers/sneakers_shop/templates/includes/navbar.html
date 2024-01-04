@@ -41,7 +41,7 @@
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link a-dark" href="{{ d_m.get_absolute_url }}" >
+                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} " >
                         {{d_m.name}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
@@ -103,6 +103,7 @@
 
                         </form>
                     </li>
+
 
 
 
@@ -183,9 +184,11 @@
                         <a class = "a-dark" href="#">Ссылка 4</a>
                     </div>
                 </div>
+
                 <hr class="my-1">
 <div class="container">
                 <div class="row ">
+
                     {% if request.user.is_authenticated %}
                     <div class="col  d-flex justify-content-center">
                         <a class="custom-btn btn-1 a-light" href="{% url 'cabinet' %}" role="button">Кабінет</a>
@@ -222,19 +225,19 @@
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <td><img src=".\media\photos\2023\09\03\adidas_ZX_30.jpg" alt=""></td>
+                        <td><img src=".\media\product_images\2023\12\18\adidas_ZX_30.jpg" alt=""></td>
                         <td><a class = "a-dark" href="#">Adidas ZX 30</a></td>
                         <td>230.99$</td>
                         <td>1 пара</td>
                     </tr>
                     <tr>
-                        <td><img src=".\media\photos\2023\09\03\asics_2.jpg" alt=""></td>
+                        <td><img src=".\media\product_images\2023\12\18\asics_2.jpg" alt=""></td>
                         <td><a class = "a-dark" href="#">Asics 970</a></td>
                         <td>130.79$</td>
                         <td>1 пара</td>
                     </tr>
                     <tr>
-                        <td><img src=".\media\photos\2023\09\03\nike_2.jpg" alt=""></td>
+                        <td><img src=".\media\product_images\2023\12\18\nike_2.jpg" alt=""></td>
                         <td><a class = "a-dark" href="#">Nike Lol 23</a></td>
                         <td>530$</td>
                         <td>1 пара</td>

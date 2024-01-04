@@ -46,7 +46,7 @@ def show_paginator(context, paginator, page_obj):
 
 @register.inclusion_tag('includes/navbar.html', takes_context=True)
 def show_navbar(context, cat_selected, cats, my_filter):
-    request = context['request'].GET.dict()
+    request = context['request']
     return {"cat_selected": cat_selected, 'cats': cats, "filter": my_filter, 'request': request}
 
 

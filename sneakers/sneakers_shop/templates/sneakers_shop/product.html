@@ -1,6 +1,6 @@
 {% extends 'sneakers_shop/base.html' %}
 {% load sneakers_tags %}
-
+{% load spurl %}
 {% block header %}
 
 {% endblock %}
@@ -53,7 +53,8 @@
 
                             <ul class="select-list list-unstyled d-flex">
                                 {% for tag in post.tags.all %}
-                                <a class="a-dark" href="{% url 'sneakers_by_tag' tag.slug %}">{{ tag }} &nbsp</a>
+<!--                                <a class="a-dark" href="{% url 'search' %}">{{ tag }} &nbsp</a>-->
+                                <a class="a-dark" href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }} &nbsp</a>
                                 {% endfor %}
                             </ul>
                         </div>
