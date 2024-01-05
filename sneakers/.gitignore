@@ -1,3 +1,4 @@
+.env
 venv/
 __pacache__/
 .idea

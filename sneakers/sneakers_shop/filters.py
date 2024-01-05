@@ -36,14 +36,14 @@ class SneakersFilter(django_filters.FilterSet):
     )
 
     def title_content_filter(self, queryset, name, value):
-        keywords = [word for word in value.split() if len(word) > 2]
-        q_objects = Q()
+        # keywords = [word for word in value.split() if len(word) > 2]
+        # q_objects = Q()
+        #
+        # for token in keywords:
+        #     q_objects |= Q(title__contains=token)
+        #     q_objects |= Q(content__contains=token)
 
-        for token in keywords:
-            q_objects |= Q(title__contains=token)
-            q_objects |= Q(content__contains=token)
-
-        return queryset.filter(q_objects)
+        return queryset.filter(title__search = value)
 
     class Meta:
         model = Sneakers

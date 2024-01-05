@@ -1,0 +1,74 @@
+[
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 4,
+    "fields": {
+      "product": 7,
+      "image": "product_images/2023/12/21/1_1.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 5,
+    "fields": {
+      "product": 6,
+      "image": "product_images/2023/12/18/nike_forced.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 7,
+    "fields": {
+      "product": 4,
+      "image": "product_images/2023/12/18/n_b_sneakres.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 8,
+    "fields": {
+      "product": 3,
+      "image": "product_images/2023/12/18/n_b_9060_C1jkYDD.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 9,
+    "fields": {
+      "product": 2,
+      "image": "product_images/2023/12/18/balenciaga_2.jpeg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 11,
+    "fields": {
+      "product": 7,
+      "image": "product_images/2023/12/18/nike_2.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 12,
+    "fields": {
+      "product": 6,
+      "image": "product_images/2023/12/18/balenciaga_2_hjJpiry.jpeg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 14,
+    "fields": {
+      "product": 7,
+      "image": "product_images/2023/12/27/1_22.jpg"
+    }
+  },
+  {
+    "model": "sneakers_shop.productimage",
+    "pk": 15,
+    "fields": {
+      "product": 7,
+      "image": "product_images/2023/12/27/1-190.jpg"
+    }
+  }
+]
