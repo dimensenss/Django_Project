@@ -8,18 +8,12 @@ from taggit.managers import TaggableManager
 
 
 class Sneakers(models.Model):
-    VARIANTS = (
-        ('None', 'None'),
-        ('Size', 'Size'),
-        ('Color', 'Color'),
-        ('Size-Color', 'Size-Color'),
-
-    )
-
     title = models.CharField(max_length=255, verbose_name='Назва')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
+    color = models.CharField(max_length=32, blank=True, null=True)
+    size = models.JSONField(max_length=128, blank=True, null=True)
     discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Знижка')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
     time_update = models.DateTimeField(auto_now=True)
@@ -27,7 +21,7 @@ class Sneakers(models.Model):
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name="Категорія")
     tags = TaggableManager()
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
-    variant = models.CharField(max_length=10, choices=VARIANTS, default='None')
+    variations = models.ManyToManyField('self', blank=True, verbose_name='Варіації')
 
     def save(self, *args, **kwargs):
         self.sell_price = self.calculate_sell_price()
@@ -50,50 +44,14 @@ class Sneakers(models.Model):
         verbose_name_plural = 'Кросівки'
         ordering = ['-time_create', 'title']
 
-class Color(models.Model):
-    name = models.CharField(max_length=20)
-    code = models.CharField(max_length=10, blank=True, null=True)
-    def __str__(self):
-        return self.name
-    def color_tag(self):
-        if self.code is not None:
-            return mark_safe('<p style="background-color:{}">Color </p>'.format(self.code))
-        else:
-            return ""
 
 
-class Size(models.Model):
-    name = models.CharField(max_length=20)
-    code = models.CharField(max_length=10, blank=True,null=True)
-    def __str__(self):
-        return self.name
-
-class Variants(models.Model):
-    title = models.CharField(max_length=100, blank=True,null=True)
-    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE,blank=True,null=True)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE,blank=True,null=True)
-    image_id = models.IntegerField(blank=True,null=True,default=0)
-    quantity = models.IntegerField(default=1)
-    price = models.DecimalField(max_digits=12, decimal_places=2,default=0)
-
-    def __str__(self):
-        return self.title
-
-    def image(self):
-        img = ProductImage.objects.get(id=self.image_id)
-        if img.id is not None:
-             varimage=img.image.url
-        else:
-            varimage=""
-        return varimage
-
-    def image_tag(self):
-        img = ProductImage.objects.get(id=self.image_id)
-        if img.id is not None:
-             return mark_safe('<img src="{}" height="50"/>'.format(img.image.url))
-        else:
-            return ""
+# class Variants(models.Model):
+#     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='variants')
+#     color = models.CharField(max_length=32,blank=True,null=True)
+#     size = models.JSONField(max_length=128)
+#     image_id = models.IntegerField(blank=True,null=True,default=0)
+#     quantity = models.IntegerField(default=1)
 
 
 

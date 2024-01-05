@@ -44,8 +44,10 @@
                             <p class="item-title fs-5 pe-2">Кольори:</p>
 
                             <ul class="select-list list-unstyled d-flex">
-                                {% for color in post.color %}
-                                <li data-value="{{ color }}" class="select-item">{{ color }} &nbsp</li>
+                                {% for variation in post.variations.all %}
+                                <li>
+                                    <a href="{% url 'product' product_slug=variation.slug %}">{{ variation.title }}</a>
+                                </li>
                                 {% endfor %}
 
                             </ul>
@@ -55,9 +57,11 @@
                             <p class="item-title fs-5 pe-2">Розміри:</p>
 
                             <ul class="select-list list-unstyled d-flex">
+                                {% if post.size %}
                                 {% for size in post.size %}
-                                <li data-value="{{ color }}" class="select-item">{{ size }} &nbsp</li>
+                                <li data-value="{{ size }}" class="select-item">{{ size }} &nbsp</li>
                                 {% endfor %}
+                                {% endif %}
 
                             </ul>
                         </div>
