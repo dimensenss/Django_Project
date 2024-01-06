@@ -10,15 +10,14 @@ from taggit.models import Tag
 from .forms import RegisterUserForm, LoginUserForm
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView
-from .utils import DataMixin
-from .filters import SneakersFilter
+from .utils import DataMixin, SneakersFilter
 
 
 class SneakersHome(DataMixin, ListView):
     model = Sneakers # модель
     template_name = 'sneakers_shop/index.html' # путь к шаблону (по умолчанию sneakers_list)
     context_object_name = 'sneakers' #имя коллекции для шаблона (по умолчанию objects_list)
-    allow_empty = False #если вернется пустой список из базы - ошибка 404
+    # allow_empty = False #если вернется пустой список из базы - ошибка 404
     tag = None
 
 

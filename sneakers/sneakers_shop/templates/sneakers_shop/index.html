@@ -1,15 +1,50 @@
 {% extends 'sneakers_shop/base.html' %}
 {% load static %}
 {% load sneakers_tags %}
-
-
+{% load crispy_forms_tags %}
 
 
 {% block content %}
 <!-- Section-->
 <section class="py-0">
     <div class="container px-4 px-lg-5 mt-5">
-        {% show_filter filter %}
+
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                {% if request.GET.title_search %}
+                <h4>Результати пошуку "<span class="text-success"> {{request.GET.title_search}} </span>"&nbsp:</h4>
+                {% else %}
+                <h4></h4>
+                {% endif %}
+
+                {% if not sneakers %}
+                <h4>Нічого не знайдено</h4>
+                {% endif %}
+
+                <a class="custom-btn btn-1 a-light" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                   aria-controls="offcanvasExample" type="Submit">
+                    Фільтри
+                </a>
+
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+                     aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+
+                    <form method="get" class="offcanvas-body" action="{% url 'home' %}">
+                        {{ filter.form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-2">
+                            Примінити фільтри
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
         <div class="text-center mb-3">
             {% if request.path == '/' %}
             <h1>Popular sneakers</h1>
@@ -24,11 +59,13 @@
                     {% if item.images %}
 
                     <a class="a-dark" href="{% url 'product' item.slug %}">
-                        <img class="card-img-top image-container-img" src="{{ item.images.first.image.url }}" alt = "{{ item.title }}" />
+                        <img class="card-img-top image-container-img" src="{{ item.images.first.image.url }}"
+                             alt="{{ item.title }}"/>
                     </a>
                     {% else %}
                     <a class="a-dark" href="{% url 'product' item.slug %}">
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="{{ item.title }}"/>
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                             alt="{{ item.title }}"/>
                     </a>
                     {% endif %}
                     <!-- Product details-->

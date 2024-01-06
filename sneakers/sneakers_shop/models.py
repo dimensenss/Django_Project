@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.db import models
 from django.urls import reverse, reverse_lazy
 
@@ -12,7 +13,7 @@ class Sneakers(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
-    color = models.CharField(max_length=32, blank=True, null=True)
+    color = ColorField(default='#FF0000')
     size = models.JSONField(max_length=128, blank=True, null=True)
     discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Знижка')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
@@ -38,6 +39,12 @@ class Sneakers(models.Model):
 
     def display_id(self):
         return f"{self.id:05}"
+
+    def color_tag(self):
+        if self.color is not None:
+            return mark_safe('<p style="background-color:{}">Color </p>'.format(self.code))
+        else:
+            return ""
 
     class Meta:
         verbose_name = 'Кросівки'

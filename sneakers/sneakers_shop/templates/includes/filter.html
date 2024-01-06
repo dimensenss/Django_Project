@@ -43,7 +43,9 @@
         {% if request.title_search %}
         <h4>Результати пошуку "<span class="text-success"> {{request.title_search}} </span>"&nbsp:</h4>
         {% else %}
+        {% if not sneakers %}
         <h4></h4>
+        <h4>Нічого не знайдено</h4>
         {% endif %}
 
 
