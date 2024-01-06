@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+{% endblock header %}
+
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <form action="{% url 'user:login' %}" method="post">
+    <h2 class="text-center">{{title}}</h2>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_username" class="form-label">Ім'я користувача</label>
+            <input type="text" class="form-control" name="username" id = "id_username" placeholder="Введіть ваше ім'я" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" name="password" id = "id_password" placeholder="Введіть ваш пароль" required>
+        </div>
+
+        <!--        {% for f in form %}-->
+        <!--        <div class="form-group">-->
+        <!--            <label class="col-form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>-->
+        <!--            {{ f }}-->
+        <!--            <div class="form-error-1">{{ f.errors }}</div>-->
+        <!--        </div>-->
+        <!--        {% endfor %}-->
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="custom-btn btn-1 ">Вхід</button>
+        </div>
+    </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-error-1 text-center">{{ form.non_field_errors }}</div>
+
+
+{% endblock content %}

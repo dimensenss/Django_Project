@@ -5,9 +5,10 @@
     <div class="container px-2 px-lg-2">
         <a class="pt-0 h-0" href="{% url 'home' %}"><img
                 src="{% static 'sneakers_shop/images/logo.png' %}"/></a>
-        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-                ><i class="fa-solid fa-bars fa-beat-fade"></i></span></button>
+        ><i class="fa-solid fa-bars fa-beat-fade"></i></span></button>
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 
@@ -17,7 +18,7 @@
                 <li class="nav-item disabled bg-secondary rounded dropdown">
                     <a class="nav-link a-dark">{{d_m.name}}</a>
                     <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                        <ul >
+                        <ul>
                             <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
                             <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                             <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
@@ -41,11 +42,11 @@
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} " >
+                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} ">
                         {{d_m.name}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                         <ul >
+                        <ul>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Action</a></li>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
@@ -59,7 +60,8 @@
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                         </ul>
                         <ul>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a>
+                            </li>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
                             <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
@@ -81,7 +83,8 @@
                         <ul>
                             {% get_menu as menu %}
                             {% for m in menu %}
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a></li>
+                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a>
+                            </li>
                             {% endfor %}
 
                         </ul>
@@ -96,7 +99,8 @@
                     <li class="nav-item ">
                         <form method="get" class="offcanvas-body h-75 mt-1" action="{% url 'search' %}">
                             <input type="text" name="{{ filter.form.title_search.name }}"
-                                   placeholder="Пошук товарів" class="form-control" value="{{request.GET.title_search}}" >
+                                   placeholder="Пошук товарів" class="form-control"
+                                   value="{{request.GET.title_search}}">
                             <button type="submit" class="custom-btn btn-1 a-light ">
                                 Пошук
                             </button>
@@ -105,19 +109,17 @@
                     </li>
 
 
-
-
                     <li class="nav-item">
 
                         <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
-                                data-bs-target="#cart-modal">
+                           data-bs-target="#cart-modal">
                             <i class="fa-solid fa-cart-shopping"></i>
                             <span class="badge bg-secondary text-white ms-1 rounded-pill">0</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a type="button" class="a-dark nav-link btn-outline" data-bs-toggle="modal"
-                                data-bs-target="#reg-modal">
+                           data-bs-target="#reg-modal">
                             <i class="fa-solid fa-user"></i>
                         </a>
                     </li>
@@ -125,23 +127,26 @@
                 </ul>
             </div>
 
-            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
+            <div class="d-block d-lg-none">
+                <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
                 <div class="row">
                     {% if request.user.is_authenticated %}
                     <div class="col text-center d-flex justify-content-center">
-                        <a class="a-dark bg-danger rounded" href="{% url 'cabinet' %}" role="button">Перейти до профілю</a>
+                        <a class="a-dark bg-danger rounded" href="{% url 'user:profile' %}" role="button">Перейти до
+                            профілю</a>
                     </div>
                     <div class="col d-flex justify-content-center">
-                        <a class=" a-light bg-secondary rounded" href="{% url 'logout' %}" role="button">Вийти</a>
+                        <a class=" a-light bg-secondary rounded" href="{% url 'user:logout' %}" role="button">Вийти</a>
                     </div>
                     {% else %}
                     <div class="col text-center pt-2">
-                        <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
+                        <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
                     </div>
                     <div class="row pt-2">
                         <div class="col text-center text-light">
-                        Нема аккаунта? <a class = "a-dark text-light text-decoration-underline" href="{% url 'register' %}">Регістрація</a>
-                    </div>
+                            Нема аккаунта? <a class="a-dark text-light text-decoration-underline"
+                                              href="{% url 'user:register' %}">Регістрація</a>
+                        </div>
                     </div>
 
                     {% endif %}
@@ -163,52 +168,54 @@
                 <!-- Строки с ссылками -->
                 <div class="row mb-2">
                     <div class="col">
-                        <a class = "a-dark" href="#">Особистий кабінет</a>
+                        <a class="a-dark" href="#">Ссылка 1</a>
                     </div>
                 </div>
                 <hr class="my-1"> <!-- Серая полоса разделения -->
                 <div class="row mb-2">
                     <div class="col">
-                        <a class = "a-dark" href="#">Ссылка 2</a>
+                        <a class="a-dark" href="#">Ссылка 2</a>
                     </div>
                 </div>
                 <hr class="my-1">
                 <div class="row mb-2">
                     <div class="col">
-                        <a class = "a-dark" href="#">Ссылка 3</a>
+                        <a class="a-dark" href="#">Ссылка 3</a>
                     </div>
                 </div>
                 <hr class="my-1">
                 <div class="row mb-2">
                     <div class="col">
-                        <a class = "a-dark" href="#">Ссылка 4</a>
+                        <a class="a-dark" href="#">Ссылка 4</a>
                     </div>
                 </div>
 
                 <hr class="my-1">
-<div class="container">
-                <div class="row ">
+                <div class="container">
+                    <div class="row ">
 
-                    {% if request.user.is_authenticated %}
-                    <div class="col  d-flex justify-content-center">
-                        <a class="custom-btn btn-1 a-light" href="{% url 'cabinet' %}" role="button">Кабінет</a>
-                    </div>
-                    <div class="col d-flex justify-content-center">
-                        <a class="custom-btn btn-2 a-light" href="{% url 'logout' %}" role="button">Вийти</a>
-                    </div>
-                    {% else %}
-                    <div class="col pt-2 d-flex justify-content-center">
-                        <a class="custom-btn btn-1 a-light" href="{% url 'login' %}" role="button">Вхід</a>
-                    </div>
-                    <div class="row pt-2">
-                        <div class="col text-center">
-                        Нема аккаунта? <a class = "a-dark text-decoration-underline" href="{% url 'register' %}">Регістрація</a>
-                    </div>
-                    </div>
+                        {% if request.user.is_authenticated %}
+                        <div class="col  d-flex justify-content-center">
+                            <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
+                               role="button">Кабінет</a>
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}" role="button">Вийти</a>
+                        </div>
+                        {% else %}
+                        <div class="col pt-2 d-flex justify-content-center">
+                            <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col text-center">
+                                Нема аккаунта? <a class="a-dark text-decoration-underline"
+                                                  href="{% url 'user:register' %}">Регістрація</a>
+                            </div>
+                        </div>
 
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-    </div>
             </div>
         </div>
     </div>
@@ -225,20 +232,20 @@
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <td><img src=".\media\product_images\2023\12\18\adidas_ZX_30.jpg" alt=""></td>
-                        <td><a class = "a-dark" href="#">Adidas ZX 30</a></td>
+                        <td><img src="" alt=""></td>
+                        <td><a class="a-dark" href="#">Adidas ZX 30</a></td>
                         <td>230.99$</td>
                         <td>1 пара</td>
                     </tr>
                     <tr>
-                        <td><img src=".\media\product_images\2023\12\18\asics_2.jpg" alt=""></td>
-                        <td><a class = "a-dark" href="#">Asics 970</a></td>
+                        <td><img src="" alt=""></td>
+                        <td><a class="a-dark" href="#">Asics 970</a></td>
                         <td>130.79$</td>
                         <td>1 пара</td>
                     </tr>
                     <tr>
-                        <td><img src=".\media\product_images\2023\12\18\nike_2.jpg" alt=""></td>
-                        <td><a class = "a-dark" href="#">Nike Lol 23</a></td>
+                        <td><img src="" alt=""></td>
+                        <td><a class="a-dark" href="#">Nike Lol 23</a></td>
                         <td>530$</td>
                         <td>1 пара</td>
                     </tr>
@@ -247,10 +254,12 @@
             </div>
             <div class="modal-footer">
 
-                        <a class="custom-btn btn-1 a-light text-center" role="button" data-bs-dismiss="modal">Продовжити покупки</a>
-                        <a class="custom-btn btn-1 a-light text-center" href="{% url 'contacts' %}" role="button">До замовлення</a>
-                </div>
+                <a class="custom-btn btn-1 a-light text-center" role="button" data-bs-dismiss="modal">Продовжити
+                    покупки</a>
+                <a class="custom-btn btn-1 a-light text-center" href="{% url 'contacts' %}" role="button">До
+                    замовлення</a>
             </div>
         </div>
     </div>
+</div>
 

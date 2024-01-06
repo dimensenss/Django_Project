@@ -8,6 +8,7 @@ from sneakers_shop.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sneakers_shop.urls')),#http://127.0.0.1:8000/
+    path('user/', include('users.urls', namespace='user')),
 ]
 
 if settings.DEBUG:

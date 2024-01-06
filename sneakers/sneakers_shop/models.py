@@ -13,7 +13,7 @@ class Sneakers(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
-    color = ColorField(default='#FF0000')
+    color = ColorField(default='#FF0000',blank=True, null=True)
     size = models.JSONField(max_length=128, blank=True, null=True)
     discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Знижка')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
