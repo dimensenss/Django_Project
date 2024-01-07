@@ -1,6 +1,16 @@
 
 $(document).ready(function($) {
 
+	var notification = $('#notification');
+
+	if (notification.length > 0){
+		setTimeout(function (){
+			notification.alert('close');
+
+		},3000);
+	}
+
+
 	$('.image-popup-vertical-fit').magnificPopup({
 		type: 'image',
 		closeOnContentClick: true,

@@ -35,6 +35,32 @@
                     <input type="email" class="form-control" name="email" value = "{% if form.email.value %}{{form.email.value}}{% endif %}" id="id_email"
                            placeholder="Введіть вашу пошту" required>
                 </div>
+
+                <div class="mb-3">
+                    <label for="id_first_name" class="form-label">Ім'я</label>
+                    {% if form.first_name.errors %}
+                    <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                        <span class="form-error-1 text-center">{{ form.first_name.errors }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                    <input type="text" class="form-control" name="first_name" value = "{% if form.first_name.value %} {{form.first_name.value}} {% endif %}" id="id_first_name"
+                           placeholder="Введіть ваше ім'я">
+                </div>
+
+
+                <div class="mb-3">
+                <label for="id_last_name" class="form-label">Прізвище</label>
+                    {% if form.last_name.errors %}
+                    <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                        <span class="form-error-1 text-center">{{ form.last_name.errors }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                    <input type="text" class="form-control" name="last_name" value = "{% if form.last_name.value %} {{form.last_name.value}} {% endif %}" id="id_last_name"
+                           placeholder="Введіть ваше прізвище">
+                </div>
+
                 <div class="mb-3">
                     <label for="id_password1" class="form-label">Введіть пароль</label>
                     {% if form.password1.errors %}

@@ -127,29 +127,51 @@
                 </ul>
             </div>
 
-            <div class="d-block d-lg-none">
-                <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
-                <div class="row">
-                    {% if request.user.is_authenticated %}
-                    <div class="col text-center d-flex justify-content-center">
-                        <a class="a-dark bg-danger rounded" href="{% url 'user:profile' %}" role="button">Перейти до
-                            профілю</a>
-                    </div>
-                    <div class="col d-flex justify-content-center">
-                        <a class=" a-light bg-secondary rounded" href="{% url 'user:logout' %}" role="button">Вийти</a>
-                    </div>
-                    {% else %}
-                    <div class="col text-center pt-2">
-                        <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
-                    </div>
-                    <div class="row pt-2">
-                        <div class="col text-center text-light">
-                            Нема аккаунта? <a class="a-dark text-light text-decoration-underline"
-                                              href="{% url 'user:register' %}">Регістрація</a>
-                        </div>
-                    </div>
+            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
 
-                    {% endif %}
+
+
+                    <form method="get" class="offcanvas-body h-75" action="{% url 'search' %}">
+                         <div class="row">
+                             <div class="col-8">
+                            <input type="text" name="{{ filter.form.title_search.name }}"
+                                   placeholder="Пошук товарів" class="form-control"
+                                   value="{{ request.GET.title_search }}">
+                             </div>
+                             <div class="col-4">
+                            <button type="submit" class="custom-btn btn-1 a-light mb-3">
+                                Пошук
+                            </button>
+                             </div>
+                         </div>
+                    </form>
+
+
+
+                <div class="container">
+                    <div class="row ">
+
+                        {% if request.user.is_authenticated %}
+                        <div class="col  d-flex justify-content-center">
+                            <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
+                               role="button">Кабінет</a>
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}" role="button">Вийти</a>
+                        </div>
+                        {% else %}
+                        <div class="col pt-2 d-flex justify-content-center">
+                            <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col text-center" style="color: white">
+                                Нема аккаунта? <a class="a-dark bg-light rounded-1 "
+                                                  href="{% url 'user:register' %}">Регістрація</a>
+                            </div>
+                        </div>
+
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
