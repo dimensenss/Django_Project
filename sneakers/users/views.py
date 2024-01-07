@@ -3,9 +3,11 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.utils.encoding import force_bytes
 from django.views.generic import CreateView, UpdateView
 from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm
 from sneakers_shop.utils import DataMixin
@@ -41,6 +43,11 @@ class LoginUser(DataMixin, LoginView):
 
     def get_success_url(self):
         messages.success(self.request, "Ви авторизовані")
+
+        next_url = self.request.POST['next']
+        if next_url:
+            return redirect(next_url)
+
         return reverse_lazy('home')
 @login_required
 def logout_user(request):
