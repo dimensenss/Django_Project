@@ -10,7 +10,7 @@ from sneakers_shop.utils import DataMixin
 
 class RegisterUser(DataMixin, CreateView):
     template_name = 'users/register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('home')
     form_class = RegisterUserForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
