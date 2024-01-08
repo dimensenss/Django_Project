@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes
@@ -47,7 +47,7 @@ class LoginUser(DataMixin, LoginView):
         if next_url:
             return next_url
 
-        return redirect('home')
+        return reverse('home')
 @login_required
 def logout_user(request):
     messages.success(request, 'Ви вийшли з акаунту')
@@ -72,4 +72,8 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
         c_def = self.get_user_context(title="Профіль")
 
         return dict(list(context.items())+list(c_def.items()))
+
+
+def users_cart(request):
+    return render(request, 'users/user_cart.html')
 

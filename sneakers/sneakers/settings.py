@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'sneakers_shop.apps.SneakersShopConfig',
 
     'users',
+    'carts',
 
     'taggit',
     'django_filters',
