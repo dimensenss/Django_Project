@@ -1,5 +1,6 @@
 {% load static %}
 {% load sneakers_tags %}
+{% load carts_tags %}
 
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container px-2 px-lg-2">
@@ -109,12 +110,12 @@
                     </li>
 
 
+                    {% user_carts request as carts %}
                     <li class="nav-item">
 
                         <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
                            data-bs-target="#cart-modal">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="badge bg-secondary text-white ms-1 rounded-pill">0</span>
+                           <i class="fa-solid fa-cart-shopping"></i><span class="badge bg-secondary text-white ms-1 rounded-pill">{{ carts.total_quantity }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -127,48 +128,52 @@
                 </ul>
             </div>
 
-            <div class="d-block d-lg-none"> <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
+            <div class="d-block d-lg-none">
+                <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
 
+               <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal" data-bs-target="#cart-modal">
+                            Кошик<i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill">{{ carts.total_quantity }}</span>
+               </a>
 
-
-                    <form method="get" class="offcanvas-body h-75" action="{% url 'search' %}">
-                         <div class="row">
-                             <div class="col-8">
+                <form method="get" class="offcanvas-body h-75" action="{% url 'search' %}">
+                    <div class="row">
+                        <div class="col-8">
                             <input type="text" name="{{ filter.form.title_search.name }}"
                                    placeholder="Пошук товарів" class="form-control"
                                    value="{{ request.GET.title_search }}">
-                             </div>
-                             <div class="col-4">
+                        </div>
+                        <div class="col-4">
                             <button type="submit" class="custom-btn btn-1 a-light mb-3">
                                 Пошук
                             </button>
-                             </div>
-                         </div>
-                    </form>
-
+                        </div>
+                    </div>
+                </form>
 
 
                 <div class="container">
                     <div class="row ">
 
                         {% if request.user.is_authenticated %}
-                        <div class="col  d-flex justify-content-center">
-                            <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
-                               role="button">Кабінет</a>
-                        </div>
-                        <div class="col d-flex justify-content-center">
-                            <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}" role="button">Вийти</a>
-                        </div>
-                        {% else %}
-                        <div class="col pt-2 d-flex justify-content-center">
-                            <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col text-center" style="color: white">
-                                Нема аккаунта? <a class="a-dark bg-light rounded-1 "
-                                                  href="{% url 'user:register' %}">Регістрація</a>
+                            <div class="col  d-flex justify-content-center">
+                                <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
+                                   role="button">Кабінет</a>
                             </div>
-                        </div>
+                            <div class="col d-flex justify-content-center">
+                                <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}"
+                                   role="button">Вийти</a>
+                            </div>
+                        {% else %}
+                            <div class="col pt-2 d-flex justify-content-center">
+                                <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col text-center" style="color: white">
+                                    Нема аккаунта? <a class="a-dark bg-light rounded-1 "
+                                                      href="{% url 'user:register' %}">Регістрація</a>
+                                </div>
+                            </div>
 
                         {% endif %}
                     </div>
@@ -230,8 +235,7 @@
                         </div>
                         <div class="row pt-2">
                             <div class="col text-center">
-                                Нема аккаунта? <a class="a-dark text-decoration-underline"
-                                                  href="{% url 'user:register' %}">Регістрація</a>
+                                Нема аккаунта? <a class="a-dark text-decoration-underline" href="{% url 'user:register' %}">Регістрація</a>
                             </div>
                         </div>
 
@@ -242,7 +246,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="cart-modal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -253,11 +256,8 @@
             <div class="modal-body">
                 {% include 'carts/includes/included_cart.html' %}
             </div>
-            <div class="modal-footer">
-                <a class="custom-btn btn-1 a-light text-center" role="button" data-bs-dismiss="modal">Продовжити
-                    покупки</a>
-                <a class="custom-btn btn-1 a-light text-center" href="{% url 'contacts' %}" role="button">До
-                    замовлення</a>
+            <div class="modal-footer justify-content-between">
+
             </div>
         </div>
     </div>

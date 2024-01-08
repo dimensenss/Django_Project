@@ -201,7 +201,15 @@ footer {
   outline: none;
   align-items: center;
   justify-content: center;
-  max-width: 200px;
+    max-height: 40px;
+    max-width: 100px;
+}
+
+.form-control{
+    max-height: 40px;
+}
+.nav-item a {
+  white-space: nowrap;
 }
 .btn-1 {
   background: rgb(255, 0, 0);

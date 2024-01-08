@@ -1,54 +1,78 @@
 {% load static %}
+{% load carts_tags %}
 
+{% user_carts request as carts %}
 
 <!-- Разметка корзины -->
 <div class="card mb-3 text-bg-light shadow-lg">
-    <div class="card-header">
-        <h5 class="card-title">Товар</h5>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <div class="row text-center">
-                <div class="col p-0">
-                    <div class="input-group">
-                                                                <span class="input-group-btn">
-                                                                    <button type="button"
-                                                                            class="btn btn-dark btn-sm decrement"
-                                                                            data-cart-id=""
-                                                                            data-cart-change-url="">-</button>
-                                                                </span>
-                        <input type="text" class="form-control number" value="1"
-                               readonly>
+    {% for cart in carts %}
+        <div class="card-header">
+            <h5 class="card-title">{{ cart.product.title }}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="row text-center">
+                    <div class="col p-0">
+                        <img src="{{ cart.product.images.first.image.url }}" alt="{{ cart.product.title }}" class="">
+                    </div>
+                    <div class="col p-0">
+                        <div class="input-group">
                         <span class="input-group-btn">
-                                                                    <button type="button"
-                                                                            class="btn btn-dark btn-sm increment"
-                                                                            data-cart-id=""
-                                                                            data-cart-change-url="">+</button>
-                                                                </span>
+                            <button type="button"
+                                    class="btn btn-dark btn-sm decrement"
+                                    data-cart-id=""
+                                    data-cart-change-url="">-
+                            </button>
+                        </span>
+                            <input type="text" class="form-control number" value="{{ cart.quantity }}" readonly>
+                            <span class="input-group-btn">
+                            <button type="button"
+                                    class="btn btn-dark btn-sm increment"
+                                    data-cart-id=""
+                                    data-cart-change-url="">+
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col p-0">
+                        <p>x {{ cart.product.sell_price }} $</p>
+                    </div>
+                    <div class="col p-0"><strong>{{ cart.product_price }} $</strong></div>
+                    <div class="col p-0">
+                        <a href="{% url 'carts:cart_remove' 1 %}" class="remove-from-cart"
+                           data-cart-id="">
+                           <i class="fa-solid fa-trash" style="color: #060b13;"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+
+</div>
+{% if carts %}
+<div class="card mb-3 text-bg-light shadow-lg">
+    <div class="card-header">
+        <div class="row">
+            <div class="col p-0 d-flex align-items-center">
+                <a class="btn btn-dark" role="button" data-bs-dismiss="modal" >Продовжити покупки</a>
+            </div>
+            <div class="col p-0 rounded-2" style="background-color: #00a0461a; border: 1px solid #00a046;">
+                <div class="row">
+                    <div class="col justify-content-center text-center">
+                        <p class="float-left">Усього <strong>{{ carts.total_quantity }}</strong> товарів на суму</p>
+                        <h4 class="float-left"><strong>{{ carts.total_price }}</strong></h4>
+                    </div>
+                    <div class="d-flex align-items-center col justify-content-center ">
+                        <a class="custom-btn btn-1 a-light text-center" href="../orders/create_order.html"
+                           role="button">До
+                            замовлення</a>
                     </div>
                 </div>
-                <div class="col p-0">
-                    <p>x 100.00 = </p>
-                </div>
-                <div class="col p-0"><strong>100.00 $</strong></div>
-                <div class="col p-0">
-                    <a href="{% url 'carts:cart_remove' 1 %}" class="remove-from-cart"
-                       data-cart-id="">
-                        <img class="mx-1" src="#"
-                             alt="Catalog Icon" width="16" height="16">
-                    </a>
-                </div>
             </div>
-        </li>
-    </ul>
-</div>
-<div class="card mb-3 shadow-lg">
-    <div class="card-footer">
-        <p class="float-left">Итого <strong>1</strong> товар(а) на сумму</p>
-        <h4 class="float-left"><strong>100.00 $</strong></h4>
+        </div>
     </div>
 </div>
+{% endif %}
 
-<a class="btn btn-dark" href="../orders/create_order.html">
-    Оформить заказ
-</a>

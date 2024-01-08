@@ -44,7 +44,7 @@ class LoginUser(DataMixin, LoginView):
         messages.success(self.request, "Ви авторизовані")
 
         next_url = self.request.POST.get('next', None)
-        if next_url:
+        if next_url and next_url != reverse('users:logout'):
             return next_url
 
         return reverse('home')
