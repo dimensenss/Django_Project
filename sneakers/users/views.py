@@ -15,7 +15,6 @@ from sneakers_shop.utils import DataMixin
 
 class RegisterUser(DataMixin, CreateView):
     template_name = 'users/register.html'
-    success_url = reverse_lazy('home')
     form_class = RegisterUserForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -44,11 +43,11 @@ class LoginUser(DataMixin, LoginView):
     def get_success_url(self):
         messages.success(self.request, "Ви авторизовані")
 
-        next_url = self.request.POST['next']
+        next_url = self.request.POST.get('next', None)
         if next_url:
-            return redirect(next_url)
+            return next_url
 
-        return reverse_lazy('home')
+        return redirect('home')
 @login_required
 def logout_user(request):
     messages.success(request, 'Ви вийшли з акаунту')
@@ -59,7 +58,6 @@ def logout_user(request):
 class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
     template_name = 'users/profile.html'
     form_class = ProfileUserForm
-    success_url = reverse_lazy('user:profile')
 
     def get_object(self, *args, **kwargs):
         return self.request.user
@@ -67,7 +65,7 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         messages.success(self.request, "Дані збережено")
-        return super().form_valid(form)
+        return redirect('user:profile')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

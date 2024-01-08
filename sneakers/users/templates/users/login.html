@@ -13,7 +13,6 @@
                 <h2 class="text-center">{{title}}</h2>
                 {% csrf_token %}
                 {% if request.GET.next %}
-                    {{request.GET.next}}
                     <input type="hidden" name = "next" value="{{ request.GET.next }}">
                 {% endif %}
 
