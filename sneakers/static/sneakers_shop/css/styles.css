@@ -201,6 +201,7 @@ footer {
   outline: none;
   align-items: center;
   justify-content: center;
+  max-width: 200px;
 }
 .btn-1 {
   background: rgb(255, 0, 0);

@@ -85,7 +85,7 @@
                                 {% endif %}
                             </div>
                             <div class="d-flex align-items-end">
-                                <a class="a-dark" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                                <a class="a-dark" href="{% url 'carts:cart_add' item.slug %}"><i class="fa-solid fa-cart-shopping"></i></a>
                             </div>
                         </div>
                     </span>
