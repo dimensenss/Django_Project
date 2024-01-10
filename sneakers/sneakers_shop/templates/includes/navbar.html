@@ -115,8 +115,10 @@
 
                         <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
                            data-bs-target="#cart-modal">
-                           <i class="fa-solid fa-cart-shopping"></i><span class="badge bg-secondary text-white ms-1 rounded-pill">{{ carts.total_quantity }}</span>
+                           <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count" >{{ carts.total_quantity }}</span>
                         </a>
+
                     </li>
                     <li class="nav-item">
                         <a type="button" class="a-dark nav-link btn-outline" data-bs-toggle="modal"
@@ -131,10 +133,12 @@
             <div class="d-block d-lg-none">
                 <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
 
-               <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal" data-bs-target="#cart-modal">
-                            Кошик<i class="fa-solid fa-cart-shopping"></i>
-                            <span class="badge bg-secondary text-white ms-1 rounded-pill">{{ carts.total_quantity }}</span>
-               </a>
+               <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
+                           data-bs-target="#cart-modal">
+                           <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count" >{{ carts.total_quantity }}</span>
+                        </a>
+
 
                 <form method="get" class="offcanvas-body h-75" action="{% url 'search' %}">
                     <div class="row">
@@ -254,7 +258,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% include 'carts/includes/included_cart.html' %}
+                <div class="container" id ="cart-items-container">
+                    {% include 'carts/includes/included_cart.html' %}
+                </div>
+
             </div>
             <div class="modal-footer justify-content-between">
 

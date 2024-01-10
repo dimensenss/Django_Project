@@ -18,18 +18,18 @@
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == 'success' %}
-                    <div id="notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" role="alert">
+                    <div id="notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" role="alert" style="z-index: 1">
                         {{ message }}
                     </div>
                     {% endif %}
                     {% if message.tags == 'warning' %}
-                    <div id="notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-danger fade show custom-shadow" role="alert">
+                    <div id="notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-danger fade show" style="z-index: 1;" role="alert">
                         {{ message }}
                     </div>
                     {% endif %}
                 {% endfor %}
             {% else %}
-            <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none;" role="alert">
+            <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none; z-index: 1;" role="alert">
             </div>
             {% endif %}
         </div>

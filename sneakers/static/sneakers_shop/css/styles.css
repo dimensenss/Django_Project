@@ -211,6 +211,15 @@ footer {
 .nav-item a {
   white-space: nowrap;
 }
+
+.button-buy {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #00a046;
+    color: #fff;
+}
 .btn-1 {
   background: rgb(255, 0, 0);
   background: linear-gradient(0deg, rgb(210, 29, 29) 0%, rgb(203, 0, 0) 100%);

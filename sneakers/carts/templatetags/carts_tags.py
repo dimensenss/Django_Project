@@ -1,11 +1,10 @@
 from django import template
 
 from carts.models import Cart
+from carts.utils import *
 
 register = template.Library()
 
 @register.simple_tag()
 def user_carts(request):
-    if request.user.is_authenticated:
-        carts = Cart.objects.filter(user=request.user)
-        return carts
+    return get_user_carts(request)

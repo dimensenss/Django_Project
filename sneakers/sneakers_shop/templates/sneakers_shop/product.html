@@ -34,7 +34,9 @@
 {#                            <button type="submit" name="add" id="add-to-cart" class="btn btn-lg btn-dark mb-3">#}
 {#                                <span>Додати в кошик</span>#}
 {#                            </button>#}
-                            <a href="{% url 'carts:cart_add' post.slug %}" class="custom-btn btn-2 a-light">Додати в кошик</a>
+                            <a href="{% url 'carts:cart_add' %}" class="btn button-buy a-light add-to-cart" data-product-id = {{ post.id }}>
+                                {% csrf_token %}
+                                Купити</a>
                         </div>
                     </div>
 
