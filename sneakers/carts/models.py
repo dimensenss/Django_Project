@@ -28,4 +28,6 @@ class Cart(models.Model):
     def product_price(self):
         return round(self.product.sell_price * self.quantity, 2)
     def __str__(self):
-        return f"Кошик користувача {self.user.username} | Товар {self.product.title} | Кількість {self.quantity}"
+        if self.user:
+            return f"Кошик користувача {self.user.username} | Товар {self.product.title} | Кількість {self.quantity}"
+        return f"Анонімний кошик | Товар {self.product.title} | Кількість {self.quantity}"

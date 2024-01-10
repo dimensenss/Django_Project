@@ -47,7 +47,7 @@ $(document).ready(function ($) {
                 goodsInCartCount.text(cartCount);
 
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-                var cartItemsContainer = $("#cart-items-container");
+                var cartItemsContainer = $(".cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
             },
@@ -95,8 +95,9 @@ $(document).ready(function ($) {
                 cartCount -= data.quantity_deleted;
                 goodsInCartCount.text(cartCount);
 
+
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-                var cartItemsContainer = $("#cart-items-container");
+                var cartItemsContainer = $(".cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
             },
@@ -173,7 +174,7 @@ $(document).ready(function ($) {
                 goodsInCartCount.text(cartCount);
 
                 // Меняем содержимое корзины
-                var cartItemsContainer = $("#cart-items-container");
+                var cartItemsContainer = $(".cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
             },
