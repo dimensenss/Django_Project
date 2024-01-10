@@ -38,8 +38,9 @@
                     <div class="col p-0"><small>x {{ cart.product.sell_price }} $</small></div>
                     <div class="col p-0"><strong>{{ cart.product_price }} $</strong></div>
                     <div class="col p-0">
-                        <a href="{% url 'carts:cart_remove' cart.id %}" class="a-dark"
+                        <a href="{% url 'carts:cart_remove'%}" class="a-dark remove-from-cart"
                            data-cart-id="{{ cart.id }}">
+                            {% csrf_token %}
                            <i class="fa-solid fa-trash" style="color: #060b13;"></i>
                         </a>
                     </div>

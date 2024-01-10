@@ -7,7 +7,7 @@ $(document).ready(function($) {
 		setTimeout(function (){
 			notification.alert('close');
 
-		},3000);
+		},1500);
 	}
 
 
@@ -41,7 +41,7 @@ $(document).ready(function($) {
                 // Через 7сек убираем сообщение
                 setTimeout(function () {
                     successMessage.fadeOut(400);
-                }, 3000);
+                }, 1500);
 
                 // Увеличиваем количество товаров в корзине (отрисовка в шаблоне)
                 cartCount++;
@@ -68,8 +68,8 @@ $(document).ready(function($) {
         e.preventDefault();
 
         // Берем элемент счетчика в значке корзины и берем оттуда значение
-        var goodsInCartCount = $("#goods-in-cart-count");
-        var cartCount = parseInt(goodsInCartCount.text() || 0);
+       var goodsInCartCount = $(".goods-in-cart-count");
+       var cartCount = parseInt(goodsInCartCount.first().text() || 0); // Выбираем первый элемент
 
         // Получаем id корзины из атрибута data-cart-id
         var cart_id = $(this).data("cart-id");
@@ -92,7 +92,7 @@ $(document).ready(function($) {
                 // Через 7сек убираем сообщение
                 setTimeout(function () {
                     successMessage.fadeOut(400);
-                }, 7000);
+                }, 1500);
 
                 // Уменьшаем количество товаров в корзине (отрисовка)
                 cartCount -= data.quantity_deleted;
