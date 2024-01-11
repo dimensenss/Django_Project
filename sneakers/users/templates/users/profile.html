@@ -31,6 +31,18 @@
                                accept="image/*">
                     </div>
                     <div class="mb-3">
+                        {% if form.username.errors %}
+                            <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                <span class="form-error-1 text-center">{{ form.username.errors }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        <input type="text" class="form-control" name="username" value="{{ form.username.value }}"
+                               id="id_username"
+                               placeholder="Введіть ваш нік">
+                    </div>
+                    <div class="mb-3">
                         {% if form.first_name.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.first_name.errors }}</span>
@@ -57,18 +69,7 @@
                                placeholder="Введіть ваше прізвище">
                     </div>
 
-                    <div class="mb-3">
-                        {% if form.username.errors %}
-                            <div class="alert alert-danger alert-dismissible pb-0" role="alert">
-                                <span class="form-error-1 text-center">{{ form.username.errors }}</span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                            </div>
-                        {% endif %}
-                        <input type="text" class="form-control" name="username" value="{{ form.username.value }}"
-                               id="id_username"
-                               placeholder="Введіть ваше ім'я">
-                    </div>
+
                     <div class="mb-3">
                         {% if form.email.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">

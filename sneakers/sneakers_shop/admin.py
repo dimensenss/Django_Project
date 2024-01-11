@@ -27,26 +27,20 @@ class SneakersImages(admin.ModelAdmin):
     get_html_main_photo.short_description = 'Головне фото'
 
 
-# class ProductVariantsInline(admin.TabularInline):
-#     model = Variants
-#     readonly_fields = ('image_tag',)
-#     extra = 1
-#     show_change_link = True
-
-
 @admin.register(Sneakers)
 class SneakersAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'title', 'get_html_main_photo', 'get_html_content', 'get_html_tag_list', 'time_create', 'is_published')
+    'id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
     inlines = [SneakersImageInline,  ]
-    search_fields = ('title', 'content')
-    list_editable = ('is_published',)
-    list_filter = ('is_published', 'time_create')
+    search_fields = ('id', 'title', 'content')
+    list_editable = ('discount','is_published',)
+    list_filter = ('is_published', 'time_create', 'cat', 'discount')
     prepopulated_fields = {'slug': ('title',)}
+    raw_id_fields = ('variations',)
     fields = (
-    'title', 'slug', 'price', 'discount', 'calculate_discount', 'content', 'cat', 'is_published', 'time_create', 'tags', 'color', 'size', 'variations',
-    'get_html_tag_list')
+    'title', 'cat',  ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'color', 'size', 'quantity', 'variations', 'slug', 'is_published', 'time_create',
+    )
     readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 
     def get_html_content(self, object):
@@ -59,7 +53,9 @@ class SneakersAdmin(admin.ModelAdmin):
             return mark_safe(f"<img src = '{main_photo.image.url}' width=100 >")
 
     def get_html_tag_list(self, object):
-        return u", ".join(o.name for o in object.tags.all())
+        if object.tags.exists():
+            return u", ".join(o.name for o in object.tags.all())
+        return 'Тегів немає'
 
     def calculate_discount(self, object):
         s = f"Актуальна ціна: {object.sell_price} \n "

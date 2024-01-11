@@ -13,14 +13,15 @@ class Sneakers(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
-    color = ColorField(default='#FF0000',blank=True, null=True)
-    size = models.JSONField(max_length=128, blank=True, null=True)
-    discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Знижка')
+    color = ColorField(blank=True, null=True, verbose_name="Колір")
+    size = models.JSONField(max_length=128, blank=True, null=True, verbose_name="Розміри")
+    discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна зі знижкою')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
-    time_update = models.DateTimeField(auto_now=True)
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Час оновлення")
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
+    quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name="Категорія")
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     variations = models.ManyToManyField('self', blank=True, verbose_name='Варіації')
 
@@ -35,16 +36,10 @@ class Sneakers(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('product', kwargs = {'product_slug':self.slug})
+        return reverse('product', kwargs={'product_slug': self.slug})
 
     def display_id(self):
         return f"{self.id:05}"
-
-    def color_tag(self):
-        if self.color is not None:
-            return mark_safe('<p style="background-color:{}">Color </p>'.format(self.code))
-        else:
-            return ""
 
     class Meta:
         verbose_name = 'Кросівки'
@@ -52,20 +47,8 @@ class Sneakers(models.Model):
         ordering = ['-time_create', 'title']
 
 
-
-# class Variants(models.Model):
-#     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='variants')
-#     color = models.CharField(max_length=32,blank=True,null=True)
-#     size = models.JSONField(max_length=128)
-#     image_id = models.IntegerField(blank=True,null=True,default=0)
-#     quantity = models.IntegerField(default=1)
-
-
-
-
-
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True, verbose_name="Имя")
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Назва")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
