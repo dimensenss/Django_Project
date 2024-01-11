@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-from sneakers_shop.models import Sneakers
+from goods.models import Sneakers
 
 class CartQuerySet(models.QuerySet):
     def total_price(self):

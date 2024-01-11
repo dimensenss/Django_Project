@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'debug_toolbar',
-    'sneakers_shop.apps.SneakersShopConfig',
+    'goods.apps.SneakersShopConfig',
 
     'users',
     'carts',

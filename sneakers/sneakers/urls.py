@@ -3,11 +3,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from sneakers import settings
-from sneakers_shop.views import *
+from goods.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('sneakers_shop.urls')),
+    path('', include('goods.urls', namespace='goods')),
     path('user/', include('users.urls', namespace='user')),
     path('cart/', include('carts.urls', namespace='cart')),
 ]

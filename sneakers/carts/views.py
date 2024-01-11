@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 from carts.models import Cart
 from carts.utils import get_user_carts
-from sneakers_shop.models import Sneakers
+from goods.models import Sneakers
 
 
 def cart_add(request):

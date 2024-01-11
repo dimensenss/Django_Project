@@ -12,7 +12,7 @@ from django.views.generic import CreateView, UpdateView
 
 from carts.models import Cart
 from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm
-from sneakers_shop.utils import DataMixin
+from goods.utils import DataMixin
 
 
 # class RegisterUser(DataMixin, CreateView):
@@ -29,7 +29,7 @@ from sneakers_shop.utils import DataMixin
 #         user = form.save()
 #         login(self.request, user)
 #         messages.success(self.request, f'Ваш акаунт {user.username} зареєстровано')
-#         return redirect('home')
+#         return redirect('goods:home')
 #
 #
 # class LoginUser(DataMixin, LoginView):
@@ -49,7 +49,7 @@ from sneakers_shop.utils import DataMixin
 #         if next_url and next_url != reverse('users:logout'):
 #             return next_url
 #
-#         return reverse('home')
+#         return reverse('goods:home')
 
 
 def LoginUser(request):
@@ -73,7 +73,7 @@ def LoginUser(request):
                 if redirect_page and redirect_page != reverse('users:logout'):
                     return HttpResponseRedirect(request.POST.get('next'))
 
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('goods:home'))
     else:
         form = LoginUserForm()
 
@@ -99,7 +99,7 @@ def RegisterUser(request):
                 Cart.objects.filter(session_key=session_key).update(user=user)
 
             messages.success(request, f"Ваш акаунт {user.username} зареєстровано")
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('goods:home'))
     else:
         form = RegisterUserForm()
 
@@ -112,7 +112,7 @@ def RegisterUser(request):
 def logout_user(request):
     messages.success(request, 'Ви вийшли з акаунту')
     logout(request)
-    return redirect('home')
+    return redirect('goods:home')
 
 
 class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('sneakers_shop', '0025_alter_sneakers_color'),
+        ('goods', '0025_alter_sneakers_color'),
     ]
 
     operations = [
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('quantity', models.PositiveSmallIntegerField(default=0, verbose_name='Кількість')),
                 ('session_key', models.CharField(blank=True, max_length=32, null=True)),
                 ('created_timestamp', models.DateTimeField(auto_now_add=True, verbose_name='Дата додавання')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sneakers_shop.sneakers', verbose_name='Товар')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='goods.sneakers', verbose_name='Товар')),
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Користувач')),
             ],
             options={
