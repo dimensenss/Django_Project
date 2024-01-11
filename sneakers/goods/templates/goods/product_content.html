@@ -1,0 +1,88 @@
+{% load spurl %}
+{% load sneakers_tags %}
+
+
+<div class="row" id="selling-product">
+
+    {% show_slider post %}
+    {% get_colors post as query %}
+
+    <div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4" id="content-color">
+        <div class="product-info">
+            <div class="element-header">
+                <h1 itemprop="name" class="display-6 fst-italic mb-0">{{ post.title }}</h1></div>
+
+            <div class="product-price pt-3 pb-3">
+                <span class="price">{{ post.price }} $</span>
+                {% if post.discount %}
+                    <span class="discount">{{ post.discount }} $</span>
+                {% endif %}
+            </div>
+
+            <h6>{{ post.content|truncatechars:512 }}</h6>
+            <div class="product-action">
+                <div class="product-quantity">
+                    <a href="{% url 'carts:cart_add' %}" class="btn button-buy a-light add-to-cart"
+                       data-product-id= {{ post.id }}>
+                        {% csrf_token %}
+                        Купити</a>
+                </div>
+            </div>
+
+            <div class="meta-product py-2">
+
+
+                <div class="meta-item d-flex align-items-center">
+            <p class="item-title fs-5 pe-2">Кольори:</p>
+            <ul class="select-list list-unstyled d-flex">
+                {% for product in query %}
+                    <li>
+                        <a href="{% url 'goods:product' None %}" class="check_variations"
+                           data-product-slug= {{ product.slug }}>
+                            {% csrf_token %}
+                            <div style="background: {{ product.color }}; width: 40px; height: 40px; margin-left: 5px;">
+
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+                <div class="meta-item d-flex align-items-baseline">
+                    <p class="item-title fs-5 pe-2">Розміри:</p>
+
+                    <ul class="select-list list-unstyled d-flex">
+                        {% if post.size %}
+                            {% for size in post.size %}
+                                <li data-value="{{ size }}" class="select-item">{{ size }} &nbsp</li>
+                            {% endfor %}
+                        {% endif %}
+
+                    </ul>
+                </div>
+                {% if post.tags %}
+
+                    <div class="meta-item d-flex align-items-baseline">
+
+                        <p class="item-title fs-5 pe-2">Теги:</p>
+
+                        <ul class="select-list list-unstyled d-flex">
+                            {% for tag in post.tags.all %}
+                                <a class="a-dark" href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }}
+                                    &nbsp</a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="meta-item d-flex align-items-baseline">
+                        <p class="item-title fs-5 pe-2">Артикул:</p>
+
+                        <ul class="select-list list-unstyled d-flex">
+                            <li data-value="S" class="select-item">{{ post.display_id }}</li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

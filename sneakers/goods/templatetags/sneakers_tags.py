@@ -23,6 +23,17 @@ def get_categories():
 def get_photos(post):
     return post.images.all()
 
+@register.simple_tag(name='get_colors')
+def get_colors(post):
+    colors = []
+    if post.variations.exists():
+        for product in post.variations.all().order_by('id'):
+            colors.append(product)
+
+        colors.append(post)
+        return colors
+
+
 
 @register.simple_tag(name='get_main_photo')
 def get_photos(post):

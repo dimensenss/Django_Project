@@ -9,6 +9,38 @@ $(document).ready(function ($) {
         }, 1500);
     }
 
+    $(document).on("click", ".check_variations", function (e) {
+        // Блокируем его базовое действие
+        e.preventDefault();
+
+        // Получаем id товара из атрибута data-product-id
+        var product_slug = $(this).data("product-slug");
+
+        // Из атрибута href берем ссылку на контроллер django
+        var show_product_url = $(this).attr("href");
+
+        // делаем post запрос через ajax не перезагружая страницу
+        $.ajax({
+            type: "POST",
+            url: show_product_url,
+            data: {
+                product_slug: product_slug,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+
+
+                // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
+                var product_page = $("#selling-product");
+                product_page.html(data.new_product_page);
+            },
+
+            error: function (data) {
+                console.log("Ошибка");
+            },
+        });
+    });
+
 
     // Ловим собыитие клика по кнопке добавить в корзину
     $(document).on("click", ".add-to-cart", function (e) {

@@ -54,10 +54,10 @@
 <div class="card mb-3 text-bg-light shadow-lg">
     <div class="card-header">
         <div class="row">
-            <div class="col p-0 d-flex align-items-center">
+            <div class="col p-0 d-flex align-items-center m-2 align-items-center">
                 <a class="btn btn-dark" role="button" data-bs-dismiss="modal" >Продовжити покупки</a>
             </div>
-            <div class="col p-0 rounded-2" style="background-color: #00a0461a; border: 1px solid #00a046;">
+            <div class="col p-0 rounded-2 p-2 m-1" style="background-color: #00a0461a; border: 1px solid #00a046;">
                 <div class="row">
                     <div class="col justify-content-center text-center">
                         <p class="float-left">Усього <strong>{{ carts.total_quantity }}</strong> товар(а) на суму</p>
@@ -65,7 +65,7 @@
                     </div>
                     {% if carts %}
                     <div class="d-flex align-items-center col justify-content-center ">
-                        <a class="custom-btn btn-1 a-light text-center" href="../orders/create_order.html"
+                        <a class="btn btn-1 a-light text-center" href="{% url 'orders:create_order' %}"
                            role="button">До
                             замовлення</a>
                     </div>
