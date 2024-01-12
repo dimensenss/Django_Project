@@ -250,4 +250,21 @@ $(document).ready(function ($) {
         }
     });
 
+    'use strict';
+
+var togglers = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < togglers.length; i++) {
+    togglers[i].addEventListener("mouseover", function () {
+        this.parentElement.querySelector(".nested").classList.add("active");
+        this.classList.add("caret-down");
+    });
+
+    togglers[i].addEventListener("mouseout", function () {
+        this.parentElement.querySelector(".nested").classList.remove("active");
+        this.classList.remove("caret-down");
+    });
+}
+
 });

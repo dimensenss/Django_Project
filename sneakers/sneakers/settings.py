@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'spurl',
     'colorfield',
+    'mptt',
 ]
 
 MIDDLEWARE = [

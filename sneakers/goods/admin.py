@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from mptt.admin import DraggableMPTTAdmin
+
 from .models import *
 
 
@@ -35,11 +37,11 @@ class SneakersAdmin(admin.ModelAdmin):
     inlines = [SneakersImageInline,  ]
     search_fields = ('id', 'title', 'content')
     list_editable = ('discount','is_published',)
-    list_filter = ('is_published', 'time_create', 'cat', 'discount')
+    list_filter = ('is_published', 'time_create', 'discount')
     prepopulated_fields = {'slug': ('title',)}
     raw_id_fields = ('variations',)
     fields = (
-    'title', 'cat',  ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'color', 'size', 'quantity', 'variations', 'slug', 'is_published', 'time_create',
+    'title',  'cat', ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'color', 'size', 'quantity', 'variations', 'slug', 'is_published', 'time_create',
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 
@@ -73,9 +75,21 @@ class SneakersAdmin(admin.ModelAdmin):
     calculate_discount.short_description = 'Актуальна ціна'
 
 
+# @admin.register(Category)
+# class CategoryAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'name')
+#     list_display_links = ('id', 'name')
+#     search_fields = ('name',)
+#     prepopulated_fields = {'slug': ('name',)}
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    list_display_links = ('id', 'name')
-    search_fields = ('name',)
-    prepopulated_fields = {'slug': ('name',)}
+class CategoryAdmin(DraggableMPTTAdmin):
+    """
+    Админ-панель модели категорий
+    """
+    list_display = ('tree_actions', 'indented_title', 'id', 'title', 'slug')
+    list_display_links = ('title', 'slug')
+    prepopulated_fields = {'slug': ('title',)}
+
+    fieldsets = (
+        ('Основная информация', {'fields': ('title', 'slug', 'parent')}),
+    )

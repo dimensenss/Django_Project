@@ -77,7 +77,7 @@ def ShowProduct(request, product_slug):
 
     product = Sneakers.objects.get(slug=product_slug)
 
-    data = DataMixin().get_user_context(title= product.title, cat_selected = product.cat.slug)
+    data = DataMixin().get_user_context(title= product.title)
     context = {"post": product, **data}
 
     return render(request, "goods/product.html", context=context)
@@ -104,7 +104,13 @@ class SneakersCategories(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        _queryset = Sneakers.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).select_related('cat')
+        current_category = Category.objects.get(slug=self.kwargs['cat_slug'])
+
+        # Получаем все подкатегории текущей категории
+        subcategories = current_category.get_descendants(include_self=True)
+
+        # Получаем товары из текущей категории и ее подкатегорий
+        _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat')
         self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.myFilter.qs
         return _queryset
@@ -112,9 +118,9 @@ class SneakersCategories(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug=self.kwargs['cat_slug'])
-
-        c_def = self.get_user_context(title=f"{cats.name}",
-                                      cat_selected=f"{cats.slug}",
+        # title = f"{cats.name}",
+        # cat_selected = f"{cats.slug}",
+        c_def = self.get_user_context(cats = cats,
                                       filter=self.myFilter)
 
         return dict(list(context.items()) + list(c_def.items()))

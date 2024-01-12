@@ -1,6 +1,7 @@
 {% load static %}
 {% load sneakers_tags %}
 {% load carts_tags %}
+{% load mptt_tags %}
 
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container px-2 px-lg-2">
@@ -11,68 +12,165 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
         ><i class="fa-solid fa-bars fa-beat-fade"></i></span></button>
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 
-                {% for d_m in cats %}
-                {% if d_m.len > 0 %} <!-- если категория пустая-->
-                {% if cat_selected == d_m.slug %}
-                <li class="nav-item disabled bg-secondary rounded dropdown">
-                    <a class="nav-link a-dark">{{d_m.name}}</a>
-                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                        <ul>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Action</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                        <ul>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                        <ul>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Something else here</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                    </div>
-                </li>
-                {% else %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} ">
-                        {{d_m.name}}
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                        <ul>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Action</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                        <ul>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Another action</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                        <ul>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a>
-                            </li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>
-                        </ul>
-                    </div>
-                </li>
-                {% endif %}
-                {% endif %}
-                {% endfor %}
+
+
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+
+{##}
+{#{% for menu_item in menu_items %}#}
+{#    {% if menu_item.get_descendants.count > 0 %}#}
+{#        <li class="nav-item dropdown">#}
+{#            <a class="nav-link dropdown-toggle" href="#" id="dropdown{{ menu_item.id }}"#}
+{#               data-bs-toggle="dropdown" aria-expanded="false">{{ menu_item }}</a>#}
+{##}
+{#            <ul class="dropdown-menu multi-column" aria-labelledby="dropdown{{ menu_item.id }}">#}
+{#                {% regroup menu_item.get_descendants by parent as level_1_items %}#}
+{##}
+{#                {% for level_1_item in level_1_items %}#}
+{#                    <li class="col">#}
+{#                        <a class="dropdown-item" href="#">{{ level_1_item.grouper }}</a>#}
+{#                        <ul class="dropdown-menu" aria-labelledby="level1{{ level_1_item.grouper.id }}">#}
+{#                            {% for level_2 in level_1_item.list %}#}
+{#                                <li><a class="dropdown-item" href="#">{{ level_2 }}</a></li>#}
+{#                                {% for level_3 in level_2.get_descendants %}#}
+{#                                    <li><a class="dropdown-item" href="#">{{ level_3 }}</a></li>#}
+{#                                    <!-- Добавьте дополнительные вложенные уровни, если необходимо -->#}
+{#                                {% endfor %}#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </li>#}
+{#    {% else %}#}
+{#        <li class="nav-item">#}
+{#            <a class="nav-link" aria-current="page" href="#">{{ menu_item }}</a>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+
+
+
+{#{% for menu_item in menu_items %}#}
+{#    {% if menu_item.get_descendants.count > 0 %}#}
+{#        <li class="nav-item dropdown">#}
+{#            <a class="nav-link dropdown-toggle" href="#" id="dropdown{{ menu_item.id }}"#}
+{#               data-bs-toggle="dropdown" aria-expanded="false">{{ menu_item }}</a>#}
+{##}
+{#            <ul class="dropdown-menu" aria-labelledby="dropdown{{ menu_item.id }}">#}
+{#                {% for m_item in menu_item.get_descendants %}#}
+{#                    <li><a class="dropdown-item" href="#">{{ m_item }}</a></li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </li>#}
+{#    {% else %}#}
+{#        <li class="nav-item">#}
+{#            <a class="nav-link" aria-current="page" href="#">{{ menu_item }}</a>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+
+
+{#{% for menu_item in menu_items %}#}
+{#    {% if menu_item.get_descendants.count > 0 %}#}
+{#        <li class="nav-item dropdown">#}
+{#            <a class="nav-link dropdown-toggle" href="#" id="dropdown{{ menu_item.id }}"#}
+{#               data-bs-toggle="dropdown" aria-expanded="false">{{ menu_item }}</a>#}
+{##}
+{#            <ul class="dropdown-menu multi-column" aria-labelledby="dropdown{{ menu_item.id }}">#}
+{#                {% with level_1_items=menu_item.get_descendants %}#}
+{#                    {% with column_size=level_1_items.count|divisibleby:3 %}#}
+{#                        {% if column_size %}#}
+{#                            {% with column_items=level_1_items|slice:":column_size" %}#}
+{#                                <li class="col">#}
+{#                                    {% for level_1 in column_items %}#}
+{#                                        <a class="dropdown-item" href="#">{{ level_1 }}</a>#}
+{#                                    {% endfor %}#}
+{#                                </li>#}
+{#                            {% endwith %}#}
+{#                            {% with column_items=level_1_items|slice:"column_size:" %}#}
+{#                                <li class="col">#}
+{#                                    {% for level_1 in column_items %}#}
+{#                                        <a class="dropdown-item" href="#">{{ level_1 }}</a>#}
+{#                                    {% endfor %}#}
+{#                                </li>#}
+{#                            {% endwith %}#}
+{#                        {% else %}#}
+{#                            <li class="col">#}
+{#                                {% for level_1 in level_1_items %}#}
+{#                                    <a class="dropdown-item" href="#">{{ level_1 }}</a>#}
+{#                                {% endfor %}#}
+{#                            </li>#}
+{#                        {% endif %}#}
+{#                    {% endwith %}#}
+{#                {% endwith %}#}
+{#            </ul>#}
+{#        </li>#}
+{#    {% else %}#}
+{#        <li class="nav-item">#}
+{#            <a class="nav-link" aria-current="page" href="#">{{ menu_item }}</a>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+
+
+                    {% for menu_item in menu_items %}
+                        <li class="nav-item rounded dropdown">
+                            <a href = "{{ menu_item.get_absolute_url }}" class="nav-link a-dark">{{ menu_item.title }}</a>
+                            <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                                {% get_cat_children menu_item 1 as children %}
+                                {% for child in children %}
+                                    {% get_cat_children child 2 as child_2 %}
+                                    <ul>
+                                        <li><a class="dropdown-item dropdown-item-navbar" href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+                                        </li>
+                                        {% for child2 in child_2 %}
+                                            <li><a class="dropdown-item dropdown-item-navbar"
+                                                   href="{{ child2.get_absolute_url }}">{{ child2.title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endfor %}
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} ">#}
+{#                        {{d_m.title}}#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">#}
+{#                        <ul>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Action</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                        </ul>#}
+{#                        <ul>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Another action</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                        </ul>#}
+{#                        <ul>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a>#}
+{#                            </li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </li>#}
+
+
+
+
+
+
+
+
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle a-dark" id="navbarDropdown" role="button"

@@ -5,6 +5,8 @@ from django.urls import reverse, reverse_lazy
 
 # Create your models here.
 from django.utils.safestring import mark_safe
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 from taggit.managers import TaggableManager
 
 
@@ -20,7 +22,7 @@ class Sneakers(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Час оновлення")
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name="Категорія")
+    cat = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='sneakers', verbose_name='Категорія')
     tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     variations = models.ManyToManyField('self', blank=True, verbose_name='Варіації')
@@ -47,20 +49,36 @@ class Sneakers(models.Model):
         ordering = ['-time_create', 'title']
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True, verbose_name="Назва")
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+class Category(MPTTModel):
+    """
+    Модель категорий с вложенностью
+    """
+    title = models.CharField(max_length=255, verbose_name='Назва категорії')
+    slug = models.SlugField(max_length=255, verbose_name='URL', blank=True)
+    parent = TreeForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_index=True,
+        related_name='children',
+        verbose_name='Батьківська категорія'
+    )
 
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse_lazy('goods:show_cat', kwargs = {'cat_slug':self.slug})
+    class MPTTMeta:
+        order_insertion_by = ('title',)
 
     class Meta:
         verbose_name = 'Категорія'
         verbose_name_plural = 'Категорії'
-        ordering = ['name', 'id']
+
+    def __str__(self):
+        return self.title
+
+    # def get_full_slug(self):
+    #     return '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+    def get_absolute_url(self):
+        return reverse('goods:show_cat', args=[str(self.slug)])
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')

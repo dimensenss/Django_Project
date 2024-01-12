@@ -1,7 +1,7 @@
 {% for d_m in cats %}
     {% if cat_selected == d_m.slug %}
-    <li class="nav-item disabled bg-info rounded"><a class="nav-link">{{d_m.name}}</a></li>
+    <li class="nav-item disabled bg-info rounded"><a class="nav-link">{{d_m.title}}</a></li>
     {% else %}
-    <li class="nav-item"><a class="nav-link" href="{{ d_m.get_absolute_url }}">{{d_m.name}}</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ d_m.get_absolute_url }}">{{d_m.title}}</a></li>
     {% endif %}
 {% endfor %}
