@@ -13,6 +13,6 @@ urlpatterns = [
     path('about/', about, name = 'about'),
     path('shop/', shop, name = 'shop'),
     path('contacts/', contacts, name = 'contacts'),
-    path('category/<slug:cat_slug>/', SneakersCategories.as_view(), name = 'show_cat'),
+    re_path(r'^category/(?P<cat_slug>[-\w/]+)/$', SneakersCategories.as_view(), name='show_cat'),
     path('product/<slug:product_slug>/', ShowProduct, name = 'product'),
 ]

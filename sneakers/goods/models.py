@@ -22,7 +22,7 @@ class Sneakers(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Час оновлення")
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
-    cat = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='sneakers', verbose_name='Категорія')
+    cat = models.ForeignKey('Category',  models.SET_DEFAULT, default=0, related_name='sneakers', verbose_name='Категорія')
     tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     variations = models.ManyToManyField('self', blank=True, verbose_name='Варіації')
@@ -50,11 +50,8 @@ class Sneakers(models.Model):
 
 
 class Category(MPTTModel):
-    """
-    Модель категорий с вложенностью
-    """
     title = models.CharField(max_length=255, verbose_name='Назва категорії')
-    slug = models.SlugField(max_length=255, verbose_name='URL', blank=True)
+    slug = models.SlugField(max_length=255, verbose_name='URL', blank=True, unique=True)
     parent = TreeForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -68,6 +65,7 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ('title',)
 
+
     class Meta:
         verbose_name = 'Категорія'
         verbose_name_plural = 'Категорії'
@@ -75,10 +73,11 @@ class Category(MPTTModel):
     def __str__(self):
         return self.title
 
-    # def get_full_slug(self):
-    #     return '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
     def get_absolute_url(self):
-        return reverse('goods:show_cat', args=[str(self.slug)])
+        # return reverse('goods:show_cat', kwargs={'cat_slug': self.slug})
+        return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')

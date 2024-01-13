@@ -104,7 +104,8 @@ class SneakersCategories(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        current_category = Category.objects.get(slug=self.kwargs['cat_slug'])
+        cat_slug = self.kwargs['cat_slug'].split('/')[-1]
+        current_category = Category.objects.get(slug=cat_slug)
 
         # Получаем все подкатегории текущей категории
         subcategories = current_category.get_descendants(include_self=True)
@@ -117,7 +118,7 @@ class SneakersCategories(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        cats = Category.objects.get(slug=self.kwargs['cat_slug'])
+        cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         # title = f"{cats.name}",
         # cat_selected = f"{cats.slug}",
         c_def = self.get_user_context(cats = cats,
