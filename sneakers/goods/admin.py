@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.db.models import Count
 from django.utils.safestring import mark_safe
+from django_mptt_admin.admin import DjangoMpttAdmin
 from mptt.admin import DraggableMPTTAdmin
 
 from .models import *
@@ -82,14 +84,18 @@ class SneakersAdmin(admin.ModelAdmin):
 #     search_fields = ('name',)
 #     prepopulated_fields = {'slug': ('name',)}
 @admin.register(Category)
-class CategoryAdmin(DraggableMPTTAdmin):
-    """
-    Админ-панель модели категорий
-    """
-    list_display = ('tree_actions', 'indented_title', 'id', 'title', 'slug')
-    list_display_links = ('title', 'slug')
+class CategoryAdmin(DjangoMpttAdmin):
+    list_display = ('id', 'title', 'slug', 'count_products')
+    list_display_links = ('id', 'title')
+    readonly_fields = ('count_products',)
+    search_fields = ('title',)
     prepopulated_fields = {'slug': ('title',)}
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(product_count=Count('sneakers'))
+        return queryset
 
-    fieldsets = (
-        ('Основная информация', {'fields': ('title', 'slug', 'parent')}),
-    )
+
+    def count_products(self, obj):
+        return obj.product_count
+    count_products.short_description = 'Кількість товарів'

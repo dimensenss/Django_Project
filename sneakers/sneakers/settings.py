@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'spurl',
     'colorfield',
     'mptt',
+    'django_mptt_admin',
 ]
 
 MIDDLEWARE = [
