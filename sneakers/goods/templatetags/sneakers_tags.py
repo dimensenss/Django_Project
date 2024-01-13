@@ -56,15 +56,7 @@ def show_paginator(context, paginator, page_obj):
 @register.inclusion_tag('includes/navbar.html', takes_context=True)
 def show_navbar(context, cat_selected, cats, my_filter):
     request = context['request']
-    #menu_items = cats.filter(level=0)
-
     return {"cat_selected": cat_selected, 'menu_items': cats, "filter": my_filter, 'request': request}
-
-
-@register.simple_tag(name='get_cat_children')
-def get_cat_children(parent, level):
-    children = Category.objects.filter(parent=parent.id, level=level)
-    return children
 
 
 @register.inclusion_tag('includes/breadcrumbs.html')

@@ -77,25 +77,11 @@ def ShowProduct(request, product_slug):
 
     product = Sneakers.objects.get(slug=product_slug)
 
-    data = DataMixin().get_user_context(title= product.title)
+    data = DataMixin().get_user_context(title=product.title)
     context = {"post": product, **data}
 
     return render(request, "goods/product.html", context=context)
 
-
-# def check_variations(request):
-#     product_slug = request.POST.get('product_slug')
-#
-#     product = Sneakers.objects.get(slug=product_slug)
-#
-#     new_product_page = render_to_string(
-#         'goods/product.html', {'post': product}, request=request
-#     )
-#     response_data = {
-#         'new_product_page': new_product_page,
-#     }
-#
-#     return JsonResponse(response_data)
 
 class SneakersCategories(DataMixin, ListView):
     model = Sneakers  # модель

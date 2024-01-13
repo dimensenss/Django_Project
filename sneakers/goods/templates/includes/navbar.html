@@ -12,66 +12,28 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
         ><i class="fa-solid fa-bars fa-beat-fade"></i></span></button>
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-                    {% recursetree menu_items %}
-                        <li class="nav-item rounded dropdown">
-                            <a href="{{ node.get_absolute_url }}" class="nav-link a-dark">{{node.title }}</a>
-                            <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                                {% for child in node.get_children %}
-                                    <ul>
+
+            <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                {# Начало списка категорий #}
+                {% recursetree menu_items %}
+                    <li class="nav-item rounded dropdown">
+                        <a href="{{ node.get_absolute_url }}" class="nav-link a-dark">{{ node.title }}</a>
+                        <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
+                            {% for child in node.get_children %}
+                                <ul>
+                                    <li><a class="dropdown-item dropdown-item-navbar"
+                                           href="{{ child.get_absolute_url }}">{{ child.title }}</a>
+                                    </li>
+                                    {% for child2 in child.get_children %}
                                         <li><a class="dropdown-item dropdown-item-navbar"
-                                               href="{{ child.get_absolute_url }}">{{ child.title }}</a>
-                                        </li>
-                                        {% for child2 in child.get_children %}
-                                            <li><a class="dropdown-item dropdown-item-navbar"
-                                                   href="{{ child2.get_absolute_url }}">{{ child2.title }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endfor %}
-                            </div>
-                        </li>
-                    {% endrecursetree %}
-
-
-
-
-{#                <li class="nav-item dropdown">#}
-{#                    <a class="nav-link a-dark" href=" {{ d_m.get_absolute_url }} ">#}
-{#                        {{d_m.title}}#}
-{#                    </a>#}
-{#                    <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">#}
-{#                        <ul>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Action</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                        </ul>#}
-{#                        <ul>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Another action</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                        </ul>#}
-{#                        <ul>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Something else here</a>#}
-{#                            </li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="#">Mega Menu Link</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </li>#}
-
-
-
-
-
-
-
-
-
+                                               href="{{ child2.get_absolute_url }}">{{ child2.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endrecursetree %}
+                {#Конец списка категорий#}
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle a-dark" id="navbarDropdown" role="button"
@@ -83,8 +45,9 @@
                         <ul>
                             {% get_menu as menu %}
                             {% for m in menu %}
-                            <li><a class="a-dark dropdown-item dropdown-item-navbar" href="{% url m.url_name %}">{{m.title}}</a>
-                            </li>
+                                <li><a class="a-dark dropdown-item dropdown-item-navbar"
+                                       href="{% url m.url_name %}">{{ m.title }}</a>
+                                </li>
                             {% endfor %}
 
                         </ul>
@@ -100,7 +63,7 @@
                         <form method="get" class="offcanvas-body h-75 mt-1" action="{% url 'goods:search' %}">
                             <input type="text" name="{{ filter.form.title_search.name }}"
                                    placeholder="Пошук товарів" class="form-control"
-                                   value="{{request.GET.title_search}}">
+                                   value="{{ request.GET.title_search }}">
                             <button type="submit" class="custom-btn btn-1 a-light ">
                                 Пошук
                             </button>
@@ -114,8 +77,8 @@
 
                         <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
                            data-bs-target="#cart-modal">
-                           <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count" >{{ carts.total_quantity }}</span>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count">{{ carts.total_quantity }}</span>
                         </a>
 
                     </li>
@@ -125,18 +88,17 @@
                             <i class="fa-solid fa-user"></i>
                         </a>
                     </li>
-
                 </ul>
             </div>
 
             <div class="d-block d-lg-none">
                 <!--начиная с самого маленького до среднего не включая большой и тд (адаптивность настроить) -->
 
-               <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
-                           data-bs-target="#cart-modal">
-                           <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count" >{{ carts.total_quantity }}</span>
-                        </a>
+                <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
+                   data-bs-target="#cart-modal">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="badge bg-secondary text-white ms-1 rounded-pill goods-in-cart-count">{{ carts.total_quantity }}</span>
+                </a>
 
 
                 <form method="get" class="offcanvas-body h-75" action="{% url 'goods:search' %}">
@@ -225,22 +187,24 @@
                     <div class="row ">
 
                         {% if request.user.is_authenticated %}
-                        <div class="col  d-flex justify-content-center">
-                            <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
-                               role="button">Кабінет</a>
-                        </div>
-                        <div class="col d-flex justify-content-center">
-                            <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}" role="button">Вийти</a>
-                        </div>
-                        {% else %}
-                        <div class="col pt-2 d-flex justify-content-center">
-                            <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col text-center">
-                                Нема аккаунта? <a class="a-dark text-decoration-underline" href="{% url 'user:register' %}">Регістрація</a>
+                            <div class="col  d-flex justify-content-center">
+                                <a class="custom-btn btn-1 a-light" href="{% url 'user:profile' %}"
+                                   role="button">Кабінет</a>
                             </div>
-                        </div>
+                            <div class="col d-flex justify-content-center">
+                                <a class="custom-btn btn-2 a-light" href="{% url 'user:logout' %}"
+                                   role="button">Вийти</a>
+                            </div>
+                        {% else %}
+                            <div class="col pt-2 d-flex justify-content-center">
+                                <a class="custom-btn btn-1 a-light" href="{% url 'user:login' %}" role="button">Вхід</a>
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col text-center">
+                                    Нема аккаунта? <a class="a-dark text-decoration-underline"
+                                                      href="{% url 'user:register' %}">Регістрація</a>
+                                </div>
+                            </div>
 
                         {% endif %}
                     </div>

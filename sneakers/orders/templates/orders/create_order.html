@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block header %}
+{% endblock %}
+
 {% block content %}
 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
     <div class="container">
@@ -16,29 +19,56 @@
         <h3 class="text-center">Детали заказа</h3>
         <div class="card mb-3">
             <div class="card-body">
-                <form>
+                <form action="{% url 'orders:create_order' %}" method="post">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="id_first_name" class="form-label">Имя*:</label>
+
+                            {% if form.first_name.errors %}
+                                <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                    <span class="form-error-1 text-center">{{ form.first_name.errors }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+
+                            <label for="id_first_name" class="form-label">Ім'я*:</label>
                             <input type="text" class="form-control" id="id_first_name"
+                                   value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
                                    name="first_name" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_last_name" class="form-label">Фамилия*:</label>
-                            <input type="text" class="form-control" id="id_last_name" name="last_name" required>
+                            {% if form.last_name.errors %}
+                                <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                    <span class="form-error-1 text-center">{{ form.last_name.errors }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                            <label for="id_last_name" class="form-label">Прізвище*:</label>
+                            <input type="text" class="form-control" id="id_last_name"
+                                   value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
+                                   name="last_name" required>
                         </div>
                         <div class="col-md-6 mb-3">
+                            {% if form.phone_number.errors %}
+                                <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                    <span class="form-error-1 text-center">{{ form.phone_number.errors }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
                             <label for="id_phone_number" class="form-label">Номер телефона*:</label>
                             <input type="text" class="form-control" id="id_phone_number" name="phone_number"
                                    placeholder="В формате: XXX-XXX-XX-XX"
+                                   value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
                                    required>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="delivery" class="form-label">Способ доставки: </label>
+                            <label for="delivery" class="form-label">Спосіб доставки: </label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
                                        id="id_requires_delivery" value="1" checked>
-                                <label class="form-check-label" for="id_requires_delivery">Нужна
+                                <label class="form-check-label" for="id_requires_delivery">Потрібна
                                     доставка</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -48,24 +78,32 @@
                             </div>
                         </div>
                         <div class="mb-3" id="deliveryAddressField">
+                            {% if form.delivery_address.errors %}
+                                <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                    <span class="form-error-1 text-center">{{ form.delivery_address.errors }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
                             <label for="id_delivery_address" class="form-label">Адрес
                                 доставки*:</label>
                             <textarea class="form-control" id="id_delivery_address"
+                                      value="{% if form.delivery_address.value %}{{ form.delivery_address.value }}{% endif %}"
                                       name="delivery_address" rows="2"></textarea>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label class="form-label">Способ оплаты: </label>
+                            <label class="form-label">Спосіб оплати: </label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="payment_on_get"
                                        id="id_payment_on_get" value="0" checked>
                                 <label class="form-check-label" for="id_payment_on_get">Оплата
-                                    картой</label>
+                                    картою</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="payment_on_get"
                                        id="id_payment_on_get" value="1">
-                                <label class="form-check-label" for="id_payment_on_get">Наличными/картой
-                                    при плучении</label>
+                                <label class="form-check-label" for="id_payment_on_get">Готівкою/картой
+                                    при отриманні</label>
                             </div>
                         </div>
                     </div>

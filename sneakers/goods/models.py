@@ -74,8 +74,9 @@ class Category(MPTTModel):
         return self.title
 
     def get_absolute_url(self):
-        # return reverse('goods:show_cat', kwargs={'cat_slug': self.slug})
-        return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+        #return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+        slug = '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+        return reverse_lazy('goods:show_cat', kwargs ={'cat_slug': slug})
 
 
 class ProductImage(models.Model):
