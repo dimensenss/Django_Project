@@ -4,7 +4,8 @@
 <!-- Magnific Popup core CSS file -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
 
-<div class="col-lg-6 col-md-6 border border-2 rounded-3 border-end-0 mt-4">
+<div class="col-lg-6 col-md-6">
+{% get_breadcrumbs post.cat %}
     <!-- Основная карусель 1-->
     <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
         <div id="my-gallery" class="vanilla-zoom">

@@ -1,5 +1,3 @@
-
-
 from django import template
 from django.utils.http import urlencode
 
@@ -23,6 +21,7 @@ def get_categories():
 def get_photos(post):
     return post.images.all()
 
+
 @register.simple_tag(name='get_colors')
 def get_colors(post):
     colors = []
@@ -32,7 +31,6 @@ def get_colors(post):
 
         colors.append(post)
         return colors
-
 
 
 @register.simple_tag(name='get_main_photo')
@@ -58,16 +56,22 @@ def show_paginator(context, paginator, page_obj):
 @register.inclusion_tag('includes/navbar.html', takes_context=True)
 def show_navbar(context, cat_selected, cats, my_filter):
     request = context['request']
-    menu_items = Category.objects.filter(level=0)
+    menu_items = cats.filter(level=0)
 
-
-    return {"cat_selected": cat_selected, 'menu_items': menu_items , "filter": my_filter, 'request': request}
+    return {"cat_selected": cat_selected, 'menu_items': menu_items, "filter": my_filter, 'request': request}
 
 
 @register.simple_tag(name='get_cat_children')
 def get_cat_children(parent, level):
-    children = Category.objects.filter(parent = parent.id, level=level)
+    children = Category.objects.filter(parent=parent.id, level=level)
     return children
+
+
+@register.inclusion_tag('includes/breadcrumbs.html')
+def get_breadcrumbs(category):
+    return {
+        'category': category
+    }
 
 
 @register.inclusion_tag('includes/slider.html')

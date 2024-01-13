@@ -381,3 +381,17 @@ ul, #myUL {
 .active {
     display: block;
 }
+.a-secondary{
+    color: #707070;
+    font-weight: 400;
+    text-decoration: none;
+}
+.a-secondary.disabled{
+    pointer-events: none;
+}
+.a-secondary:hover {
+    text-decoration: underline !important;
+    text-decoration-color: #CC0000;
+    text-underline-offset: 10px;
+    color: #2d2d2d !important;
+}
