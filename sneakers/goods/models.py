@@ -78,7 +78,6 @@ class Category(MPTTModel):
         return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
 
 
-
 class ProductImage(models.Model):
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to="product_images/%Y/%m/%d/", verbose_name='Зображення')
