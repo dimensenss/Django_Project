@@ -1,45 +1,14 @@
 $(document).ready(function ($) {
     var successMessage = $("#jq-notification");
     var notification = $('#notification');
+    var warning_notification = $('#warning-jq-notification');
 
     if (notification.length > 0) {
         setTimeout(function () {
             notification.alert('close');
 
-        }, 1500);
+        }, 3000);
     }
-
-    $(document).on("click", ".check_variations", function (e) {
-        // Блокируем его базовое действие
-        e.preventDefault();
-
-        // Получаем id товара из атрибута data-product-id
-        var product_slug = $(this).data("product-slug");
-
-        // Из атрибута href берем ссылку на контроллер django
-        var show_product_url = $(this).attr("href");
-
-        // делаем post запрос через ajax не перезагружая страницу
-        $.ajax({
-            type: "POST",
-            url: show_product_url,
-            data: {
-                product_slug: product_slug,
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-            },
-            success: function (data) {
-
-
-                // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-                var product_page = $("#selling-product");
-                product_page.html(data.new_product_page);
-            },
-
-            error: function (data) {
-                console.log("Ошибка");
-            },
-        });
-    });
 
 
     // Ловим собыитие клика по кнопке добавить в корзину
@@ -47,15 +16,32 @@ $(document).ready(function ($) {
         // Блокируем его базовое действие
         e.preventDefault();
 
+        var selectedSize = $(".form-select").val();
+
+        // Проверяем, что цвет и размер выбраны
+        if (selectedSize === 'Наявні розміри') {
+            // Если не все параметры выбраны, вы можете вывести сообщение пользователю или просто вернуться
+                warning_notification.html('Оберіть розмір');
+                warning_notification.fadeIn(400);
+                setTimeout(function () {
+                    warning_notification.fadeOut(400);
+                }, 1500);
+            return;
+        }
+
+
         // Берем элемент счетчика в значке корзины и берем оттуда значение
         var goodsInCartCount = $(".goods-in-cart-count");
         var cartCount = parseInt(goodsInCartCount.first().text() || 0); // Выбираем первый элемент
 
         // Получаем id товара из атрибута data-product-id
         var product_id = $(this).data("product-id");
-
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
+
+
+
+
 
         // делаем post запрос через ajax не перезагружая страницу
         $.ajax({
@@ -63,6 +49,7 @@ $(document).ready(function ($) {
             url: add_to_cart_url,
             data: {
                 product_id: product_id,
+                size: selectedSize,
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             },
             success: function (data) {
@@ -89,6 +76,9 @@ $(document).ready(function ($) {
             },
         });
     });
+
+
+
 
 
     // Ловим собыитие клика по кнопке удалить товар из корзины
@@ -215,6 +205,17 @@ $(document).ready(function ($) {
             },
         });
     }
+
+
+    $("input[name='requires_delivery']").change(function () {
+        var selectedValue = $(this).val();
+        // Скрываем или отображаем input ввода адреса доставки
+        if (selectedValue === "1") {
+            $("#deliveryAddressField").show();
+        } else {
+            $("#deliveryAddressField").hide();
+        }
+    });
 
 
     $('.image-popup-vertical-fit').magnificPopup({

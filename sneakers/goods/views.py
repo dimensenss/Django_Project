@@ -47,38 +47,12 @@ def contacts(request):
     return HttpResponse("contacts")
 
 
-# class ShowProduct(DataMixin, DetailView):
-#     model = Sneakers
-#     template_name = 'goods/product.html'
-#     context_object_name = 'post'
-#     slug_url_kwarg = 'product_slug' # пользовательский слаг по умолчанию django ищет в path "slug"
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         c_def = self.get_user_context(title = f"{context['post']}",
-#                                       cat_selected = f"{context['post'].cat.slug}")
-#
-#         return dict(list(context.items())+list(c_def.items()))
-
-
 def ShowProduct(request, product_slug):
-
-    if product_slug == 'None':
-        product_slug = request.POST.get('product_slug')
-        product = Sneakers.objects.get(slug=product_slug)
-
-        new_product_page = render_to_string(
-            'goods/product_content.html', {'post': product}, request=request
-        )
-        response_data = {
-            'new_product_page': new_product_page,
-        }
-        return JsonResponse(response_data)
-
     product = Sneakers.objects.get(slug=product_slug)
-
+    sizes = SneakersVariations.objects.filter(sneakers=product)
+    variations = SneakersVariations.objects.filter(sneakers=product)
     data = DataMixin().get_user_context(title=product.title)
-    context = {"post": product, **data}
+    context = {'sizes': sizes, 'variations': variations, "post": product, **data}
 
     return render(request, "goods/product.html", context=context)
 
@@ -107,7 +81,7 @@ class SneakersCategories(DataMixin, ListView):
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         # title = f"{cats.name}",
         # cat_selected = f"{cats.slug}",
-        c_def = self.get_user_context(cats = cats,
+        c_def = self.get_user_context(cats=cats,
                                       filter=self.myFilter)
 
         return dict(list(context.items()) + list(c_def.items()))
