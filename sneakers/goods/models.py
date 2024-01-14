@@ -38,6 +38,8 @@ class Sneakers(models.Model):
     def display_id(self):
         return f"{self.id:05}"
 
+
+
     class Meta:
         verbose_name = 'Кросівки'
         verbose_name_plural = 'Кросівки'
@@ -45,7 +47,7 @@ class Sneakers(models.Model):
 
 
 class SneakersVariations(models.Model):
-    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='product', verbose_name='Кросівки')
+    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='sneakers', verbose_name='Кросівки')
     size = models.PositiveIntegerField(verbose_name='Розмір')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
 

@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 
@@ -11,6 +12,7 @@ from django.utils.encoding import force_bytes
 from django.views.generic import CreateView, UpdateView
 
 from carts.models import Cart
+from orders.models import Order, OrderItem
 from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm
 from goods.utils import DataMixin
 
@@ -128,8 +130,15 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
         return redirect('user:profile')
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        orders = Order.objects.filter(user=self.request.user).prefetch_related(
+            Prefetch(
+                "orderitem_set",
+                queryset=OrderItem.objects.select_related("product"),
+            )
+        ).order_by("-id")
+
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Профіль")
+        c_def = self.get_user_context(title="Профіль", orders=orders)
 
         return dict(list(context.items())+list(c_def.items()))
 

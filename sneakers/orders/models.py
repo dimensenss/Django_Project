@@ -51,7 +51,7 @@ class OrderItem(models.Model):
     objects = OrderItemQueryset.as_manager()
 
     def products_price(self):
-        return round(self.product.sneakers.sell_price() * self.quantity, 2)
+        return round(self.product.sneakers.sell_price * self.quantity, 2)
 
     def __str__(self):
         return f"Товар {self.name} | Заказ № {self.order.pk}"

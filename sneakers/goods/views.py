@@ -20,9 +20,11 @@ class SneakersHome(DataMixin, ListView):
     tag = None
 
     def get_queryset(self):
+
         _queryset = Sneakers.objects.filter(is_published=1)
         self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.myFilter.qs
+
         return _queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
@@ -48,11 +50,11 @@ def contacts(request):
 
 
 def ShowProduct(request, product_slug):
+
     product = Sneakers.objects.get(slug=product_slug)
     sizes = SneakersVariations.objects.filter(sneakers=product)
-    variations = SneakersVariations.objects.filter(sneakers=product)
     data = DataMixin().get_user_context(title=product.title)
-    context = {'sizes': sizes, 'variations': variations, "post": product, **data}
+    context = {'sizes': sizes,  "post": product, **data}
 
     return render(request, "goods/product.html", context=context)
 

@@ -19,7 +19,7 @@ $(document).ready(function ($) {
         var selectedSize = $(".form-select").val();
 
         // Проверяем, что цвет и размер выбраны
-        if (selectedSize === 'Наявні розміри') {
+        if (selectedSize === '') {
             // Если не все параметры выбраны, вы можете вывести сообщение пользователю или просто вернуться
                 warning_notification.html('Оберіть розмір');
                 warning_notification.fadeIn(400);
@@ -267,5 +267,8 @@ for (i = 0; i < togglers.length; i++) {
         this.classList.remove("caret-down");
     });
 }
+
+
+
 
 });

@@ -8,7 +8,7 @@
 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
     <div class="container">
         <h3 class="text-center mb-4">Выбранные товары</h3>
-        <div class="container" id="cart-items-container">
+        <div class="container cart-items-container">
             <!-- Разметка корзины -->
             {% include 'carts/includes/included_cart.html' %}
             <!-- Закончилась разметка корзины -->
@@ -60,7 +60,7 @@
                             {% endif %}
                             <label for="id_phone_number" class="form-label">Номер телефона*:</label>
                             <input type="text" class="form-control" id="id_phone_number" name="phone_number"
-                                   placeholder="В формате: XXX-XXX-XX-XX"
+                                   placeholder="098-765-43-21"
                                    value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
                                    required>
                         </div>
@@ -108,7 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-dark">Оформить заказ</button>
+                    <button type="submit" class="btn btn-dark">Оформити замовлення</button>
                 </form>
             </div>
         </div>
