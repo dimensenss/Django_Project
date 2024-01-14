@@ -95,6 +95,7 @@ def RegisterUser(request):
             session_key = request.session.session_key
 
             user = form.instance
+            user.backend = 'users.authentication.EmailAuthBackend'
             auth.login(request, user)
 
             if session_key:

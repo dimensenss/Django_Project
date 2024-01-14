@@ -395,3 +395,21 @@ ul, #myUL {
     text-underline-offset: 10px;
     color: #2d2d2d !important;
 }
+
+.feedback__file {
+  display: none;
+}
+
+.feedback__label:before {
+  			content: "Прикріпити фото";
+			cursor: pointer;
+			padding: 8px 20px 7px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 5px;
+			background-color: #ececec;
+			font-size: 16px;
+			text-align: center;
+			color: #282828;
+}

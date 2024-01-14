@@ -53,7 +53,7 @@ def create_order(request):
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()
 
-                        messages.success(request, 'Замовлення оформлене!')
+                        messages.success(request, 'Замовлення оформлено!')
                         return redirect('user:profile')
             except ValidationError as e:
                 messages.warning(request, str(e))
@@ -62,6 +62,7 @@ def create_order(request):
         initial = {
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
+            'phone_number': request.user.phone_number,
         }
         form = CreateOrderForm(initial=initial)
 

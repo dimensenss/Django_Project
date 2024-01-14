@@ -32,7 +32,7 @@
                                 </div>
                             {% endif %}
 
-                            <label for="id_first_name" class="form-label">Ім'я*:</label>
+                            <label for="id_first_name" class="form-label">Ім'я:</label>
                             <input type="text" class="form-control" id="id_first_name"
                                    value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
                                    name="first_name" required>
@@ -45,7 +45,7 @@
                                             aria-label="Close"></button>
                                 </div>
                             {% endif %}
-                            <label for="id_last_name" class="form-label">Прізвище*:</label>
+                            <label for="id_last_name" class="form-label">Прізвище:</label>
                             <input type="text" class="form-control" id="id_last_name"
                                    value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
                                    name="last_name" required>
@@ -58,14 +58,14 @@
                                             aria-label="Close"></button>
                                 </div>
                             {% endif %}
-                            <label for="id_phone_number" class="form-label">Номер телефона*:</label>
+                            <label for="id_phone_number" class="form-label">Номер телефона:</label>
                             <input type="text" class="form-control" id="id_phone_number" name="phone_number"
                                    placeholder="098-765-43-21"
                                    value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
                                    required>
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="delivery" class="form-label">Спосіб доставки: </label>
+                            <label for="delivery" class="form-label">Спосіб доставлення: </label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
                                        id="id_requires_delivery" value="1" checked>
@@ -75,7 +75,7 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
                                        id="id_requires_delivery" value="0">
-                                <label class="form-check-label" for="id_requires_delivery">Самовывоз</label>
+                                <label class="form-check-label" for="id_requires_delivery">Самовивіз</label>
                             </div>
                         </div>
                         <div class="mb-3" id="deliveryAddressField">

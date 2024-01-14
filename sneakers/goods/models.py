@@ -47,7 +47,7 @@ class Sneakers(models.Model):
 
 
 class SneakersVariations(models.Model):
-    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='sneakers', verbose_name='Кросівки')
+    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='product', verbose_name='Кросівки')
     size = models.PositiveIntegerField(verbose_name='Розмір')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
 

@@ -26,11 +26,14 @@
                                      style="max-width: 150px">
                             </div>
                         {% endif %}
-                        <input type="file" class="form-control" name="image" value="{{ form.image.value }}"
-                               id="id_image"
-                               accept="image/*">
+                        <label for="file" class="feedback__label">
+                            <input type="file" id='file' class="form-control feedback__file" name="image" value="{{ form.image.value }}"
+                            id="id_image"
+                            accept="image/*">
+                        </label>
                     </div>
                     <div class="mb-3">
+                    <label for="id_username" class="form-label">Нік або email</label>
                         {% if form.username.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.username.errors }}</span>
@@ -43,6 +46,7 @@
                                placeholder="Введіть ваш нік">
                     </div>
                     <div class="mb-3">
+                    <label for="id_first_name" class="form-label">Ім'я</label>
                         {% if form.first_name.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.first_name.errors }}</span>
@@ -57,6 +61,7 @@
 
 
                     <div class="mb-3">
+                    <label for="id_last_name" class="form-label">Прізвище</label>
                         {% if form.last_name.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.last_name.errors }}</span>
@@ -71,6 +76,7 @@
 
 
                     <div class="mb-3">
+                    <label for="id_email" class="form-label">Пошта</label>
                         {% if form.email.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <div class="form-error-1 text-center">{{ form.email.errors }}</div>
@@ -84,15 +90,16 @@
                     </div>
 
                     <div class="mb-3">
-                        {% if form.phone.errors %}
+                    <label for="id_phone_number" class="form-label">Номер телефону</label>
+                        {% if form.phone_number.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
-                                <span class="form-error-1 text-center">{{ form.phone.errors }}</span>
+                                <span class="form-error-1 text-center">{{ form.phone_number.errors }}</span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                         aria-label="Close"></button>
                             </div>
                         {% endif %}
-                        <input type="text" class="form-control" name="phone"
-                               value="{% if form.phone.value %}{{ form.phone.value }}{% endif %}" id="id_phone"
+                        <input type="text" class="form-control" name="phone_number"
+                               value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}" id="id_phone_number"
                                placeholder="Введіть ваш номер телефону">
                     </div>
 
@@ -110,6 +117,8 @@
                     {% include 'carts/includes/included_cart.html' %}
                 </div>
             </div>
+{% if orders %}
+
 
             <div class="col-md-12">
                 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
@@ -163,6 +172,7 @@
                     </div>
                 </div>
             </div>
+        {% endif %}
         </div>
     </div>
 
