@@ -6,13 +6,14 @@ from django.template.loader import render_to_string
 
 from carts.models import Cart
 from carts.utils import get_user_carts
-from goods.models import Sneakers
+from goods.models import Sneakers, SneakersVariations
 
 
 def cart_add(request):
     product_id = request.POST.get('product_id')
+    size = request.POST.get('size')
 
-    product = Sneakers.objects.get(id=product_id)
+    product = SneakersVariations.objects.get(sneakers=product_id, size=size)
 
     if request.user.is_authenticated:
         carts = Cart.objects.filter(user=request.user, product=product)

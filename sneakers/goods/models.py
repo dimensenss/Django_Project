@@ -2,7 +2,6 @@ from colorfield.fields import ColorField
 from django.db import models
 from django.urls import reverse, reverse_lazy
 
-
 # Create your models here.
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
@@ -12,21 +11,17 @@ from taggit.managers import TaggableManager
 
 class Sneakers(models.Model):
     title = models.CharField(max_length=255, verbose_name='Назва')
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name= "URL")
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
     color = ColorField(blank=True, null=True, verbose_name="Колір")
-    size = models.JSONField(max_length=128, blank=True, null=True, verbose_name="Розміри")
     discount = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна зі знижкою')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
     time_update = models.DateTimeField(auto_now=True, verbose_name="Час оновлення")
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
-    quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
-    cat = models.ForeignKey('Category',  models.SET_DEFAULT, default=0, related_name='sneakers', verbose_name='Категорія')
+    cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers', verbose_name='Категорія')
     tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
-    variations = models.ManyToManyField('self', blank=True, verbose_name='Варіації')
-
     def save(self, *args, **kwargs):
         self.sell_price = self.calculate_sell_price()
         super().save(*args, **kwargs)
@@ -38,7 +33,7 @@ class Sneakers(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('goods:product', kwargs={'product_slug': self.slug})
+        return reverse_lazy('goods:product', kwargs={'product_slug': self.slug})
 
     def display_id(self):
         return f"{self.id:05}"
@@ -48,6 +43,14 @@ class Sneakers(models.Model):
         verbose_name_plural = 'Кросівки'
         ordering = ['-time_create', 'title']
 
+
+class SneakersVariations(models.Model):
+    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='product', verbose_name='Кросівки')
+    size = models.PositiveIntegerField(verbose_name='Розмір')
+    quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
+
+    def __str__(self):
+        return f"{self.sneakers.title}  Розмір: {self.size}"
 
 class Category(MPTTModel):
     title = models.CharField(max_length=255, verbose_name='Назва категорії')
@@ -65,7 +68,6 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ('title',)
 
-
     class Meta:
         verbose_name = 'Категорія'
         verbose_name_plural = 'Категорії'
@@ -74,9 +76,9 @@ class Category(MPTTModel):
         return self.title
 
     def get_absolute_url(self):
-        #return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
+        # return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
         slug = '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
-        return reverse_lazy('goods:show_cat', kwargs ={'cat_slug': slug})
+        return reverse_lazy('goods:show_cat', kwargs={'cat_slug': slug})
 
 
 class ProductImage(models.Model):
@@ -86,5 +88,3 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Фотографія'
         verbose_name_plural = 'Фотографії'
-
-

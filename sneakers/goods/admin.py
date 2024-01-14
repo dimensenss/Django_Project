@@ -7,6 +7,13 @@ from mptt.admin import DraggableMPTTAdmin
 from .models import *
 
 
+
+
+class SneakersVariationInline(admin.TabularInline):
+    model = SneakersVariations
+
+    extra = 1
+
 class SneakersImageInline(admin.TabularInline):
     model = ProductImage
     extra = 0
@@ -33,17 +40,16 @@ class SneakersImages(admin.ModelAdmin):
 
 @admin.register(Sneakers)
 class SneakersAdmin(admin.ModelAdmin):
-    list_display = (
-    'id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
+    list_display = ('id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
-    inlines = [SneakersImageInline,  ]
+    inlines = [SneakersImageInline, SneakersVariationInline ]
     search_fields = ('id', 'title', 'content')
     list_editable = ('discount','is_published',)
     list_filter = ('is_published', 'time_create', 'discount')
     prepopulated_fields = {'slug': ('title',)}
-    raw_id_fields = ('variations',)
+    # raw_id_fields = ('variations',)
     fields = (
-    'title',  'cat', ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'color', 'size', 'quantity', 'variations', 'slug', 'is_published', 'time_create',
+    'title', 'cat', ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'slug', 'is_published', 'time_create',
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 
@@ -77,12 +83,6 @@ class SneakersAdmin(admin.ModelAdmin):
     calculate_discount.short_description = 'Актуальна ціна'
 
 
-# @admin.register(Category)
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'name')
-#     list_display_links = ('id', 'name')
-#     search_fields = ('name',)
-#     prepopulated_fields = {'slug': ('name',)}
 @admin.register(Category)
 class CategoryAdmin(DjangoMpttAdmin):
     list_display = ('id', 'title', 'slug', 'count_products')

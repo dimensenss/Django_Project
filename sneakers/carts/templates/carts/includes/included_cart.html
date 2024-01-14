@@ -13,7 +13,10 @@
             <li class="list-group-item">
                 <div class="row text-center d-flex align-items-center">
                     <div class="col p-0">
-                        <img src="{{ cart.product.images.first.image.url }}" alt="{{ cart.product.title }}" class="">
+                        <img src="{{ cart.product.sneakers.images.first.image.url }}" alt="{{ cart.product.title }}" class="">
+                    </div>
+                    <div class="col p-0">
+                        <small> Розмір: {{ cart.product.size }} </small>
                     </div>
                     <div class="col p-0">
                         <div class="input-group">
@@ -35,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="col p-0"><small>x {{ cart.product.sell_price }} $</small></div>
+                    <div class="col p-0"><small>x {{ cart.product.sneakers.sell_price }} $</small></div>
                     <div class="col p-0"><strong>{{ cart.product_price }} $</strong></div>
                     <div class="col p-0">
                         <a href="{% url 'carts:cart_remove'%}" class="a-dark remove-from-cart"
