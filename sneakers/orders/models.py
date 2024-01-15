@@ -1,3 +1,4 @@
+from django.contrib.sessions.models import Session
 from django.db import models
 
 from goods.models import Sneakers, SneakersVariations
@@ -24,6 +25,7 @@ class Order(models.Model):
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адреса доставки")
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при отриманні")
     is_paid = models.BooleanField(default=False, verbose_name="Сплачено")
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, blank=True, null=True)
     status = models.CharField(max_length=50, default='В обробці', verbose_name="Статус заказа")
 
     class Meta:

@@ -24,16 +24,20 @@
     </div>
     <!-- Детали заказа -->
     <div class="container mt-3">
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="text-center">Ваші контактні данні</h3>
-            </div>
-            <div class="col-md-6">
-                <span class="green-stroke">
+
+
+        <h3>Ваші контактні данні</h3>
+
+        <div class="d-flex justify-content-start align-items-center">
+         <span class="green-stroke">
+                Я новий покупець
+        </span>
+            <span class="green-stroke">
                 <a href="{% url 'users:login' %}?next=/orders/create-order/">Я постійний покупець</a>
-                    </span>
-            </div>
+        </span>
         </div>
+
+
         <div class="card mb-3">
             <div class="card-body">
                 <form action="{% url 'orders:create_order' %}" method="post">
@@ -124,15 +128,6 @@
                                           value="
 
 
-
-
-
-
-
-
-
-
-
                                                   {% if form.delivery_address.value %}{{ form.delivery_address.value }}{% endif %}"
                                           name="delivery_address" rows="2"></textarea>
                             </div>
@@ -151,6 +146,71 @@
                                         при отриманні</label>
                                 </div>
                             </div>
+
+
+
+
+                            <div class="col-md-12 mb-3">
+                                <label for="requires_registration" class="form-label">Зареєструвати акаунт? </label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="requires_registration"
+                                           id="id_requires_registration_1" value="1">
+                                    <label class="form-check-label" for="id_requires_registration_1">Так</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="requires_registration"
+                                           id="id_requires_registration_0" value="0" checked>
+                                    <label class="form-check-label" for="id_requires_registration_0">Ні</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3" id="passwordField">
+                                <div id="passwordFieldsContainer"
+                                     {% if form.requires_registration.value != '1' %}style="display: none;"{% endif %}>
+                                    <label for="id_password1" class="form-label">Введіть пароль</label>
+                                    {% if form.password1.errors %}
+                                        <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                            <div class="form-error-1 text-center">{{ form.password1.errors }}</div>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    {% endif %}
+                                    <input type="password" class="form-control" name="password1" id="id_password1"
+                                           placeholder="Введіть пароль">
+
+                                    <label for="id_password2" class="form-label">Повторіть пароль</label>
+                                    {% if form.password2.errors %}
+                                        <div class="alert alert-danger alert-dismissible pb-0" role="alert">
+                                            <div class="form-error-1 text-center">{{ form.password2.errors }}</div>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    {% endif %}
+                                    <input type="password" class="form-control" name="password2" id="id_password2"
+                                           placeholder="Повторіть пароль">
+                                </div>
+                            </div>
+
+
+                            <script>
+                                // Скрипт для изменения видимости полей ввода пароля в зависимости от выбора
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var requiresRegistration = document.getElementsByName('requires_registration');
+                                    var passwordFieldsContainer = document.getElementById('passwordFieldsContainer');
+
+                                    for (var i = 0; i < requiresRegistration.length; i++) {
+                                        requiresRegistration[i].addEventListener('change', function () {
+                                            if (this.value === '1') {
+                                                passwordFieldsContainer.style.display = 'block';
+                                            } else {
+                                                passwordFieldsContainer.style.display = 'none';
+                                            }
+                                        });
+                                    }
+                                });
+                            </script>
+
+
                         </div>
 
                         <div class="col-md-4">

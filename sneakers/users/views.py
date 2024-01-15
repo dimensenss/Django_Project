@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.contrib.sessions.models import Session
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -100,6 +101,12 @@ def RegisterUser(request):
 
             if session_key:
                 Cart.objects.filter(session_key=session_key).update(user=user)
+                existing_orders = Order.objects.filter(user__username=session_key)
+                # удалить временного пользователя
+                if existing_orders:
+                    for order in existing_orders:
+                        order.user = user
+                        order.save()
 
             messages.success(request, f"Ваш акаунт {user.username} зареєстровано")
             return HttpResponseRedirect(reverse('goods:home'))

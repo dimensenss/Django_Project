@@ -21,11 +21,11 @@ $(document).ready(function ($) {
         // Проверяем, что цвет и размер выбраны
         if (selectedSize === '') {
             // Если не все параметры выбраны, вы можете вывести сообщение пользователю или просто вернуться
-                warning_notification.html('Оберіть розмір');
-                warning_notification.fadeIn(400);
-                setTimeout(function () {
-                    warning_notification.fadeOut(400);
-                }, 1500);
+            warning_notification.html('Оберіть розмір');
+            warning_notification.fadeIn(400);
+            setTimeout(function () {
+                warning_notification.fadeOut(400);
+            }, 1500);
             return;
         }
 
@@ -38,9 +38,6 @@ $(document).ready(function ($) {
         var product_id = $(this).data("product-id");
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
-
-
-
 
 
         // делаем post запрос через ajax не перезагружая страницу
@@ -76,9 +73,6 @@ $(document).ready(function ($) {
             },
         });
     });
-
-
-
 
 
     // Ловим собыитие клика по кнопке удалить товар из корзины
@@ -216,6 +210,20 @@ $(document).ready(function ($) {
             $("#deliveryAddressField").hide();
         }
     });
+    // $("input[name='requires_registration']").change(function () {
+    //     var selectedValue = $(this).val();
+    //     var passwordFields = $("#passwordField input[type='password']");
+    //
+    //     // Устанавливаем или снимаем обязательность полей пароля в зависимости от выбранного значения
+    //     passwordFields.prop("required", selectedValue === "1");
+    //
+    //     // Скрываем или отображаем input ввода пароля
+    //     if (selectedValue === "1") {
+    //         $("#passwordField").show();
+    //     } else {
+    //         $("#passwordField").hide();
+    //     }
+    // });
 
 
     $('.image-popup-vertical-fit').magnificPopup({
@@ -253,22 +261,20 @@ $(document).ready(function ($) {
 
     'use strict';
 
-var togglers = document.getElementsByClassName("caret");
-var i;
+    var togglers = document.getElementsByClassName("caret");
+    var i;
 
-for (i = 0; i < togglers.length; i++) {
-    togglers[i].addEventListener("mouseover", function () {
-        this.parentElement.querySelector(".nested").classList.add("active");
-        this.classList.add("caret-down");
-    });
+    for (i = 0; i < togglers.length; i++) {
+        togglers[i].addEventListener("mouseover", function () {
+            this.parentElement.querySelector(".nested").classList.add("active");
+            this.classList.add("caret-down");
+        });
 
-    togglers[i].addEventListener("mouseout", function () {
-        this.parentElement.querySelector(".nested").classList.remove("active");
-        this.classList.remove("caret-down");
-    });
-}
-
-
+        togglers[i].addEventListener("mouseout", function () {
+            this.parentElement.querySelector(".nested").classList.remove("active");
+            this.classList.remove("caret-down");
+        });
+    }
 
 
 });

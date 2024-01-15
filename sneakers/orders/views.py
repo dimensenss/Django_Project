@@ -1,5 +1,10 @@
+from random import randint
+
 from django.contrib import messages, auth
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.shortcuts import render, redirect
@@ -18,18 +23,20 @@ def create_order(request):
             try:
                 with transaction.atomic():
 
-                    if request.user.is_authenticated:
+                    session_key = request.session.session_key
+
+                    if request.user.is_authenticated: #Авторизирован
                         user = request.user
-                    elif User.objects.filter(email=form.cleaned_data['email']):
+                    elif User.objects.filter(email=form.cleaned_data['email']): #Не авторизирован но есть аккаунт
                         messages.warning(request, 'Користувач з таким email вже існує. Будь ласка, увійдіть.')
                         return redirect('orders:create_order')
 
-                    else:
+                    elif form.cleaned_data['requires_registration'] == '1': #Не авторизирован и хочет рег
                         # Если неавторизован, создаем нового пользователя
                         user = User.objects.create_user(
                             username=form.cleaned_data['email'],
                             email=form.cleaned_data['email'],
-                            password=User.objects.make_random_password(),
+                            password=form.cleaned_data['password1'],
                             first_name=form.cleaned_data['first_name'],
                             last_name=form.cleaned_data['last_name'],
                             phone_number=form.cleaned_data['phone_number']
@@ -37,9 +44,13 @@ def create_order(request):
                         user.save()
                         user.backend = 'users.authentication.EmailAuthBackend'
 
-                        session_key = request.session.session_key
-                        if session_key:
-                            Cart.objects.filter(session_key=session_key).update(user=user)
+                        Cart.objects.filter(session_key=session_key).update(user=user)
+
+                    elif form.cleaned_data['requires_registration'] == '0': #Не авторизирован и не хочет рег
+                        user = User.objects.create_user(session_key, User.objects.make_random_password(), f'user{randint(1, 99999)}@example.com')
+                        Cart.objects.filter(session_key=session_key).update(user=user)
+
+
 
                     cart_items = Cart.objects.filter(user=user)
 
@@ -51,6 +62,7 @@ def create_order(request):
                             requires_delivery=form.cleaned_data['requires_delivery'],
                             delivery_address=form.cleaned_data['delivery_address'],
                             payment_on_get=form.cleaned_data['payment_on_get'],
+                            session=Session.objects.get(session_key=session_key)
                         )
                         # Создать заказанные товары
                         for cart_item in cart_items:
@@ -75,9 +87,14 @@ def create_order(request):
 
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()
-                        auth.login(request, user)
+
                         messages.success(request, 'Замовлення оформлено!')
-                        return redirect('user:profile')
+
+                        if form.cleaned_data['requires_registration'] == '1':
+                            auth.login(request, user)
+
+                        if not form.cleaned_data['requires_registration'] == '0' or user.is_authenticated:
+                            return redirect('user:profile')
 
                     else:
                         raise ValidationError(f'Ваш кошик порожній')
