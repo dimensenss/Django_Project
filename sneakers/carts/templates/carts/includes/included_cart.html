@@ -63,11 +63,11 @@
             <div class="col p-0 d-flex align-items-center m-2 align-items-center">
                 <a class="btn btn-dark" role="button" onclick="closeModalOrRedirect()" >Продовжити покупки</a>
             </div>
-            <div class="col p-0 rounded-2 p-2 m-1" style="background-color: #00a0461a; border: 1px solid #00a046;">
+            <div class="col green-stroke">
                 <div class="row">
                     <div class="col justify-content-center text-center">
                         <p class="float-left">Усього <strong>{{ carts.total_quantity }}</strong> товар(а) на суму</p>
-                        <h4 class="float-left"><strong>{{ carts.total_price }}</strong></h4>
+                        <h4 class="float-left"><strong>{{ carts.total_price }} $</strong></h4>
                     </div>
                     {% if carts and not order %}
                     <div class="d-flex align-items-center col justify-content-center ">
