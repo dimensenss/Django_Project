@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from users.models import User
 
 
@@ -53,3 +53,10 @@ class ProfileUserForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('image', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'address')
+
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField()
+    new_password1 = forms.CharField()
+    new_password2 = forms.CharField()

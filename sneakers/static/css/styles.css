@@ -474,6 +474,14 @@ ul, #myUL {
     text-decoration: none;
     color: #ff5555;
 }
+.a-blue{
+    text-decoration: none;
+    color: #326293;
+}
+.a-blue:hover {
+    text-decoration: none;
+    color: #ff5555;
+}
 
 .button-success {
     border: none;

@@ -2,11 +2,12 @@ from django.contrib import messages, auth
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.contrib.sessions.models import Session
 from django.db.models import Prefetch
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes
@@ -14,7 +15,7 @@ from django.views.generic import CreateView, UpdateView
 
 from carts.models import Cart
 from orders.models import Order, OrderItem
-from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm
+from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm, UserPasswordChangeForm
 from goods.utils import DataMixin
 
 
@@ -81,7 +82,7 @@ def LoginUser(request):
         form = LoginUserForm()
 
     context = {
-        'title': 'Авторизація',
+        'title': 'Вхід',
         'form': form
     }
     return render(request, 'users/login.html', context)
@@ -151,6 +152,13 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
         return dict(list(context.items())+list(c_def.items()))
 
 
-def users_cart(request):
-    return render(request, 'users/user_cart.html')
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "includes/password_change_form.html"
+
+
+
+
 

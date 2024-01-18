@@ -21,6 +21,7 @@ class Order(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, blank=True, null=True, verbose_name="Користувач", default=None)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення замовлення")
     phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
+    email = models.CharField(max_length=50, verbose_name="Email", null=True, blank=True)
     requires_delivery = models.BooleanField(default=False, verbose_name="Потрібна доставка")
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адреса доставки")
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при отриманні")

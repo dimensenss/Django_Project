@@ -210,20 +210,6 @@ $(document).ready(function ($) {
             $("#deliveryAddressField").hide();
         }
     });
-    // $("input[name='requires_registration']").change(function () {
-    //     var selectedValue = $(this).val();
-    //     var passwordFields = $("#passwordField input[type='password']");
-    //
-    //     // Устанавливаем или снимаем обязательность полей пароля в зависимости от выбранного значения
-    //     passwordFields.prop("required", selectedValue === "1");
-    //
-    //     // Скрываем или отображаем input ввода пароля
-    //     if (selectedValue === "1") {
-    //         $("#passwordField").show();
-    //     } else {
-    //         $("#passwordField").hide();
-    //     }
-    // });
 
 
     $('.image-popup-vertical-fit').magnificPopup({
@@ -275,6 +261,35 @@ $(document).ready(function ($) {
             this.classList.remove("caret-down");
         });
     }
+
+
+    // $(document).ready(function () {
+    //         $('#password_reset_form').submit(function (e) {
+    //             e.preventDefault(); // предотвращаем обычную отправку формы
+    //             $.ajax({
+    //                 type: $(this).attr('method'),
+    //                 url: $(this).attr('action'),
+    //                 data: $(this).serialize(),
+    //                 success: function (data) {
+    //                     successMessage.html(data.message);
+    //                     successMessage.fadeIn(400);
+    //                     // Через 7сек убираем сообщение
+    //                     setTimeout(function () {
+    //                         successMessage.fadeOut(400);
+    //                     }, 1500);
+    //
+    //
+    //
+    //                     $('#message-container').html(data.info_message);
+    //                 },
+    //                 error: function (data) {
+    //                     // Обработка ошибок при отправке формы
+    //                     // В data.responseText содержится текст ошибки
+    //                     alert('Произошла ошибка: ' + data.responseText);
+    //                 }
+    //             });
+    //         });
+    //     });
 
 
 });

@@ -51,6 +51,8 @@ class OrderAdmin(admin.ModelAdmin):
                     "created_timestamp",
                     )
 
+    list_display_links = ('id', 'user')
+
     search_fields = ('id', 'is_paid', 'created_timestamp')
     list_filter = ('requires_delivery',
                    'payment_on_get',
