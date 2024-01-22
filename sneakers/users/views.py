@@ -54,6 +54,7 @@ from goods.utils import DataMixin
 #             return next_url
 #
 #         return reverse('goods:home')
+from users.models import User
 
 
 def LoginUser(request):
@@ -102,8 +103,11 @@ def RegisterUser(request):
 
             if session_key:
                 Cart.objects.filter(session_key=session_key).update(user=user)
-                existing_orders = Order.objects.filter(user__username=session_key)
+                existing_orders = Order.objects.filter(session=session_key)
+
                 # удалить временного пользователя
+                User.objects.get(username=existing_orders[0].user.username).delete()
+
                 if existing_orders:
                     for order in existing_orders:
                         order.user = user
