@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
+from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 
 from carts.models import Cart
 from goods.utils import DataMixin
@@ -25,13 +27,13 @@ def create_order(request):
 
                     session_key = request.session.session_key
 
-                    if request.user.is_authenticated: #Авторизирован
+                    if request.user.is_authenticated:  # Авторизирован
                         user = request.user
-                    elif User.objects.filter(email=form.cleaned_data['email']): #Не авторизирован но есть аккаунт
+                    elif User.objects.filter(email=form.cleaned_data['email']):  # Не авторизирован но есть аккаунт
                         messages.warning(request, 'Користувач з таким email вже існує. Будь ласка, увійдіть.')
                         return redirect('orders:create_order')
 
-                    elif form.cleaned_data['requires_registration'] == '1': #Не авторизирован и хочет рег
+                    elif form.cleaned_data['requires_registration'] == '1':  # Не авторизирован и хочет рег
                         # Если неавторизован, создаем нового пользователя
                         user = User.objects.create_user(
                             username=form.cleaned_data['email'],
@@ -46,11 +48,12 @@ def create_order(request):
 
                         Cart.objects.filter(session_key=session_key).update(user=user)
 
-                    elif form.cleaned_data['requires_registration'] == '0': #Не авторизирован и не хочет рег
-                        user = User.objects.create_user(session_key, User.objects.make_random_password(), f'user{randint(1, 99999)}@example.com')
+                    elif form.cleaned_data['requires_registration'] == '0':  # Не авторизирован и не хочет рег
+                        user = User.objects.create_user(User.objects.make_random_password(),
+                                                        User.objects.make_random_password(),
+                                                        first_name=form.cleaned_data['first_name'],
+                                                        last_name=form.cleaned_data['last_name'])
                         Cart.objects.filter(session_key=session_key).update(user=user)
-
-
 
                     cart_items = Cart.objects.filter(user=user)
 
@@ -63,7 +66,7 @@ def create_order(request):
                             requires_delivery=form.cleaned_data['requires_delivery'],
                             delivery_address=form.cleaned_data['delivery_address'],
                             payment_on_get=form.cleaned_data['payment_on_get'],
-                            session=Session.objects.get(session_key=session_key)
+                            session=session_key
                         )
                         # Создать заказанные товары
                         for cart_item in cart_items:
@@ -89,13 +92,23 @@ def create_order(request):
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()
 
+                        html_body = render_to_string('orders/order_email.html', {'order': order})
+
+                        msg = EmailMultiAlternatives(subject=f'Дякуємо за замовлення №{order.id} на Sneakers_shop.com',
+                                                     to=[order.email])
+                        msg.attach_alternative(html_body, 'text/html')
+                        msg.send()
+
                         messages.success(request, 'Замовлення оформлено!')
 
                         if form.cleaned_data['requires_registration'] == '1':
                             auth.login(request, user)
 
-                        if not form.cleaned_data['requires_registration'] == '0' or user.is_authenticated:
+                        if request.user.is_authenticated:
                             return redirect('user:profile')
+
+                        if form.cleaned_data['requires_registration'] == '0':
+                            return redirect('goods:home')
 
                     else:
                         raise ValidationError(f'Ваш кошик порожній')
