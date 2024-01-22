@@ -2,9 +2,15 @@ body {
     min-width: 320px;
     height: 100%;
     font-family: Bahnschrift, serif !important;
+    margin: 0;
 
 }
 
+.page{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 img {
     max-width: 100%;
     height: auto;
@@ -16,7 +22,7 @@ hr {
 }
 
 footer {
-    position: relative;
+    margin-top: auto;
 }
 
 .custom-header {
