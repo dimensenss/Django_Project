@@ -263,6 +263,7 @@ $(document).ready(function ($) {
     }
 
 
+
     // $(document).ready(function () {
     //         $('#password_reset_form').submit(function (e) {
     //             e.preventDefault(); // предотвращаем обычную отправку формы

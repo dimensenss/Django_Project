@@ -26,14 +26,17 @@
                                      style="max-width: 150px">
                             </div>
                         {% endif %}
+
                         <label for="file" class="feedback__label">
-                            <input type="file" id='file' class="form-control feedback__file" name="image" value="{{ form.image.value }}"
-                            id="id_image"
-                            accept="image/*">
+                            <input type="file" id="file" class="form-control feedback__file" name="image"
+                                   value="{{ form.image.value }}"
+                                   accept="image/*" onchange="displayFileName()">
+
                         </label>
+                        <p id="fileName"></p>
                     </div>
                     <div class="mb-3">
-                    <label for="id_username" class="form-label">Нік або email</label>
+                        <label for="id_username" class="form-label">Нік або email</label>
                         {% if form.username.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.username.errors }}</span>
@@ -46,7 +49,7 @@
                                placeholder="Введіть ваш нік">
                     </div>
                     <div class="mb-3">
-                    <label for="id_first_name" class="form-label">Ім'я</label>
+                        <label for="id_first_name" class="form-label">Ім'я</label>
                         {% if form.first_name.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.first_name.errors }}</span>
@@ -61,7 +64,7 @@
 
 
                     <div class="mb-3">
-                    <label for="id_last_name" class="form-label">Прізвище</label>
+                        <label for="id_last_name" class="form-label">Прізвище</label>
                         {% if form.last_name.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.last_name.errors }}</span>
@@ -76,7 +79,7 @@
 
 
                     <div class="mb-3">
-                    <label for="id_email" class="form-label">Пошта</label>
+                        <label for="id_email" class="form-label">Пошта</label>
                         {% if form.email.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <div class="form-error-1 text-center">{{ form.email.errors }}</div>
@@ -90,7 +93,7 @@
                     </div>
 
                     <div class="mb-3">
-                    <label for="id_phone_number" class="form-label">Номер телефону</label>
+                        <label for="id_phone_number" class="form-label">Номер телефону</label>
                         {% if form.phone_number.errors %}
                             <div class="alert alert-danger alert-dismissible pb-0" role="alert">
                                 <span class="form-error-1 text-center">{{ form.phone_number.errors }}</span>
@@ -99,11 +102,12 @@
                             </div>
                         {% endif %}
                         <input type="text" class="form-control" name="phone_number"
-                               value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}" id="id_phone_number"
+                               value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
+                               id="id_phone_number"
                                placeholder="Введіть ваш номер телефону">
                     </div>
-                <div class="mb-3">
-                    <a href="{% url 'users:password_change' %}" class="a-blue">Змінити пароль</a>
+                    <div class="mb-3">
+                        <a href="{% url 'users:password_change' %}" class="a-blue">Змінити пароль</a>
                     </div>
 
 
@@ -120,64 +124,75 @@
                     {% include 'carts/includes/included_cart.html' %}
                 </div>
             </div>
-{% if orders %}
+            {% if orders %}
 
 
-            <div class="col-md-12">
-                <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
-                    <h3 class="text-center mb-4">Мої замовлення</h3>
-                    <!-- Разметка заказов -->
-                    <div class="container">
-                        <div class="accordion" id="accordionExample">
-                            {% for order in orders %}
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ order.id }}">
-                                        <button class="accordion-button {% if order != orders.0 %}collapsed{% endif %}"
-                                                type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse{{ order.id }}" aria-expanded="false"
-                                                aria-controls="collapse{{ order.id }}">
-                                            Заказ № {{ order.id }} - {{ order.created_timestamp }} | Статус: <strong
-                                                class="mx-2">{{ order.status }}</strong>
-                                        </button>
-                                    </h2>
-                                    <div id="collapse{{ order.id }}"
-                                         class="accordion-collapse collapse {% if order == orders.0 %}show{% endif %}"
-                                         aria-labelledby="heading{{ order.id }}" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <table class="table table-dark table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>Товар</th>
-                                                    <th>Кількість</th>
-                                                    <th>Ціна</th>
-                                                    <th>Загальна вартість</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for item in order.orderitem_set.all %}
+                <div class="col-md-12">
+                    <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
+                        <h3 class="text-center mb-4">Мої замовлення</h3>
+                        <!-- Разметка заказов -->
+                        <div class="container">
+                            <div class="accordion" id="accordionExample">
+                                {% for order in orders %}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{ order.id }}">
+                                            <button class="accordion-button {% if order != orders.0 %}collapsed{% endif %}"
+                                                    type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse{{ order.id }}" aria-expanded="false"
+                                                    aria-controls="collapse{{ order.id }}">
+                                                Заказ № {{ order.id }} - {{ order.created_timestamp }} | Статус: <strong
+                                                    class="mx-2">{{ order.status }}</strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ order.id }}"
+                                             class="accordion-collapse collapse {% if order == orders.0 %}show{% endif %}"
+                                             aria-labelledby="heading{{ order.id }}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <table class="table table-dark table-hover">
+                                                    <thead>
                                                     <tr>
-                                                        <td><a class="text-white"
-                                                               href="{% url 'goods:product' item.product.sneakers.slug %}">{{ item.product.sneakers.title }}</a>
-                                                        </td>
-                                                        <td>{{ item.quantity }}</td>
-                                                        <td>{{ item.price }}</td>
-                                                        <td>{{ item.products_price }}</td>
-
+                                                        <th>Товар</th>
+                                                        <th>Кількість</th>
+                                                        <th>Ціна</th>
+                                                        <th>Загальна вартість</th>
                                                     </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for item in order.orderitem_set.all %}
+                                                        <tr>
+                                                            <td><a class="text-white"
+                                                                   href="{% url 'goods:product' item.product.sneakers.slug %}">{{ item.product.sneakers.title }}</a>
+                                                            </td>
+                                                            <td>{{ item.quantity }}</td>
+                                                            <td>{{ item.price }}</td>
+                                                            <td>{{ item.products_price }}</td>
+
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
         </div>
     </div>
+<script>
+    function displayFileName() {
+        var fileInput = document.getElementById('file');
+        var fileNameDisplay = document.getElementById('fileName');
 
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    }
+</script>
 
 {% endblock content %}
