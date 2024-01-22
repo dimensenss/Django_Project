@@ -18,6 +18,13 @@ class OrderItemQueryset(models.QuerySet):
 
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('В обробці', 'В обробці'),
+        ('Відправлено', 'Відправлено'),
+        ('Доставлено', 'Доставлено'),
+        ('Скасовано', 'Скасовано'),
+    ]
+
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, blank=True, null=True, verbose_name="Користувач", default=None)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення замовлення")
     phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
@@ -27,7 +34,7 @@ class Order(models.Model):
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при отриманні")
     is_paid = models.BooleanField(default=False, verbose_name="Сплачено")
     session = models.CharField(null=True, blank=True, verbose_name="Сесія")
-    status = models.CharField(max_length=50, default='В обробці', verbose_name="Статус заказа")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='В обробці', verbose_name="Статус")
 
     class Meta:
         db_table = "order"
