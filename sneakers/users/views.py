@@ -149,7 +149,6 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
                 queryset=OrderItem.objects.select_related("product"),
             )
         ).order_by("-id")
-
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Профіль", orders=orders)
 

@@ -59,7 +59,7 @@
                     {% if item.images %}
 
                     <a class="a-dark" href="{{ item.get_absolute_url }}">
-                        <img class="card-img-top image-container-img" src="{{ item.images.first.image.url }}"
+                        <img class="card-img-top image-container-img" src="{{ item.first_image_url}}"
                              alt="{{ item.title }}"/>
                     </a>
                     {% else %}

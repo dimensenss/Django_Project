@@ -4,12 +4,14 @@ body {
     font-family: Bahnschrift, serif !important;
     margin: 0;
 
+
 }
 
 .page{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow: hidden;
 }
 img {
     max-width: 100%;

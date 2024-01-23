@@ -5,7 +5,6 @@
 <div class="row" id="selling-product">
 
     {% show_slider post %}
-    {#    {% get_colors post as query %}#}
 
     <div class="col-lg-6 col-md-6 mt-4" id="content-color">
         <div class="product-info">
@@ -30,41 +29,9 @@
             </div>
 
             <div class="meta-product py-2">
-
-
-                {#                <div class="meta-item d-flex align-items-center">#}
-                {#            <p class="item-title fs-5 pe-2">Кольори:</p>#}
-                {#            <ul class="select-list list-unstyled d-flex">#}
-                {#                {% for var in variations %}#}
-                {#                    <li>#}
-                {#                        <a href="{% url 'goods:product' None %}" class="check_variations"#}
-                {#                           data-color="{{ var.color }}"#}
-                {#                           data-product-slug= {{ post.slug }}>#}
-                {#                            {% csrf_token %}#}
-                {#                            <div style="background: {{ var.color }}; width: 40px; height: 40px; margin-left: 5px;">#}
-                {##}
-                {#                            </div>#}
-                {#                        </a>#}
-                {#                    </li>#}
-                {#                {% endfor %}#}
-                {#            </ul>#}
-                {#        </div>#}
-
                 <div class="meta-item d-flex align-items-baseline">
                     <p class="item-title fs-5 pe-2">Розмір:</p>
-
                     <ul class="select-list list-unstyled d-flex">
-                        {#                        {% if post.size %}#}
-                        {#                            <select class="form-select" aria-label="Пример выбора по умолчанию">#}
-                        {#                            <option selected>Наявні розміри</option>#}
-                        {##}
-                        {#                            {% for size in post.size %}#}
-                        {#                                 <option value="{{ size }}">{{ size }}</option>#}
-                        {#                            {% endfor %}#}
-                        {#                        #}
-                        {#                        </select>#}
-                        {#                        {% endif %}#}
-
                         <select class="form-select" id='sizes-container' aria-label="Пример выбора по умолчанию">
                             <option selected></option>
 
@@ -76,16 +43,11 @@
                                 {% endif %}
                             {% endfor %}
                         </select>
-
-
                     </ul>
                 </div>
                 {% if post.tags %}
-
                     <div class="meta-item d-flex align-items-baseline">
-
                         <p class="item-title fs-5 pe-2">Теги:</p>
-
                         <ul class="select-list list-unstyled d-flex">
                             {% for tag in post.tags.all %}
                                 <a class="a-dark" href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }}
@@ -93,6 +55,7 @@
                             {% endfor %}
                         </ul>
                     </div>
+                {% endif %}
                     <div class="meta-item d-flex align-items-baseline">
                         <p class="item-title fs-5 pe-2">Артикул:</p>
 
@@ -100,7 +63,7 @@
                             <li data-value="S" class="select-item">{{ post.display_id }}</li>
                         </ul>
                     </div>
-                {% endif %}
+
             </div>
         </div>
     </div>

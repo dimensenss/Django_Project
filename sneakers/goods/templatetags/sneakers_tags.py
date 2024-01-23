@@ -5,7 +5,6 @@ from goods.models import *
 
 register = template.Library()
 
-
 @register.simple_tag()
 def get_menu():
     return [{'title': 'Про нас', 'url_name': 'goods:about'},
@@ -22,20 +21,16 @@ def get_photos(post):
     return post.images.all()
 
 
-@register.simple_tag(name='get_colors')
-def get_colors(post):
-    colors = []
-    if post.variations.exists():
-        for product in post.variations.all().order_by('id'):
-            colors.append(product)
+# @register.simple_tag(name='get_colors')
+# def get_colors(post):
+#     colors = []
+#     if post.variations.exists():
+#         for product in post.variations.all().order_by('id'):
+#             colors.append(product)
+#
+#         colors.append(post)
+#         return colors
 
-        colors.append(post)
-        return colors
-
-
-@register.simple_tag(name='get_main_photo')
-def get_photos(post):
-    return post.images.first().image
 
 
 @register.inclusion_tag('goods/list_categories.html')
@@ -76,8 +71,11 @@ def show_filter(context, my_filter):
     request = context['request'].GET.dict()
     return {"filter": my_filter, 'request': request}
 
-# @register.simple_tag(takes_context=True) # метод для добавления параметра в урл запрос
-# def change_params(context, **kwargs):
-#     query = context['request'].GET.dict()
-#     query.update(kwargs)
-#     return urlencode(query)
+@register.simple_tag(name='get_products_by_tag')
+def get_products_by_tag(post):
+    return Sneakers.objects.filter(tags__in=post.tags.all()).distinct()
+
+
+
+
+

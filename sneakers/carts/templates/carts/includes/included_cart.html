@@ -4,7 +4,7 @@
 {% user_carts request as carts %}
 
 <!-- Разметка корзины -->
-{% if carts %}
+{% if carts.length > 0 %}
 <div class="card mb-3 text-bg-light shadow-lg">
     {% for cart in carts %}
         <div class="card-header">

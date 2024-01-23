@@ -294,3 +294,13 @@ $(document).ready(function ($) {
 
 
 });
+    function displayFileName() {
+        var fileInput = document.getElementById('file');
+        var fileNameDisplay = document.getElementById('fileName');
+
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    }
