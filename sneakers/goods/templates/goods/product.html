@@ -6,24 +6,25 @@
 {% endblock %}
 
 {% block content %}
-
+{% get_breadcrumbs post.cat %}
     <section class="single-product">
         <div class="container-fluid">
             {% include 'goods/product_content.html' %}
         </div>
     </section>
-    <div class="row m-3">
+    <div class="container-fluid">
     <h4>Також вас можуть зацікавити</h4>
 {% get_products_by_tag post as query %}
+    <div id = "simple-scroll" class="scrolling-wrapper-flexbox">
         {% for product in query %}
             {% if product.is_published %}
-            <div class="col mb-5">
-                <div class="card h-100 my-card">
+
+                <div class="card small-card">
                     <!-- Product image-->
                     {% if product.images %}
 
                     <a class="a-dark" href="{{ product.get_absolute_url }}">
-                        <img class="card-img-top image-container-img" src="{{ product.images.first.image.url}}"
+                        <img class="card-img-top image-container-img " src="{{ product.first_image_url}}"
                              alt="{{ product.title }}"/>
                     </a>
                     {% else %}
@@ -34,7 +35,7 @@
                     {% endif %}
                     <!-- Product details-->
                     <span class="card-body">
-                        <div class="text-center">
+                        <div class="d-flex justify-content-center">
                             <!-- Product name-->
                             <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                             <!-- Product price-->
@@ -55,9 +56,10 @@
                         <p class="ventor-code">Артикул: {{ product.display_id }}</p>
                     </div>
                 </div>
-            </div>
+
             {% endif %}
     {% endfor %}
+</div>
 
     </div>
 {% endblock %}

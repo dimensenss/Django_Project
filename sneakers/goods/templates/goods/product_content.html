@@ -6,7 +6,7 @@
 
     {% show_slider post %}
 
-    <div class="col-lg-6 col-md-6 mt-4" id="content-color">
+    <div class="col-lg-6 col-md-6 " id="content-color">
         <div class="product-info">
             <div class="element-header">
                 <h1 itemprop="name" class="display-6 fst-italic mb-0">{{ post.title }}</h1></div>
@@ -28,42 +28,69 @@
                 </div>
             </div>
 
-            <div class="meta-product py-2">
-                <div class="meta-item d-flex align-items-baseline">
-                    <p class="item-title fs-5 pe-2">Розмір:</p>
-                    <ul class="select-list list-unstyled d-flex">
-                        <select class="form-select" id='sizes-container' aria-label="Пример выбора по умолчанию">
-                            <option selected></option>
+            <div class="row meta-product py-2 align-items-center">
+                <div class="col-md-6">
+                    <div class="meta-item d-flex align-items-center">
+                        <p class="item-title fs-5 pe-2">Розмір:</p>
+                        <ul class="select-list list-unstyled d-flex">
+                            <select class="form-select" id='sizes-container' aria-label="Пример выбора по умолчанию">
+                                <option selected></option>
 
-                            {% for size in sizes %}
-                                {% if size.quantity > 0 %}
-                                    <option value="{{ size.size }}">{{ size.size }}</option>
-                                {% else %}
-                                    <option value="{{ size.size }}" disabled>{{ size.size }} Немає в наявності</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </ul>
+                                {% for size in sizes %}
+                                    {% if size.quantity > 0 %}
+                                        <option value="{{ size.size }}">{{ size.size }}</option>
+                                    {% else %}
+                                        <option value="{{ size.size }}" disabled>{{ size.size }} Немає в наявності
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </ul>
+                    </div>
                 </div>
-                {% if post.tags %}
-                    <div class="meta-item d-flex align-items-baseline">
-                        <p class="item-title fs-5 pe-2">Теги:</p>
-                        <ul class="select-list list-unstyled d-flex">
-                            {% for tag in post.tags.all %}
-                                <a class="a-dark" href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }}
-                                    &nbsp</a>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-                    <div class="meta-item d-flex align-items-baseline">
-                        <p class="item-title fs-5 pe-2">Артикул:</p>
+                <div class="col-md-6">
+                    <a type="button" class="a-blue" data-bs-toggle="modal"
+                       data-bs-target="#sizes-modal">Таблиця розмірів
+                    </a>
+                </div>
+                {#                {% if post.tags %}#}
+                {#                    <div class="meta-item d-flex align-items-baseline">#}
+                {#                        <p class="item-title fs-5 pe-2">Теги:</p>#}
+                {#                        <ul class="select-list list-unstyled d-flex">#}
+                {#                            {% for tag in post.tags.all %}#}
+                {#                                <a class="a-dark" href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }}#}
+                {#                                    &nbsp</a>#}
+                {#                            {% endfor %}#}
+                {#                        </ul>#}
+                {#                    </div>#}
+                {#                {% endif %}#}
 
-                        <ul class="select-list list-unstyled d-flex">
-                            <li data-value="S" class="select-item">{{ post.display_id }}</li>
-                        </ul>
-                    </div>
 
+            </div>
+            <div class="meta-item d-flex align-items-baseline">
+                <p class="item-title fs-5 pe-2">Артикул:</p>
+
+                <ul class="select-list list-unstyled d-flex">
+                    <li data-value="S" class="select-item">{{ post.display_id }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sizes-modal" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-l">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="exampleModalLabel3">Розміри</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid text-center">
+                    {% include 'includes/size_table.html' %}
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
             </div>
         </div>
     </div>

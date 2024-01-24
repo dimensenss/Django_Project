@@ -2,6 +2,7 @@ from django import template
 from django.utils.http import urlencode
 
 from goods.models import *
+from goods.utils import DataMixin
 
 register = template.Library()
 
@@ -73,7 +74,9 @@ def show_filter(context, my_filter):
 
 @register.simple_tag(name='get_products_by_tag')
 def get_products_by_tag(post):
-    return Sneakers.objects.filter(tags__in=post.tags.all()).distinct()
+    queryset = Sneakers.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).distinct()
+    return DataMixin().get_first_image(queryset)
+
 
 
 
