@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.db.models import OuterRef, Subquery, Value, CharField
 from django.db.models.functions import Concat
@@ -97,3 +98,8 @@ class SneakersCategories(DataMixin, ListView):
 
 def PageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+
+
+def signup_redirect(request):
+    messages.warning(request, 'Сталася помилка. Напевно користувач з таким email вже існує.')
+    return redirect('goods:home')

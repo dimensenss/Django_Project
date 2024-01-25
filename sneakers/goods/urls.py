@@ -15,4 +15,6 @@ urlpatterns = [
     path('contacts/', contacts, name = 'contacts'),
     re_path(r'^category/(?P<cat_slug>[-\w/]+)/$', SneakersCategories.as_view(), name='show_cat'),
     path('product/<slug:product_slug>/', ShowProduct, name = 'product'),
+
+    path('social/signup/', signup_redirect, name='signup_redirect'),
 ]

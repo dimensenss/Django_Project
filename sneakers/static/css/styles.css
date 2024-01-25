@@ -326,36 +326,37 @@ footer {
 }
 
 .scrolling-wrapper-flexbox {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
+
 #simple-scroll {
 
-  cursor: pointer; /* Добавляем курсор при наведении на контейнер */
+    cursor: pointer; /* Добавляем курсор при наведении на контейнер */
 }
 
 #simple-scroll::-webkit-scrollbar {
-  height: 7px;
-  background-color: #f9f9fd;
-  cursor: pointer; /* Добавляем курсор при наведении */
-  transition: background-color 0.3s ease-in-out; /* Анимация изменения цвета при наведении */
+    height: 7px;
+    background-color: #f9f9fd;
+    cursor: pointer; /* Добавляем курсор при наведении */
+    transition: background-color 0.3s ease-in-out; /* Анимация изменения цвета при наведении */
 }
 
 #simple-scroll::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #af0202;
-  transition: background-color 0.3s ease-in-out; /* Анимация изменения цвета при наведении */
+    border-radius: 10px;
+    background-color: #af0202;
+    transition: background-color 0.3s ease-in-out; /* Анимация изменения цвета при наведении */
 }
 
 #simple-scroll::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background-color: #f9f9fd;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #f9f9fd;
 }
 
 #simple-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #940221; /* Цвет при наведении */
+    background-color: #940221; /* Цвет при наведении */
 }
 
 
@@ -367,6 +368,7 @@ footer {
     margin-left: 2vh;
 
 }
+
 .small-card .card-body {
     padding: 0 0 0.5em 0.5em;
 
@@ -378,6 +380,7 @@ footer {
     font-size: 22px;
 
 }
+
 .card-body a {
     padding-bottom: 10px;
     font-weight: 500;
@@ -385,7 +388,8 @@ footer {
     height: 30px;
     overflow: hidden;
 }
-.card-body{
+
+.card-body {
     padding: 0 0 0 1em;
 }
 
@@ -617,3 +621,108 @@ tbody td:hover:before {
     position: absolute;
     background-color: rgba(63, 63, 63, 0.2);
 }
+
+.gsi-material-button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-appearance: none;
+  background-color: WHITE;
+  background-image: none;
+  border: 1px solid #747775;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 14px;
+  height: 40px;
+  letter-spacing: 0.25px;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  position: relative;
+  text-align: center;
+  -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+  transition: background-color .218s, border-color .218s, box-shadow .218s;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: auto;
+  max-width: 400px;
+  min-width: min-content;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+  height: 20px;
+  margin-right: 12px;
+  min-width: 20px;
+  width: 20px;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+  -webkit-align-items: center;
+  align-items: center;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  font-family: 'Roboto', arial, sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+  -webkit-transition: opacity .218s;
+  transition: opacity .218s;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gsi-material-button:disabled {
+  cursor: default;
+  background-color: #ffffff61;
+  border-color: #1f1f1f1f;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents {
+  opacity: 38%;
+}
+
+.gsi-material-button:disabled .gsi-material-button-icon {
+  opacity: 38%;
+}
+
+.gsi-material-button:not(:disabled):active .gsi-material-button-state,
+.gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 12%;
+}
+
+.gsi-material-button:not(:disabled):hover {
+  -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+}
+
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 8%;
+}
+
