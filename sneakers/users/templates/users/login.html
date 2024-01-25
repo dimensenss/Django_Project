@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load socialaccount %}
 
 {% block header %}
 {% endblock header %}
@@ -33,11 +34,19 @@
 
                     <div class="d-flex justify-content-evenly">
                         <button type="submit" class="custom-btn btn-1 ">Вхід</button>
+                        <button class="btn btn-outline-info">
+{#                            ?next={{ request.get_full_path }}#}
+                            <a href="{% provider_login_url 'google' %}">
+                                <i class="fab fa-google"></i>
+                                Login with Google
+                            </a>
+                        </button>
                         <a href="{% url 'users:password_reset' %}" class="a-blue">Забули пароль?</a>
                     </div>
 
                     <div class="d-flex justify-content-end mt-2 text-end">
-                        <p>Нема акаунта? </br> <a class="a-blue" href="{% url 'users:register' %} ">Зареєструватися</a></p>
+                        <p>Нема акаунта? </br> <a class="a-blue" href="{% url 'users:register' %} ">Зареєструватися</a>
+                        </p>
 
 
                     </div>
