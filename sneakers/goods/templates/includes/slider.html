@@ -11,26 +11,26 @@
             <!-- Основное изображение -->
             <div class="carousel-inner">
                 {% if post.images %}
-                {% get_photos post as query %}
+                    {% get_photos post as query %}
 
-                {% with first_photo=query.first.image.url %}
-                <div class="carousel-item active">
-                    <a class="image-popup-vertical-fit" href="{{ first_photo }}">
-                        <img src="{{ first_photo }}" class="mx-auto d-block img-fluid my_image"
-                             alt="Изображение товара">
-                    </a>
-                </div>
-                {% endwith %}
-
+                    <div class="carousel-item active">
+                        {% with first_photo=query|first %}
+                            {% if first_photo %}
+                                <a class="image-popup-vertical-fit" href="{{ first_photo.image.url }}">
+                                    <img src="{{ first_photo.image.url }}" class="mx-auto d-block img-fluid my_image"
+                                         alt="Изображение товара">
+                                </a>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
                 {% endif %}
-
                 <!-- Дополнительные изображения (перебор) -->
                 {% for image in query %}
-                <div class="carousel-item">
-                    <a class="image-popup-vertical-fit" href="{{ image.image.url  }}">
-                    <img src="{{ image.image.url }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
-                    </a>
-                </div>
+                    <div class="carousel-item">
+                        <a class="image-popup-vertical-fit" href="{{ image.image.url }}">
+                            <img src="{{ image.image.url }}" class="mx-auto d-block img-fluid" alt="Изображение товара">
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
 
@@ -50,9 +50,9 @@
 
         <!-- Дополнительные изображения в навигации (перебор) -->
         {% for image in query %}
-        <div class="img-carousel" data-bs-target="#mainCarousel" data-bs-slide-to="{{ forloop.counter }}">
-            <img src="{{ image.image.url }}" class="" alt="Изображение товара">
-        </div>
+            <div class="img-carousel" data-bs-target="#mainCarousel" data-bs-slide-to="{{ forloop.counter }}">
+                <img src="{{ image.image.url }}" class="" alt="Изображение товара">
+            </div>
         {% endfor %}
     </div>
 </div>

@@ -62,11 +62,6 @@ def get_breadcrumbs(category):
     }
 
 
-@register.inclusion_tag('includes/slider.html')
-def show_slider(post):
-    return {"post": post}
-
-
 @register.inclusion_tag('includes/filter.html', takes_context=True)
 def show_filter(context, my_filter):
     request = context['request'].GET.dict()
