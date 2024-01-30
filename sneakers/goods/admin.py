@@ -49,7 +49,7 @@ class SneakersAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     # raw_id_fields = ('variations',)
     fields = (
-    'title', 'cat', ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'slug', 'is_published', 'time_create',
+    'title', 'cat', ('price', 'discount', 'calculate_discount'), 'content', ('tags', 'get_html_tag_list'), 'slug', 'is_published', 'time_create', 'first_image'
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 

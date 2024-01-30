@@ -24,7 +24,7 @@
                     {% if product.images %}
 
                     <a class="a-dark" href="{{ product.get_absolute_url }}">
-                        <img class="card-img-top image-container-img " src="{{ product.first_image_url}}"
+                        <img class="card-img-top image-container-img " src="{{ product.first_image.image.url}}"
                              alt="{{ product.title }}"/>
                     </a>
                     {% else %}

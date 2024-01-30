@@ -70,7 +70,7 @@ def show_filter(context, my_filter):
 @register.simple_tag(name='get_products_by_tag')
 def get_products_by_tag(post):
     queryset = Sneakers.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).distinct()
-    return DataMixin().get_first_image(queryset)
+    return queryset
 
 
 

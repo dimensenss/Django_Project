@@ -11,14 +11,14 @@
         {% if order.requires_delivery %}
             адреса доставки: {{ order.delivery_address }}
         {% else %}
-           Самовивіз<
+           Самовивіз
         {% endif %}
 
     </li>
 
     <li>Спосіб оплати:
         {% if order.payment_on_get %}
-          готівкою/картой при отриманні
+          готівкою/картою при отриманні
         {% else %}
             оплата картою
         {% endif %}

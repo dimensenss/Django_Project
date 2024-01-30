@@ -1,5 +1,7 @@
 from colorfield.fields import ColorField
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse, reverse_lazy
 
 # Create your models here.
@@ -22,7 +24,19 @@ class Sneakers(models.Model):
     cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers', verbose_name='Категорія')
     tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
+    first_image = models.OneToOneField(
+        'ProductImage',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name='Перше зображення'
+    )
+
+
     def save(self, *args, **kwargs):
+        if not self.first_image and self.images.exists():
+            self.first_image = self.images.first()
+
         self.sell_price = self.calculate_sell_price()
         super().save(*args, **kwargs)
 
@@ -44,6 +58,8 @@ class Sneakers(models.Model):
         verbose_name = 'Кросівки'
         verbose_name_plural = 'Кросівки'
         ordering = ['-time_create', 'title']
+
+
 
 
 class SneakersVariations(models.Model):

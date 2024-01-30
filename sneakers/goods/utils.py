@@ -4,6 +4,8 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models.functions import Concat
 from django_filters import CharFilter
 from taggit.models import Tag
+
+from sneakers.settings import MEDIA_URL
 from .models import *
 
 
@@ -17,18 +19,6 @@ class DataMixin:
         # if 'cat_selected' not in  context:
         #     context['cat_selected'] = 0
         return context
-
-    def get_first_image(self, _queryset):
-        _queryset = _queryset.annotate(
-            first_image=Subquery(
-                ProductImage.objects.filter(product=OuterRef('pk')).order_by('pk').values('image')[:1]
-            )
-        )
-        _queryset = _queryset.annotate(
-            first_image_url=Concat(Value('/media/'), 'first_image', output_field=CharField())
-        )
-
-        return _queryset
 
 class SneakersFilter(django_filters.FilterSet):
     title_search = CharFilter(method='title_content_filter', label='Назва складається з', )

@@ -1,14 +1,10 @@
 import datetime
 
 from django.contrib import messages
-from django.contrib.auth import login, logout
-from django.db.models import OuterRef, Subquery, Value, CharField
-from django.db.models.functions import Concat
+
 
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
-from taggit.models import Tag
 
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView
@@ -24,8 +20,6 @@ class SneakersHome(DataMixin, ListView):
 
     def get_queryset(self):
         _queryset = Sneakers.objects.filter(is_published=1)
-
-        _queryset = self.get_first_image(_queryset)
 
         self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.myFilter.qs
@@ -54,7 +48,7 @@ def contacts(request):
     return HttpResponse("contacts")
 
 
-def ShowProduct(request, product_slug):
+def show_product(request, product_slug):
 
     product = Sneakers.objects.get(slug=product_slug)
     sizes = SneakersVariations.objects.filter(sneakers=product)
@@ -76,12 +70,8 @@ class SneakersCategories(DataMixin, ListView):
         cat_slug = self.kwargs['cat_slug'].split('/')[-1]
         current_category = Category.objects.get(slug=cat_slug)
 
-        # Получаем все подкатегории текущей категории
         subcategories = current_category.get_descendants(include_self=True)
-        # Получаем товары из текущей категории и ее подкатегорий
         _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat')
-
-        _queryset = self.get_first_image(_queryset)
 
         self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.myFilter.qs

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.contrib.sessions.models import Session
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F, OuterRef, Subquery
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -143,12 +143,17 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
         return redirect('user:profile')
 
     def get_context_data(self, *, object_list=None, **kwargs):
+
+
         orders = Order.objects.filter(user=self.request.user).prefetch_related(
             Prefetch(
                 "orderitem_set",
-                queryset=OrderItem.objects.select_related("product"),
+                queryset=OrderItem.objects.select_related("product__sneakers").annotate(
+                    sneakers_slug=F("product__sneakers__slug"), sneakers_first_image = F("product__sneakers__first_image__image")
+                ),
             )
         ).order_by("-id")
+
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Профіль", orders=orders)
 
