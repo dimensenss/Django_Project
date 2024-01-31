@@ -124,51 +124,7 @@ $(document).ready(function ($) {
         });
     });
 
-
-    // Теперь + - количества товара
-    // Обработчик события для уменьшения значения
     var isUpdatingCart = false; // Флаг, который указывает, идет ли в данный момент процесс обновления корзины
-
-    $(document).on("click", ".decrement", function () {
-        if (!isUpdatingCart) { // Проверяем, не идет ли уже процесс обновления корзины
-            isUpdatingCart = true; // Устанавливаем флаг, что процесс начался
-
-            var url = $(this).data("cart-change-url");
-            var cartID = $(this).data("cart-id");
-            var $input = $(this).closest('.input-group').find('.number');
-            var currentValue = parseInt($input.val());
-
-            if (currentValue > 1) {
-                $input.val(currentValue - 1);
-                updateCart(cartID, currentValue - 1, -1, url);
-
-                // Устанавливаем задержку в 1 секунду (или любое другое значение в миллисекундах)
-                setTimeout(function () {
-                    isUpdatingCart = false; // По истечении времени задержки снимаем флаг
-                }, 200);
-            } else {
-                isUpdatingCart = false; // Если количество уже 1, снимаем флаг без задержки
-            }
-        }
-    });
-
-    $(document).on("click", ".increment", function () {
-        if (!isUpdatingCart) {
-            isUpdatingCart = true;
-
-            var url = $(this).data("cart-change-url");
-            var cartID = $(this).data("cart-id");
-            var $input = $(this).closest('.input-group').find('.number');
-            var currentValue = parseInt($input.val());
-
-            $input.val(currentValue + 1);
-            updateCart(cartID, currentValue + 1, 1, url);
-
-            setTimeout(function () {
-                isUpdatingCart = false;
-            }, 200);
-        }
-    });
 
     function updateCart(cartID, quantity, change, url) {
         $.ajax({
@@ -193,12 +149,75 @@ $(document).ready(function ($) {
                 var cartItemsContainer = $(".cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
+
             },
             error: function (data) {
                 console.log("Ошибка при добавлении товара в корзину");
             },
         });
     }
+
+    $(document).on("input", ".number", function () {
+        if (!isUpdatingCart) {
+            isUpdatingCart = true;
+
+            var url = $(this).closest('.input-group').find('.increment').data("cart-change-url");
+            var cartID = $(this).closest('.input-group').find('.increment').data("cart-id");
+            var quantity = parseInt($(this).val());
+
+            // Проверяем, что количество находится в допустимом диапазоне
+            if (quantity >= 1 && quantity <= 9999) {
+                updateCart(cartID, quantity, quantity - parseInt($(this).attr('value')), url);
+
+                // Устанавливаем задержку (при необходимости)
+                setTimeout(function () {
+                    isUpdatingCart = false;
+                }, 200);
+            } else {
+                // Возвращаем предыдущее значение в случае недопустимого количества
+                $(this).val(parseInt($(this).attr('value')));
+                isUpdatingCart = false;
+            }
+        }
+    });
+
+    $(document).on("click", ".decrement", function () {
+        if (!isUpdatingCart) {
+            isUpdatingCart = true;
+
+            var url = $(this).data("cart-change-url");
+            var cartID = $(this).data("cart-id");
+            var $input = $(this).closest('.input-group').find('.number');
+            var currentValue = parseInt($input.val());
+
+            if (currentValue > 1) {
+                $input.val(currentValue - 1);
+                updateCart(cartID, currentValue - 1, -1, url);
+            }
+
+            setTimeout(function () {
+                isUpdatingCart = false;
+            }, 200);
+        }
+    });
+
+    $(document).on("click", ".increment", function () {
+        if (!isUpdatingCart) {
+            isUpdatingCart = true;
+
+            var url = $(this).data("cart-change-url");
+            var cartID = $(this).data("cart-id");
+            var $input = $(this).closest('.input-group').find('.number');
+            var currentValue = parseInt($input.val());
+
+            $input.val(currentValue + 1);
+            updateCart(cartID, currentValue + 1, 1, url);
+
+            setTimeout(function () {
+                isUpdatingCart = false;
+            }, 200);
+        }
+    });
 
 
     $("input[name='requires_delivery']").change(function () {
@@ -263,7 +282,6 @@ $(document).ready(function ($) {
     }
 
 
-
     // $(document).ready(function () {
     //         $('#password_reset_form').submit(function (e) {
     //             e.preventDefault(); // предотвращаем обычную отправку формы
@@ -294,13 +312,14 @@ $(document).ready(function ($) {
 
 
 });
-    function displayFileName() {
-        var fileInput = document.getElementById('file');
-        var fileNameDisplay = document.getElementById('fileName');
 
-        if (fileInput.files.length > 0) {
-            fileNameDisplay.textContent = fileInput.files[0].name;
-        } else {
-            fileNameDisplay.textContent = '';
-        }
+function displayFileName() {
+    var fileInput = document.getElementById('file');
+    var fileNameDisplay = document.getElementById('fileName');
+
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = fileInput.files[0].name;
+    } else {
+        fileNameDisplay.textContent = '';
     }
+}

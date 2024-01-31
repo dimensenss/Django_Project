@@ -15,7 +15,7 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                 {# Начало списка категорий #}
-                {% recursetree menu_items %}
+                {% recursetree cats %}
                     <li class="nav-item rounded dropdown">
                         <a href="{{ node.get_absolute_url }}" class="nav-link a-dark">{{ node.title }}</a>
                         <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">

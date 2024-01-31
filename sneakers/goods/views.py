@@ -21,15 +21,15 @@ class SneakersHome(DataMixin, ListView):
     def get_queryset(self):
         _queryset = Sneakers.objects.filter(is_published=1)
 
-        self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
-        _queryset = self.myFilter.qs
+        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
+        _queryset = self.sneakers_filter.qs
 
         return _queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
-        c_def = self.get_user_context(title='Shop home', filter=self.myFilter)
-        c_def['request'] = self.request
+        c_def = self.get_user_context(title='Shop home',
+                                      filter=self.sneakers_filter)
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -73,15 +73,16 @@ class SneakersCategories(DataMixin, ListView):
         subcategories = current_category.get_descendants(include_self=True)
         _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat')
 
-        self.myFilter = SneakersFilter(self.request.GET, queryset=_queryset)
-        _queryset = self.myFilter.qs
+        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
+        _queryset = self.sneakers_filter.qs
+
         return _queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         c_def = self.get_user_context(cats=cats,
-                                      filter=self.myFilter)
+                                      filter=self.sneakers_filter)
 
         return dict(list(context.items()) + list(c_def.items()))
 

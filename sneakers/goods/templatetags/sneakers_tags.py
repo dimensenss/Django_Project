@@ -35,12 +35,12 @@ def get_photos(post):
 
 
 @register.inclusion_tag('goods/list_categories.html')
-def show_categories(sort=None, cat_selected=None):  # доделать
+def show_categories(sort=None):  # доделать
     if sort:
         cats = Category.objects.order_by(sort)
     else:
         cats = Category.objects.all()
-    return {'cats': cats, 'cat_selected': cat_selected}
+    return {'cats': cats,}
 
 
 @register.inclusion_tag('includes/paginator.html', takes_context=True)
@@ -50,9 +50,9 @@ def show_paginator(context, paginator, page_obj):
 
 
 @register.inclusion_tag('includes/navbar.html', takes_context=True)
-def show_navbar(context, cat_selected, cats, my_filter):
+def show_navbar(context, cats):
     request = context['request']
-    return {"cat_selected": cat_selected, 'menu_items': cats, "filter": my_filter, 'request': request}
+    return {'cats': cats, 'request': request}
 
 
 @register.inclusion_tag('includes/breadcrumbs.html')
@@ -60,12 +60,6 @@ def get_breadcrumbs(category):
     return {
         'category': category
     }
-
-
-@register.inclusion_tag('includes/filter.html', takes_context=True)
-def show_filter(context, my_filter):
-    request = context['request'].GET.dict()
-    return {"filter": my_filter, 'request': request}
 
 @register.simple_tag(name='get_products_by_tag')
 def get_products_by_tag(post):

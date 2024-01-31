@@ -14,10 +14,8 @@ class DataMixin:
     def get_user_context(self, **kwargs):
         context = kwargs
         cats = Category.objects.annotate(len = Count('sneakers')).filter(id__gte = 1) #Исключить катгорию "Нет категории"
-
         context['cats'] = cats
-        # if 'cat_selected' not in  context:
-        #     context['cat_selected'] = 0
+
         return context
 
 class SneakersFilter(django_filters.FilterSet):

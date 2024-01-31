@@ -30,10 +30,11 @@
                      aria-labelledby="offcanvasExampleLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
+
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
 
-                    <form method="get" class="offcanvas-body" action="{% url 'goods:home' %}">
+                    <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">
                         {{ filter.form|crispy }}
                         <button type="submit" class="btn btn-primary mt-2">
                             Примінити фільтри
