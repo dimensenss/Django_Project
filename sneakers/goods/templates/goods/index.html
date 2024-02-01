@@ -49,6 +49,7 @@
         <div class="text-center mb-3">
             {% if request.path == '/' %}
             <h1>Popular sneakers</h1>
+                {{ recently_viewed_qs }}
             {% endif %}
         </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">

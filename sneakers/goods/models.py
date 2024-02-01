@@ -1,4 +1,5 @@
 from colorfield.fields import ColorField
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -9,6 +10,8 @@ from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from taggit.managers import TaggableManager
+
+User = get_user_model()
 
 
 class Sneakers(models.Model):
@@ -21,7 +24,8 @@ class Sneakers(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Час створення')
     time_update = models.DateTimeField(auto_now=True, verbose_name="Час оновлення")
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
-    cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers', verbose_name='Категорія')
+    cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers',
+                            verbose_name='Категорія')
     tags = TaggableManager(blank=True, verbose_name='Теги')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     first_image = models.OneToOneField(
@@ -32,13 +36,12 @@ class Sneakers(models.Model):
         verbose_name='Перше зображення'
     )
 
-
     def save(self, *args, **kwargs):
-        if not self.first_image and self.images.exists():
-            self.first_image = self.images.first()
-
         self.sell_price = self.calculate_sell_price()
         super().save(*args, **kwargs)
+
+
+
 
     def calculate_sell_price(self):
         return self.discount if self.discount else self.price
@@ -52,23 +55,20 @@ class Sneakers(models.Model):
     def display_id(self):
         return f"{self.id:05}"
 
-
-
     class Meta:
         verbose_name = 'Кросівки'
         verbose_name_plural = 'Кросівки'
         ordering = ['-time_create', 'title']
 
 
-
-
 class SneakersVariations(models.Model):
-    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='product', verbose_name='Кросівки')
+    sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='variations', verbose_name='Кросівки')
     size = models.PositiveIntegerField(verbose_name='Розмір')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
 
     def __str__(self):
         return f"{self.sneakers.title}  Розмір: {self.size}"
+
 
 class Category(MPTTModel):
     title = models.CharField(max_length=255, verbose_name='Назва категорії')
@@ -106,3 +106,6 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Фотографія'
         verbose_name_plural = 'Фотографії'
+
+
+

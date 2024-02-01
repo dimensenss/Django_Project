@@ -11,12 +11,29 @@ from .models import *
 
 class DataMixin:
     paginate_by = 4
+
     def get_user_context(self, **kwargs):
+
         context = kwargs
-        cats = Category.objects.annotate(len = Count('sneakers')).filter(id__gte = 1) #Исключить катгорию "Нет категории"
+        if 'request' not in context:
+            context['request'] = self.request
+
+        cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)  # Исключить катгорию "Нет категории"
         context['cats'] = cats
 
+        recently_viewed_qs = Sneakers.objects.filter(slug__in=context['request'].session.get("recently_viewed", []))
+
+        context['recently_viewed_qs'] = recently_viewed_qs
         return context
+
+    # def get_recent_viewed_products(self):
+    #     user = self.request.user
+    #
+    #     if user.is_authenticated:
+    #         queryset = Sneakers.objects.filter(
+    #             timestamps__user=user).order_by("-timestamps__timestamp")
+    #         return queryset
+
 
 class SneakersFilter(django_filters.FilterSet):
     title_search = CharFilter(method='title_content_filter', label='Назва складається з', )
@@ -48,16 +65,16 @@ class SneakersFilter(django_filters.FilterSet):
     )
 
     def title_content_filter(self, queryset, name, value):
-
         if value.isdigit() and len(value) <= 5:
             return queryset.filter(id=value)
 
         vector = SearchVector('title', 'content')
         query = SearchQuery(value)
         normalization = Value(2).bitor(Value(4))
-        return queryset.annotate(rank = SearchRank(vector, query, normalization=normalization)).filter(rank__gt = 0).order_by("-rank")
+        return queryset.annotate(rank=SearchRank(vector, query, normalization=normalization)).filter(
+            rank__gt=0).order_by("-rank")
 
     class Meta:
         model = Sneakers
         fields = {'price': ['gte', 'lte'],
-                  'tags':['exact']}
+                  'tags': ['exact']}

@@ -19,8 +19,8 @@ class SneakersImageInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['get_image']
 
-    def get_image(self, object):
-        return mark_safe(f"<img src='{object.image.url}' width='100' />")
+    def get_image(self, obj):
+        return mark_safe(f"<img src='{obj.image.url}' width='100' />")
 
     get_image.short_description = 'Зображення'
 
@@ -31,9 +31,9 @@ class SneakersImages(admin.ModelAdmin):
     list_display_links = ('id', 'get_html_main_photo', 'product_id')
     readonly_fields = ('get_html_main_photo',)
 
-    def get_html_main_photo(self, object):
-        if object.image:
-            return mark_safe(f"<img src = '{object.image.url}' width=100 >")
+    def get_html_main_photo(self, obj):
+        if obj.image:
+            return mark_safe(f"<img src = '{obj.image.url}' width=100 >")
 
     get_html_main_photo.short_description = 'Головне фото'
 
@@ -53,25 +53,28 @@ class SneakersAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
 
-    def get_html_content(self, object):
-        if object.content:
-            return object.content[:24] + '...'
+    def get_html_content(self, obj):
+        if obj.content:
+            return obj.content[:24] + '...'
 
-    def get_html_main_photo(self, object):
-        main_photo = object.images.first()
+    def get_html_main_photo(self, obj):
+        main_photo = obj.images.first()
         if main_photo:
+            if not obj.first_image:
+                obj.first_image = main_photo
+                obj.save()
             return mark_safe(f"<img src = '{main_photo.image.url}' width=100 >")
 
-    def get_html_tag_list(self, object):
-        if object.tags.exists():
-            return u", ".join(o.name for o in object.tags.all())
+    def get_html_tag_list(self, obj):
+        if obj.tags.exists():
+            return u", ".join(o.name for o in obj.tags.all())
         return 'Тегів немає'
 
-    def calculate_discount(self, object):
-        s = f"Актуальна ціна: {object.sell_price} \n "
+    def calculate_discount(self, obj):
+        s = f"Актуальна ціна: {obj.sell_price} \n "
         discount = 100
-        if object.price:
-            discount = (object.price - object.discount) * 100 / object.price
+        if obj.price:
+            discount = (obj.price - obj.discount) * 100 / obj.price
 
         if discount < 100:
             s += f"Знижка: {discount} %"

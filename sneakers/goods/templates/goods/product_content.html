@@ -13,6 +13,7 @@
 
             <div class="product-price pt-3 pb-3">
                 <span class="price">{{ post.price }} $</span>
+            {{ recently_viewed_qs }}
                 {% if post.discount %}
                     <span class="discount">{{ post.discount }} $</span>
                 {% endif %}
@@ -33,15 +34,14 @@
                     <div class="meta-item d-flex align-items-center">
                         <p class="item-title fs-5 pe-2">Розмір:</p>
                         <ul class="select-list list-unstyled d-flex">
-                            <select class="form-select" id='sizes-container' aria-label="Пример выбора по умолчанию">
+                            <select class="form-select" id='sizes-container' name='sizes'
+                                    aria-label="Пример выбора по умолчанию">
                                 <option selected></option>
-
-                                {% for size in sizes %}
+                                {% for size in post.variations.all %}
                                     {% if size.quantity > 0 %}
                                         <option value="{{ size.size }}">{{ size.size }}</option>
                                     {% else %}
-                                        <option value="{{ size.size }}" disabled>{{ size.size }} Немає
-                                        </option>
+                                        <option value="{{ size.size }}" disabled>{{ size.size }} Немає</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
@@ -100,8 +100,8 @@
 
                 </div>
                 <div class="mt-3" id="selectedTable">
-                        <!-- Сюда будет подставлен контент выбранной таблицы -->
-                    </div>
+                    <!-- Сюда будет подставлен контент выбранной таблицы -->
+                </div>
             </div>
             <div class="modal-footer justify-content-between">
             </div>
