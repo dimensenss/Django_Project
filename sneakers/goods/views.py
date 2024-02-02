@@ -22,7 +22,8 @@ class SneakersHome(DataMixin, ListView):
     sneakers_filter = None
 
     def get_queryset(self):
-        queryset = Sneakers.objects.filter(is_published=1)
+        queryset = Sneakers.objects.filter(is_published=1).annotate(
+            sneakers_first_image=F("first_image__image"))
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -54,7 +55,6 @@ def contacts(request):
 
 def show_product(request, product_slug):
     product = Sneakers.objects.prefetch_related('variations').get(slug=product_slug)
-
 
     recently_viewed(request, product_slug)
     data = DataMixin().get_user_context(title=product.title, request=request)

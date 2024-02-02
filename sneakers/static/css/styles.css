@@ -325,6 +325,38 @@ footer {
     max-height: 100%;
 }
 
+/*.my-small-card{*/
+/*    transition: all .3s;*/
+/*    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);*/
+/*}*/
+/*.my-small-card:hover {*/
+/*    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);*/
+/*}*/
+/*.my-small-card img {*/
+/*    max-height: 140px;*/
+/*    max-width: 200px;*/
+/*}*/
+.my-smaller-card {
+        max-width: 200px; /* Adjust the maximum width as per your design */
+        margin: auto; /* Center the card within the column */
+    }
+
+    .my-smaller-card .card-body {
+        padding: 10px; /* Adjust padding for the card body */
+    }
+
+    .my-smaller-card h6 {
+        font-size: 16px; /* Adjust the font size for the product name */
+        margin-bottom: 5px; /* Adjust the margin as needed */
+    }
+
+    .my-smaller-card .card-footer {
+        padding: 5px 10px; /* Adjust padding for the card footer */
+    }
+
+    .my-smaller-card p {
+        margin: 0; /* Remove default margins for paragraphs */
+    }
 .scrolling-wrapper-flexbox {
     display: flex;
     flex-wrap: nowrap;

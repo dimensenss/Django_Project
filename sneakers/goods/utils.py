@@ -1,5 +1,5 @@
 import django_filters
-from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField
+from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField, F
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models.functions import Concat
 from django_filters import CharFilter
@@ -21,18 +21,12 @@ class DataMixin:
         cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)  # Исключить катгорию "Нет категории"
         context['cats'] = cats
 
-        recently_viewed_qs = Sneakers.objects.filter(slug__in=context['request'].session.get("recently_viewed", []))
+        recently_viewed_qs = Sneakers.objects.filter(slug__in=context['request'].session.get("recently_viewed", [])).annotate(
+            sneakers_first_image=F("first_image__image"))
+        # recently_viewed_qs = sorted(recently_viewed_qs, key=lambda x: context['request'].session[x.slug])
 
         context['recently_viewed_qs'] = recently_viewed_qs
         return context
-
-    # def get_recent_viewed_products(self):
-    #     user = self.request.user
-    #
-    #     if user.is_authenticated:
-    #         queryset = Sneakers.objects.filter(
-    #             timestamps__user=user).order_by("-timestamps__timestamp")
-    #         return queryset
 
 
 class SneakersFilter(django_filters.FilterSet):

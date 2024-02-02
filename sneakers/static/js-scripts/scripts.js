@@ -323,3 +323,11 @@ function displayFileName() {
         fileNameDisplay.textContent = '';
     }
 }
+
+$(document).ready(function () {
+    $('#id_tags').magicSuggest({
+        // Настраивайте конфигурацию по мере необходимости
+        placeholder: 'Введите и выберите 1теги',
+        // Другие параметры
+    });
+});

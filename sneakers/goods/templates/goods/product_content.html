@@ -2,6 +2,7 @@
 {% load sneakers_tags %}
 
 
+
 <div class="row" id="selling-product">
 
     {% include 'includes/slider.html' %}
@@ -13,7 +14,6 @@
 
             <div class="product-price pt-3 pb-3">
                 <span class="price">{{ post.price }} $</span>
-            {{ recently_viewed_qs }}
                 {% if post.discount %}
                     <span class="discount">{{ post.discount }} $</span>
                 {% endif %}
@@ -52,6 +52,20 @@
                     <a type="button" class="a-blue" data-bs-toggle="modal"
                        data-bs-target="#sizes-modal">Таблиця розмірів
                     </a>
+{#                    <div class="form-group">#}
+{#                        <label>Scrabble box (free entries + set of entries)</label>#}
+{#                        <div class="ms-ctn form-control  ms-ctn-focus" style="" id="ms-scrabble"><span#}
+{#                                class="ms-helper " style="display: none;"></span>#}
+{#                            <div class="ms-sel-ctn"><input type="text" class=""#}
+{#                                                           placeholder="Type some real or fake fruits"#}
+{#                                                           style="width: 652.4px;">#}
+{#                                <div style="display: none;"></div>#}
+{#                            </div>#}
+{#                            <div class="ms-trigger">#}
+{#                                <div class="ms-trigger-ico"></div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
                 {#                {% if post.tags %}#}
                 {#                    <div class="meta-item d-flex align-items-baseline">#}
