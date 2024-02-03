@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'orders',
 
     'taggit',
+    'taggit_autosuggest',
     'django_filters',
     'crispy_forms',
     'crispy_bootstrap4',

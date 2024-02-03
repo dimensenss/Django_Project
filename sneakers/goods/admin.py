@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 from django_mptt_admin.admin import DjangoMpttAdmin
@@ -6,14 +7,14 @@ from mptt.admin import DraggableMPTTAdmin
 from django import forms
 from taggit.forms import TagField, TagWidget
 from taggit.models import Tag
-
+#
+# from .forms import SneakersAdminForm
 from .models import *
+
 
 class SneakersVariationInline(admin.TabularInline):
     model = SneakersVariations
     extra = 1
-
-
 
 
 class SneakersImageInline(admin.TabularInline):
@@ -23,7 +24,6 @@ class SneakersImageInline(admin.TabularInline):
 
     def get_image(self, obj):
         return mark_safe(f"<img src='{obj.image.url}' width='100' />")
-
     get_image.short_description = 'Зображення'
 
 
@@ -40,10 +40,9 @@ class SneakersImages(admin.ModelAdmin):
     get_html_main_photo.short_description = 'Головне фото'
 
 
-
-
 @admin.register(Sneakers)
 class SneakersAdmin(admin.ModelAdmin):
+    # form = SneakersAdminForm
     list_display = ('id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
     inlines = [SneakersImageInline, SneakersVariationInline]
@@ -51,13 +50,11 @@ class SneakersAdmin(admin.ModelAdmin):
     list_editable = ('discount', 'is_published',)
     list_filter = ('is_published', 'time_create', 'discount')
     prepopulated_fields = {'slug': ('title',)}
-    # raw_id_fields = ('variations',)
     fields = (
-        ('get_html_main_photo', 'first_image'), ('title','slug'), 'cat', ('price', 'discount', 'calculate_discount'), 'content',
-        ('tags', 'get_html_tag_list'),  'is_published', 'time_create',
+        ('get_html_main_photo', 'first_image'), 'title', 'slug', 'cat', ('price', 'discount', 'calculate_discount'),
+        'content', 'tags', 'is_published', 'time_create',
     )
-    readonly_fields = ('get_html_main_photo', 'time_create', 'get_html_tag_list', 'calculate_discount')
-
+    readonly_fields = ('get_html_main_photo', 'time_create', 'calculate_discount')
 
     def get_html_content(self, obj):
         if obj.content:
@@ -69,12 +66,6 @@ class SneakersAdmin(admin.ModelAdmin):
                 obj.first_image = obj.images.first()
                 obj.save()
             return mark_safe(f"<img src = '{obj.images.first().image.url}' width=100 >")
-
-    def get_html_tag_list(self, obj):
-        if obj.tags.exists():
-            return u", ".join(o.name for o in obj.tags.all())
-        return 'Тегів немає'
-
 
     def calculate_discount(self, obj):
         s = f"Актуальна ціна: {obj.sell_price} \n "
@@ -88,9 +79,7 @@ class SneakersAdmin(admin.ModelAdmin):
 
     get_html_content.short_description = 'Опис'
     get_html_main_photo.short_description = 'Головне фото'
-    get_html_tag_list.short_description = 'Теги'
     calculate_discount.short_description = 'Актуальна ціна'
-
 
 
 @admin.register(Category)

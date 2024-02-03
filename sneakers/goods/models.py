@@ -9,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
-from taggit.managers import TaggableManager
+from taggit_autosuggest.managers import TaggableManager
 
 User = get_user_model()
 
@@ -26,7 +26,7 @@ class Sneakers(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers',
                             verbose_name='Категорія')
-    tags = TaggableManager(blank=True, verbose_name='Теги')
+    tags = TaggableManager(blank=True, verbose_name='Теги', help_text='')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     first_image = models.OneToOneField(
         'ProductImage',
@@ -63,11 +63,16 @@ class Sneakers(models.Model):
 
 class SneakersVariations(models.Model):
     sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='variations', verbose_name='Кросівки')
-    size = models.PositiveIntegerField(verbose_name='Розмір')
+    size = models.CharField(max_length=8, verbose_name='Розмір')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name="Кількість")
 
     def __str__(self):
         return f"{self.sneakers.title}  Розмір: {self.size}"
+
+    class Meta:
+        verbose_name = 'Варіація'
+        verbose_name_plural = 'Варіації'
+        ordering = ['size']
 
 
 class Category(MPTTModel):

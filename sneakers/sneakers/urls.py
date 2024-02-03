@@ -1,13 +1,14 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from sneakers import settings
 from goods.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
     path('', include('goods.urls', namespace='goods')),
     path('user/', include('users.urls', namespace='user')),
     path('cart/', include('carts.urls', namespace='cart')),
