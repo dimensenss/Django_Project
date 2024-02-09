@@ -143,8 +143,6 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
         return redirect('user:profile')
 
     def get_context_data(self, *, object_list=None, **kwargs):
-
-
         orders = Order.objects.filter(user=self.request.user).prefetch_related(
             Prefetch(
                 "orderitem_set",

@@ -1,3 +1,4 @@
+from PIL import Image
 from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -10,6 +11,8 @@ from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from taggit_autosuggest.managers import TaggableManager
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 User = get_user_model()
 
@@ -39,9 +42,6 @@ class Sneakers(models.Model):
     def save(self, *args, **kwargs):
         self.sell_price = self.calculate_sell_price()
         super().save(*args, **kwargs)
-
-
-
 
     def calculate_sell_price(self):
         return self.discount if self.discount else self.price
@@ -106,11 +106,16 @@ class Category(MPTTModel):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to="product_images/%Y/%m/%d/", verbose_name='Зображення')
+    image = ProcessedImageField(
+        upload_to="product_images/%Y/%m/%d/",
+        processors=[ResizeToFill(800, 800)],
+        format='JPEG',  # или 'PNG' в зависимости от ваших требований
+        options={'quality': 90}  # Качество изображения
+    )
+
 
     class Meta:
         verbose_name = 'Фотографія'
         verbose_name_plural = 'Фотографії'
-
 
 

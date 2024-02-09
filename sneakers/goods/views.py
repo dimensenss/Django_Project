@@ -54,7 +54,8 @@ def contacts(request):
 
 
 def show_product(request, product_slug):
-    product = Sneakers.objects.prefetch_related('variations').get(slug=product_slug)
+    product = Sneakers.objects.prefetch_related('variations').annotate(
+            sneakers_first_image=F("first_image__image")).get(slug=product_slug)
 
     recently_viewed(request, product_slug)
     data = DataMixin().get_user_context(title=product.title, request=request)

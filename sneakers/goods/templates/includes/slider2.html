@@ -1,0 +1,71 @@
+{% load static %}
+{% load sneakers_tags %}
+
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<link href="{% static 'css/slider/slider.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/slider/style.css' %}" rel="stylesheet"/>
+
+<div class="container-fluid mx-3 p-0">
+    <div class="d-flex">
+        <div class="card-slider">
+            <div class="card-slider__nav slider-nav">
+             {% if post.images %}
+                    {% get_photos post as query %}
+
+                {% for image in query %}
+                    <div class="slider-nav__item" tabindex="0"><img src="{{ image.image.url }}" alt=""></div>
+                {% endfor %}
+            {% endif %}
+
+            </div>
+            <div class="slider-block">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide" id="slide-image">
+                        <img class="selected-image" src="{% get_media_prefix %}{{ post.sneakers_first_image }}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-info">
+            <span class="vendor">Артикул: 879876</span>
+            <h1 class="title">Ноутбук Apple MacBook Pro 16 TB i7 2.6/16/512 SSD SG MVVJ2RU/A</h1>
+            <div class="testimonials">
+                <div class="rating">
+                    <img src="img/star.svg" alt="Рейтинг 5 из 5">
+                    <img src="img/star.svg" alt="">
+                    <img src="img/star.svg" alt="">
+                    <img src="img/star.svg" alt="">
+                    <img src="img/star.svg" alt="">
+                </div>
+                <a href="#" class="testimonials__link">Отзывы 83</a>
+            </div>
+            <span class="available">В началии: 13 шт</span>
+            <div class="price">
+                <span class="price__current">190 789 ₽</span>
+                <span class="price__old">194 578 ₽</span>
+            </div>
+            <button class="buy">Купить</button>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="additional-pic-modal" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title " id="exampleModalLabel3">Кошик</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="additional-pic-modal-body">
+
+            </div>
+            <div class="modal-footer justify-content-between">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/js-image-zoom@0.7.0/js-image-zoom.js" type="application/javascript"></script>
+<script src="{% static 'js-scripts/slider-js/slider.js' %}"></script>

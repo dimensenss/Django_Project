@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'spurl',
+    'imagekit',
 
     'mptt',
     'django_mptt_admin',
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
