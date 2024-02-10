@@ -33,9 +33,8 @@
                                     <div class="image-zoom" data-scale="2.5"
                                          data-image="{{ image.image.url }}"><img
                                             src="{{ image.image.url }}" alt="product-large"></div>
-                                </div>
+                                    </div>
                                 {% endfor %}
-
                             </div>
                             <div class="swiper-pagination"></div>
                         </div>
@@ -46,76 +45,60 @@
             <div class="col-lg-4">
                 <div class="product-info">
                     <div class="element-header">
-                        <h3 itemprop="name" class="display-6 fw-bold">Nike Shoes</h3>
+                        <h3 itemprop="name" class="display-6 fw-bold">{{ post.title }}</h3>
                     </div>
-                    <div class="product-price py-3">
-                        <strong class="fs-5 fw-bold">$99</strong>
+                    <div class="product-price pt-3 pb-3">
+                        {% if post.discount %}
+                            <span class="discount">{{ post.discount }} $</span>
+                        {% endif %}
+                        <span class="price">{{ post.price }} $</span>
                     </div>
-                    <p>This Shoes is comfortable for wearing for men. imperdiet nulla molestie ac vulputate scelerisque
-                        amet.
-                        Bibendum adipiscing platea blandit sit sed quam semper rhoncus. Diam ultrices maecenas consequat
-                        eu tortor
-                        orci.</p>
+                    <p>{{ post.content|truncatechars:256 }}</p>
                     <div class="cart-wrap padding-small">
-                        <div class="color-options product-select">
-                            <div class="color-toggle" data-option-index="0">
-                                <h5 class="widget-title text-decoration-underline pe-2">Color:</h5>
-                                <ul class="select-list list-unstyled d-flex">
-                                    <li class="select-item pe-3" data-val="Green" title="Green">
-                                        <a href="#">Green</a>
-                                    </li>
-                                    <li class="select-item pe-3" data-val="Orange" title="Orange">
-                                        <a href="#">Orange</a>
-                                    </li>
-                                    <li class="select-item pe-3" data-val="Red" title="Red">
-                                        <a href="#">Red</a>
-                                    </li>
-                                    <li class="select-item" data-val="Black" title="Black">
-                                        <a href="#">Black</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+{#                        <div class="color-options product-select">#}
+{#                            <div class="color-toggle" data-option-index="0">#}
+{#                                <h5 class="widget-title text-decoration-underline pe-2">Color:</h5>#}
+{#                                <ul class="select-list list-unstyled d-flex">#}
+{#                                    <li class="select-item pe-3" data-val="Green" title="Green">#}
+{#                                        <a href="#">Green</a>#}
+{#                                    </li>#}
+{#                                    <li class="select-item pe-3" data-val="Orange" title="Orange">#}
+{#                                        <a href="#">Orange</a>#}
+{#                                    </li>#}
+{#                                    <li class="select-item pe-3" data-val="Red" title="Red">#}
+{#                                        <a href="#">Red</a>#}
+{#                                    </li>#}
+{#                                    <li class="select-item" data-val="Black" title="Black">#}
+{#                                        <a href="#">Black</a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="swatch product-select" data-option-index="1">
-                            <h5 class="widget-title text-decoration-underline pe-2">Size:</h5>
-                            <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item pe-3">
-                                    <a href="#">XL</a>
-                                </li>
-                                <li data-value="M" class="select-item pe-3">
-                                    <a href="#">L</a>
-                                </li>
-                                <li data-value="L" class="select-item pe-3">
-                                    <a href="#">M</a>
-                                </li>
-                                <li data-value="L" class="select-item">
-                                    <a href="#">S</a>
-                                </li>
-                            </ul>
+                            <h5 class="widget-title text-decoration-underline pe-2">Розміри:</h5>
+                            <select class="form-select" id='sizes-container' name='sizes'
+                                    aria-label="Пример выбора по умолчанию">
+                                <option selected></option>
+                                {% for variation in post.variations.all %}
+                                    {% if variation.quantity > 0 %}
+                                        <option value="{{ variation.size }}">
+                                            {{ variation.size }}
+                                        </option>
+                                    {% else %}
+                                        <option value="{{ variation.size }}" disabled>{{ variation.size }} Немає</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="product-quantity">
-                            <div class="stock-number text-dark">12 in stock</div>
+                            <div class="stock-number text-dark">{{ post.variations.all.total_quantity }} пар в наявності</div>
+                            <div class="stock-number text-dark">
+                                <a type="button" class="a-blue" id="btnSizesTable">
+                                    <i class="fa-solid fa-grip"></i>
+                                    Таблиця розмірів
+                                </a>
+                            </div>
                             <div class="stock-button-wrap pt-3">
-                                <div class="quantity-price d-flex justify-content-between align-items-center">
-                                    <div class="input-group product-qty">
-                                        <button type="button"
-                                                class="quantity-left-minus btn btn-light rounded-0 rounded-start btn-number"
-                                                data-type="minus">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#minus"></use>
-                                            </svg>
-                                        </button>
-                                        <input type="text" name="quantity" class="form-control input-number quantity"
-                                               value="1">
-                                        <button type="button"
-                                                class="quantity-right-plus btn btn-light rounded-0 rounded-end btn-number"
-                                                data-type="plus">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#plus"></use>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
                                 <!-- quantity-price -->
                                 <div class="qty-button d-flex flex-wrap pt-3">
                                     <button type="submit"
@@ -190,43 +173,15 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active padding-small" id="nav-home" role="tabpanel"
                          aria-labelledby="nav-home-tab">
-                        <p>Product Description</p>
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis
-                            eros.
-                            Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a,
-                            pede. Donec
-                            nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean
-                            dignissim
-                            pellentesque felis. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer
-                            ligula
-                            vulputate sem tristique cursus.</p>
-                        <ul style="list-style-type:disc;" class="list-unstyled ps-4">
-                            <li>Donec nec justo eget felis facilisis fermentum.</li>
-                            <li>Suspendisse urna viverra non, semper suscipit pede.</li>
-                            <li>Aliquam porttitor mauris sit amet orci.</li>
-                        </ul>
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis
-                            eros.
-                            Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a,
-                            pede. Donec
-                            nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean
-                            dignissim
-                            pellentesque felis. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer
-                            ligula
-                            vulputate sem tristique cursus. </p>
+                        <p>Опис</p>
                     </div>
                     <div class="tab-pane fade padding-small" id="nav-information" role="tabpanel"
                          aria-labelledby="nav-information-tab">
-                        <p>It is Comfortable and Best</p>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur.
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est
-                            laborum. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                            fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            mollit anim
-                            id est laborum.</p>
+
+                        <div id="sizesTable">
+                            {% include 'includes/size_table.html' %}
+                        </div>
+
                     </div>
                     <div class="tab-pane fade padding-small" id="nav-review" role="tabpanel"
                          aria-labelledby="nav-review-tab">
@@ -395,5 +350,3 @@
         </div>
     </div>
 </section>
-
-

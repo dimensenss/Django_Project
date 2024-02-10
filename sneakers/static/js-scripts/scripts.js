@@ -331,3 +331,25 @@ $(document).ready(function () {
         // Другие параметры
     });
 });
+$(document).ready(function() {
+    var btnTable = $("#btnSizesTable");
+    var sizesTable = $("#sizesTable");
+
+    if (btnTable.length && sizesTable.length) {
+        btnTable.on("click", function() {
+            // Открываем вкладку "Additional information"
+            $("#nav-information-tab").tab('show');
+
+            // Получаем позицию элемента "sizesTable"
+            var targetOffset = sizesTable.offset().top;
+
+            // Получаем высоту навигационной панели (если она есть)
+            var navbarHeight = $('.navbar').outerHeight() || 0;
+
+            // Анимируем прокрутку с учетом высоты навигационной панели
+            $('html, body').animate({
+                scrollTop: targetOffset - navbarHeight
+            }, 800);
+        });
+    }
+});

@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    {% get_breadcrumbs post.cat %}
     <section class="single-product">
+        {% get_breadcrumbs post.cat %}
         {% include 'goods/product_content_2.html' %}
-
     </section>
+
     <div class="container-fluid">
         <h4>Також вас можуть зацікавити</h4>
         {% get_products_by_tag post as query %}

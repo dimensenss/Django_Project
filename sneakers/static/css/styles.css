@@ -127,17 +127,17 @@ footer {
     height: auto; /* Автоматическая высота, чтобы соответствовать пропорциям */
 }
 
-.price {
-    font-size: 3.5rem; /* Размер шрифта */
+.discount{
+    font-size: 2.5rem; /* Размер шрифта */
     font-weight: bold; /* Жирный текст */
-    color: #d9534f; /* Цвет текста */
+    color: #f80e07; /* Цвет текста */
     text-decoration: none; /* Убрать подчеркивание, если это гиперссылка */
     margin-right: 10px; /* Внешний отступ справа */
 }
 
 /* Пример стиля для скидки */
-.discount {
-    font-size: 2.5rem; /* Размер шрифта скидки */
+.price {
+    font-size: 1.5rem; /* Размер шрифта скидки */
     color: #7a7a7a; /* Цвет текста скидки (например, красный) */
     text-decoration: line-through; /* Зачеркнутый текст для исходной цены */
     margin-left: 5px; /* Внешний отступ слева */
@@ -629,7 +629,6 @@ ul, #myUL {
 }
 
 table {
-    width: 100%;
     display: table;
     border-collapse: separate;
     box-sizing: border-box;
@@ -639,6 +638,13 @@ table {
 .sizes_table {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-spacing: 2px;
+    white-space: nowrap;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .sizes_table th, .sizes_table td {
@@ -659,6 +665,13 @@ table {
 
 .sizes_table tbody tr:hover {
     background-color: rgba(66, 66, 66, 0.3);
+}
+.sizes_table tbody tr {
+    height: 50px;
+}
+.sizes_table tbody tr td {
+    min-width: 0;
+    width: 100px;
 }
 
 .sizes_table tbody td {

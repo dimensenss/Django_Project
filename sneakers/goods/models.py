@@ -61,6 +61,16 @@ class Sneakers(models.Model):
         ordering = ['-time_create', 'title']
 
 
+class SneakersVariationsQS(models.QuerySet):
+    def total_quantity(self):
+        total_sum = 0
+        if self:
+            for pd in self:
+                total_sum += pd.quantity
+            return total_sum
+        return 0
+
+
 class SneakersVariations(models.Model):
     sneakers = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='variations', verbose_name='Кросівки')
     size = models.CharField(max_length=8, verbose_name='Розмір')
@@ -73,6 +83,8 @@ class SneakersVariations(models.Model):
         verbose_name = 'Варіація'
         verbose_name_plural = 'Варіації'
         ordering = ['size']
+
+    objects = SneakersVariationsQS.as_manager()
 
 
 class Category(MPTTModel):
@@ -113,9 +125,6 @@ class ProductImage(models.Model):
         options={'quality': 90}  # Качество изображения
     )
 
-
     class Meta:
         verbose_name = 'Фотографія'
         verbose_name_plural = 'Фотографії'
-
-
