@@ -18,8 +18,10 @@
                 {% recursetree cats %}
                     <li class="nav-item rounded dropdown">
                         <a href="{{ node.get_absolute_url }}" class="nav-link a-dark">{{ node.title }}</a>
+                        {% with all_children=node.get_children %}
+                            {% if all_children %}
                         <div class="dropdown-menu dropdown-menu-navbar" aria-labelledby="navbarDropdown">
-                            {% for child in node.get_children %}
+                            {% for child in all_children %}
                                 <ul>
                                     <li><a class="dropdown-item dropdown-item-navbar"
                                            href="{{ child.get_absolute_url }}">{{ child.title }}</a>
@@ -31,6 +33,8 @@
                                 </ul>
                             {% endfor %}
                         </div>
+                            {% endif %}
+                    {% endwith %}
                     </li>
                 {% endrecursetree %}
                 {#Конец списка категорий#}

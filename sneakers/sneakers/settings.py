@@ -35,6 +35,8 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'admin_interface',
     'colorfield',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

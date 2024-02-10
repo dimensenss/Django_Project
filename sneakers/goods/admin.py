@@ -10,6 +10,8 @@ from taggit.models import Tag
 #
 # from .forms import SneakersAdminForm
 from .models import *
+from dal import autocomplete
+
 
 
 class SneakersVariationInline(admin.TabularInline):
@@ -24,6 +26,7 @@ class SneakersImageInline(admin.TabularInline):
 
     def get_image(self, obj):
         return mark_safe(f"<img src='{obj.image.url}' width='100' />")
+
     get_image.short_description = 'Зображення'
 
 
@@ -39,10 +42,26 @@ class SneakersImages(admin.ModelAdmin):
 
     get_html_main_photo.short_description = 'Головне фото'
 
-
+class SneakersAdminForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('__all__')
+        widgets = {
+            'cat': autocomplete.ModelSelect2(url='category-autocomplete')
+        }
 @admin.register(Sneakers)
 class SneakersAdmin(admin.ModelAdmin):
-    # form = SneakersAdminForm
+    form = SneakersAdminForm
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == 'cat':
+    #         kwargs['widget'] = autocomplete.ModelSelect2(
+    #             url='category-autocomplete',
+    #             attrs={
+    #                 'data-minimum-input-length': 1,
+    #             },
+    #         )
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     list_display = ('id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
     inlines = [SneakersImageInline, SneakersVariationInline]
@@ -51,8 +70,8 @@ class SneakersAdmin(admin.ModelAdmin):
     list_filter = ('is_published', 'time_create', 'discount')
     prepopulated_fields = {'slug': ('title',)}
     fields = (
-        ('get_html_main_photo', 'first_image'), 'title', 'slug', 'cat', ('price', 'discount', 'calculate_discount'),
-        'content', 'tags', 'is_published', 'time_create',
+        ('get_html_main_photo',), 'title', 'slug', 'cat', ('price', 'discount', 'calculate_discount'),
+        'content', 'color', 'tags', 'is_published', 'time_create',
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'calculate_discount')
 

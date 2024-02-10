@@ -77,7 +77,8 @@ class SneakersCategories(DataMixin, ListView):
         current_category = Category.objects.get(slug=cat_slug)
 
         subcategories = current_category.get_descendants(include_self=True)
-        _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat')
+        _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat').annotate(
+            sneakers_first_image=F("first_image__image"))
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.sneakers_filter.qs
@@ -113,3 +114,18 @@ def recently_viewed(request, product_slug):
         if len(request.session["recently_viewed"]) > MAX_RECENT_VIEWED_PRODUCTS:
             del request.session["recently_viewed"][MAX_RECENT_VIEWED_PRODUCTS-1]
     request.session.modified = True
+
+
+from dal import autocomplete
+
+
+class CategoryAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+
+        qs = Category.objects.all()
+
+        if self.q:
+            qs = qs.filter(title__istartswith=self.q)
+
+        return qs

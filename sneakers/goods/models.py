@@ -77,7 +77,7 @@ class SneakersVariations(models.Model):
 
 class Category(MPTTModel):
     title = models.CharField(max_length=255, verbose_name='Назва категорії')
-    slug = models.SlugField(max_length=255, verbose_name='URL', blank=True, unique=True)
+    slug = models.SlugField(max_length=255, verbose_name='URL', unique=True)
     parent = TreeForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -96,7 +96,7 @@ class Category(MPTTModel):
         verbose_name_plural = 'Категорії'
 
     def __str__(self):
-        return self.title
+        return ''.join([ancestor.title + ' ' for ancestor in self.get_ancestors(include_self=True)])
 
     def get_absolute_url(self):
         # return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
