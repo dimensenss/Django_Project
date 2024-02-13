@@ -6,6 +6,7 @@
 
 {% block content %}
     <!-- Section-->
+
     <section class="py-0">
         <div class="container px-4 px-lg-5 mt-5">
 
@@ -28,22 +29,46 @@
                         Фільтри
                     </a>
 
+
+                    {#                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"#}
+                    {#                         aria-labelledby="offcanvasExampleLabel">#}
+                    {#                        <div class="offcanvas-header">#}
+                    {#                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>#}
+                    {##}
+                    {#                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"#}
+                    {#                                    aria-label="Close"></button>#}
+                    {#                        </div>#}
+                    {##}
+                    {#                        <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">#}
+                    {#                            {{ filter.form|crispy }}#}
+                    {#                            <button type="submit" class="btn btn-primary mt-2">#}
+                    {#                                Примінити фільтри#}
+                    {#                            </button>#}
+                    {#                        </form>#}
+                    {#                    </div>#}
+                    <!-- Ваш HTML-код -->
                     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
                          aria-labelledby="offcanvasExampleLabel">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
-
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                         </div>
 
-                        <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">
+                        <form method="get" class="offcanvas-body" action="{% url 'goods:home' %}">
                             {{ filter.form|crispy }}
+
+
+
+                            <!-- Конец блока для price range slider -->
+
                             <button type="submit" class="btn btn-primary mt-2">
                                 Примінити фільтри
                             </button>
                         </form>
                     </div>
+
+
                 </div>
 
             </div>
@@ -102,32 +127,31 @@
             </div>
 
 
-
-
         </div>
-    <div class="container-fluid">
-        <h4>Переглянуті товари</h4>
+        <div class="container-fluid">
+            <h4>Переглянуті товари</h4>
 
-    <div id = "simple-scroll" class="scrolling-wrapper-flexbox">
-        {% for product in recently_viewed_qs %}
-            {% if product.is_published %}
+            <div id="simple-scroll" class="scrolling-wrapper-flexbox">
+                {% for product in recently_viewed_qs %}
+                    {% if product.is_published %}
 
-                <div class="card small-card">
-                    <!-- Product image-->
-                    {% if product.images %}
+                        <div class="card small-card">
+                            <!-- Product image-->
+                            {% if product.images %}
 
-                    <a class="a-dark" href="{{ product.get_absolute_url }}">
-                        <img class="card-img-top image-container-img " src="{% get_media_prefix %}{{ product.sneakers_first_image}}"
-                             alt="{{ product.title }}"/>
-                    </a>
-                    {% else %}
-                    <a class="a-dark" href="{{ product.get_absolute_url }}">
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                             alt="{{ product.title }}"/>
-                    </a>
-                    {% endif %}
-                    <!-- Product details-->
-                    <span class="card-body">
+                                <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                    <img class="card-img-top image-container-img "
+                                         src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
+                                         alt="{{ product.title }}"/>
+                                </a>
+                            {% else %}
+                                <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                         alt="{{ product.title }}"/>
+                                </a>
+                            {% endif %}
+                            <!-- Product details-->
+                            <span class="card-body">
                         <div class="d-flex justify-content-center">
                             <!-- Product name-->
                             <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
@@ -144,16 +168,19 @@
                             </div>
                         </div>
                     </span>
-                    <!-- Product actions-->
-                    <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
-                        <p class="ventor-code">Артикул: {{ product.display_id }}</p>
-                    </div>
-                </div>
+                            <!-- Product actions-->
+                            <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
+                                <p class="ventor-code">Артикул: {{ product.display_id }}</p>
+                            </div>
+                        </div>
 
-            {% endif %}
-    {% endfor %}
-</div>
-    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </section>
+
+
+
 {% endblock content %}
 

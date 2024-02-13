@@ -129,3 +129,13 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(title__istartswith=self.q)
 
         return qs
+
+
+class SneakersAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = SneakersVariations.objects.all()
+
+        if self.q:
+            qs = qs.filter(sneakers__title__istartswith=self.q)
+
+        return qs

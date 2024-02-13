@@ -41,7 +41,7 @@ def cart_add(request):
 
     user_carts = get_user_carts(request)
 
-    if is_order:
+    if is_order == "true":
         create_order_url = reverse_lazy('orders:create_order')
     else:
         create_order_url = None

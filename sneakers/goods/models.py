@@ -19,6 +19,7 @@ User = get_user_model()
 
 class Sneakers(models.Model):
     title = models.CharField(max_length=255, verbose_name='Назва')
+    sku = models.CharField(max_length=255, verbose_name='Артикул', blank=True, null=True, unique=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name='Контент')
     price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Ціна')
@@ -53,6 +54,8 @@ class Sneakers(models.Model):
         return reverse_lazy('goods:product', kwargs={'product_slug': self.slug})
 
     def display_id(self):
+        if self.sku:
+            return self.sku
         return f"{self.id:05}"
 
     class Meta:

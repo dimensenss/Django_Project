@@ -1,7 +1,10 @@
+from dal import autocomplete
 from django.contrib import admin
+from django.utils.html import format_html
 
+from goods.models import Sneakers
 from orders.models import OrderItem, Order
-
+from django import forms
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
@@ -13,12 +16,28 @@ class OrderItemAdmin(admin.ModelAdmin):
 
     search_fields = ('order', 'product', 'name',)
 
+class OrderSneakersAdminForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+        widgets = {
+            'product': autocomplete.ModelSelect2(url='sneakers-autocomplete')
+        }
+
 
 class OrderItemAdminTabular(admin.TabularInline):
+    form = OrderSneakersAdminForm
     model = OrderItem
     fields = ('product', 'name', 'price', 'quantity')
-    search_fields = ('product', 'name')
+    search_fields = ('product__title', 'name')
     extra = 0
+
+    # def get_product_image(self, obj):
+    #     if obj.product.first_image:
+    #         return format_html(f'<img src="{obj.product.first_image.image}" width="50" height="50" />')
+    #     return None
+    #
+    # get_product_image.short_description = 'Product Image'
 
 
 class OrderAdminTabular(admin.TabularInline):

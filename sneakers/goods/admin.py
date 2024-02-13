@@ -60,9 +60,9 @@ class SneakersAdmin(admin.ModelAdmin):
     search_fields = ('id', 'title', 'content')
     list_editable = ('discount', 'is_published',)
     list_filter = ('is_published', 'time_create', 'discount')
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {'slug': ('title','sku')}
     fields = (
-        ('get_html_main_photo',), 'title', 'slug', 'cat', ('price', 'discount'), 'calculate_discount',
+        ('get_html_main_photo',), 'title', 'sku', 'slug', 'cat', ('price', 'discount'), 'calculate_discount',
         'content', 'color', 'tags', 'is_published', 'time_create',
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'calculate_discount')

@@ -15,6 +15,12 @@ urlpatterns = [
         CategoryAutocomplete.as_view(),
         name='category-autocomplete',
     ),
+    re_path(
+        r'^sneakers-autocomplete/$',
+        SneakersAutocomplete.as_view(),
+        name='sneakers-autocomplete',
+    ),
+
 
     path('', include('goods.urls', namespace='goods')),
     path('user/', include('users.urls', namespace='user')),

@@ -113,7 +113,7 @@
                                 <div class="qty-button d-flex flex-wrap">
                                     <a href="{% url 'carts:cart_add' %}" class="btn button-buy a-light add-to-cart"
                                         data-product-id = "{{ post.id }}"
-                                        data-is-order = 1>
+                                        data-is-order = "true">
                                         {% csrf_token %}
                                         Оформити замовлення
                                     </a>

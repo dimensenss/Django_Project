@@ -38,7 +38,7 @@ $(document).ready(function ($) {
         var product_id = $(this).data("product-id");
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
-        var is_order =  parseInt($(this).data("is-order"));
+        var is_order = $(this).data("is-order");
 
 
         // делаем post запрос через ajax не перезагружая страницу
@@ -334,7 +334,7 @@ function displayFileName() {
 $(document).ready(function () {
     $('#id_tags').magicSuggest({
         // Настраивайте конфигурацию по мере необходимости
-        placeholder: 'Введите и выберите 1теги',
+        placeholder: 'Введіть теги',
         // Другие параметры
     });
 });
