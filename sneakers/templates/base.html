@@ -19,6 +19,11 @@
 
 </head>
 <body>
+<div id="loader-wrapper">
+    <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
 <div class="page">
 
     {% block nav %}
@@ -84,8 +89,6 @@
     <script type="text/javascript" src="{% static 'js-scripts/scripts.js' %}"></script>
     <script src="{% static 'js-scripts/plugins.js' %}"></script>
     <script src="{% static 'js-scripts/product_script.js' %}"></script>
-
-
 
 
 </div>

@@ -166,8 +166,4 @@ $(document).ready(function ($) {
 
   }); // End of a document
 
-  // $(window).load(function(){
-  //   $('.preloader').fadeOut();
-  // });
-
 });

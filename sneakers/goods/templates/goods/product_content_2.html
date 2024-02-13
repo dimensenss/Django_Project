@@ -55,7 +55,7 @@
                         <span class="price">{{ post.price }} $</span>
                     </div>
                 {% autoescape off %}
-                    <p>{{ post.content|truncatechars:128 }}
+                    <p>{{ post.content|truncatewords:24 }}
                         {% if post.content|length > 128 %}
                             <a type="button" class="a-blue" id="btnAdditionalContent">
                                 Детальний опис
