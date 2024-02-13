@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 
 from carts.models import Cart
 from carts.utils import get_user_carts
@@ -12,6 +13,7 @@ from goods.models import Sneakers, SneakersVariations
 def cart_add(request):
     product_id = request.POST.get('product_id')
     size = request.POST.get('size')
+    is_order = request.POST.get('is_order')
 
     product = SneakersVariations.objects.get(sneakers=product_id, size=size)
 
@@ -37,14 +39,20 @@ def cart_add(request):
         else:
             Cart.objects.create(session_key=request.session.session_key, product=product, quantity=1)
 
-
     user_carts = get_user_carts(request)
+
+    if is_order:
+        create_order_url = reverse_lazy('orders:create_order')
+    else:
+        create_order_url = None
+
     cart_items_html = render_to_string(
-        'carts/includes/included_cart.html', {'carts': user_carts}, request=request
+        'carts/includes/included_cart.html', {'carts': user_carts, }, request=request
     )
     response_data = {
         'message': 'Товар додано у кошик',
         'cart_items_html' : cart_items_html,
+        'create_order_url': create_order_url
     }
 
     return JsonResponse(response_data)

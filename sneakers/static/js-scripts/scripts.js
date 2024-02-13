@@ -38,6 +38,7 @@ $(document).ready(function ($) {
         var product_id = $(this).data("product-id");
         // Из атрибута href берем ссылку на контроллер django
         var add_to_cart_url = $(this).attr("href");
+        var is_order =  parseInt($(this).data("is-order"));
 
 
         // делаем post запрос через ajax не перезагружая страницу
@@ -47,6 +48,7 @@ $(document).ready(function ($) {
             data: {
                 product_id: product_id,
                 size: selectedSize,
+                is_order: is_order,
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             },
             success: function (data) {
@@ -65,6 +67,11 @@ $(document).ready(function ($) {
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
                 var cartItemsContainer = $(".cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
+
+                if (is_order) {
+                    var createOrderUrl = data.create_order_url;
+                    window.location.href = createOrderUrl;
+                }
 
             },
 
@@ -334,22 +341,35 @@ $(document).ready(function () {
 $(document).ready(function() {
     var btnTable = $("#btnSizesTable");
     var sizesTable = $("#sizesTable");
+    var btnAdditionalContent = $("#btnAdditionalContent");
+    var additionalContent = $("#additionalContent");
 
     if (btnTable.length && sizesTable.length) {
         btnTable.on("click", function() {
-            // Открываем вкладку "Additional information"
+            // Открываем вкладку "Information" и после этого прокручиваем
             $("#nav-information-tab").tab('show');
-
-            // Получаем позицию элемента "sizesTable"
-            var targetOffset = sizesTable.offset().top;
-
-            // Получаем высоту навигационной панели (если она есть)
-            var navbarHeight = $('.navbar').outerHeight() || 0;
-
-            // Анимируем прокрутку с учетом высоты навигационной панели
-            $('html, body').animate({
-                scrollTop: targetOffset - navbarHeight
-            }, 800);
+            scrollToElement(sizesTable);
         });
+    }
+
+    if (btnAdditionalContent.length && additionalContent.length) {
+        btnAdditionalContent.on("click", function() {
+            // Открываем вкладку "Additional information" и после этого прокручиваем
+            $("#nav-additional-info-tab").tab('show');
+            scrollToElement(additionalContent);
+        });
+    }
+
+    function scrollToElement(element) {
+        // Получаем позицию элемента
+        var targetOffset = element.offset().top;
+
+        // Получаем высоту навигационной панели (если она есть)
+        var navbarHeight = $('.navbar').outerHeight() || 0;
+
+        // Анимируем прокрутку с учетом высоты навигационной панели
+        $('html, body').animate({
+            scrollTop: targetOffset - navbarHeight
+        }, 800);
     }
 });

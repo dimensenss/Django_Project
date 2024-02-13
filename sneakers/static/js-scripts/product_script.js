@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function ($) {
 
   "use strict";
 
@@ -166,8 +166,8 @@
 
   }); // End of a document
 
-  $(window).load(function(){
-    $('.preloader').fadeOut();
-  });
+  // $(window).load(function(){
+  //   $('.preloader').fadeOut();
+  // });
 
-})(jQuery);
+});

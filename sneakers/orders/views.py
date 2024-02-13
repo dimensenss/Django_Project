@@ -128,7 +128,7 @@ def create_order(request):
         else:
             form = CreateOrderForm()
 
-    data = DataMixin().get_user_context(title="Створення замовлення")
+    data = DataMixin().get_user_context(title="Створення замовлення", request=request)
     context = {'form': form, 'order': True, **data}
 
     return render(request, 'orders/create_order.html', context=context)

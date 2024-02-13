@@ -1,4 +1,5 @@
 {% load static %}
+{% load spurl %}
 {% load sneakers_tags %}
 
 
@@ -53,7 +54,16 @@
                         {% endif %}
                         <span class="price">{{ post.price }} $</span>
                     </div>
-                    <p>{{ post.content|truncatechars:256 }}</p>
+                {% autoescape off %}
+                    <p>{{ post.content|truncatechars:128 }}
+                        {% if post.content|length > 128 %}
+                            <a type="button" class="a-blue" id="btnAdditionalContent">
+                                Детальний опис
+                            </a>
+                        {% endif %}
+                    </p>
+                {% endautoescape %}
+
                     <div class="cart-wrap padding-small">
 {#                        <div class="color-options product-select">#}
 {#                            <div class="color-toggle" data-option-index="0">#}
@@ -90,57 +100,50 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="product-quantity">
-                            <div class="stock-number text-dark">{{ post.variations.all.total_quantity }} пар в наявності</div>
-                            <div class="stock-number text-dark">
+                        <div class="product-quantity py-2">
+                            <div class="stock-number text-dark">{{ post.variations.all.total_quantity }} в наявності</div>
+                            <div class="stock-number text-dark py-2">
                                 <a type="button" class="a-blue" id="btnSizesTable">
                                     <i class="fa-solid fa-grip"></i>
                                     Таблиця розмірів
                                 </a>
                             </div>
-                            <div class="stock-button-wrap pt-3">
+                            <div class="stock-button-wrap py-2">
                                 <!-- quantity-price -->
-                                <div class="qty-button d-flex flex-wrap pt-3">
-                                    <button type="submit"
-                                            class="btn btn-black text-uppercase me-3 mt-3 hvr-sweep-to-right">Buy
-                                        now
-                                    </button>
-                                    <button type="submit" name="add-to-cart" value="1269"
-                                            class="btn btn-outline-gray text-uppercase mt-3 hvr-sweep-to-right">Add to
-                                        cart
-                                    </button>
+                                <div class="qty-button d-flex flex-wrap">
+                                    <a href="{% url 'carts:cart_add' %}" class="btn button-buy a-light add-to-cart"
+                                        data-product-id = "{{ post.id }}"
+                                        data-is-order = 1>
+                                        {% csrf_token %}
+                                        Оформити замовлення
+                                    </a>
+                                    <a href="{% url 'carts:cart_add' %}" class="btn btn-secondary a-light add-to-cart"
+                                       data-product-id= {{ post.id }}>
+                                        {% csrf_token %}
+                                        До кошика
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="meta-product padding-small">
                         <div class="meta-item d-flex align-items-baseline">
-                            <h5 class="widget-title text-decoration-underline pe-2">SKU:</h5>
+                            <h5 class="widget-title text-decoration-underline pe-2">Артикул:</h5>
                             <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item">1223</li>
+                                <li data-value="S" class="select-item">{{ post.display_id }}</li>
                             </ul>
                         </div>
                         <div class="meta-item d-flex align-items-baseline">
-                            <h5 class="widget-title text-decoration-underline pe-2">Category:</h5>
-                            <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Men</a>,
-                                </li>
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Casual</a>,
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="meta-item d-flex align-items-baseline">
-                            <h5 class="widget-title text-decoration-underline pe-2">Tags:</h5>
-                            <ul class="select-list list-unstyled d-flex">
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Classic</a>,
-                                </li>
-                                <li data-value="S" class="select-item">
-                                    <a href="#">Modern</a>
-                                </li>
-                            </ul>
+                            <h5 class="widget-title text-decoration-underline pe-2">Теги:</h5>
+                            {% if post.tags %}
+                                <ul class="select-list list-unstyled d-flex">
+                                    {% for tag in post.tags.all %}
+                                        <a class="a-dark"
+                                           href="{% spurl base='/search/' set_query='tags={{tag}}' %}">{{ tag }}
+                                            &nbsp</a>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -155,25 +158,29 @@
             <div class="tabs-listing">
                 <nav>
                     <div class="nav nav-tabs d-flex flex-wrap justify-content-center" id="nav-tab" role="tablist">
-                        <button class="nav-link active text-dark fs-5" id="nav-home-tab" data-bs-toggle="tab"
-                                data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                aria-selected="true">Description
+                        <button class="nav-link active fs-5" id="nav-additional-info-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-additional-info" type="button" role="tab" aria-controls="nav-additional-info"
+                                aria-selected="true"><span class="text-dark">Детальний опис</span>
                         </button>
                         <button class="nav-link text-dark fs-5" id="nav-information-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-information" type="button" role="tab"
                                 aria-controls="nav-information"
-                                aria-selected="false">Additional information
+                                aria-selected="false"><span class="text-dark">Таблиця розмірів</span>
                         </button>
                         <button class="nav-link text-dark fs-5" id="nav-review-tab" data-bs-toggle="tab"
                                 data-bs-target="#nav-review" type="button" role="tab" aria-controls="nav-review"
-                                aria-selected="false">Reviews
+                                aria-selected="false"><span class="text-dark">Відгуки</span>
                         </button>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active padding-small" id="nav-home" role="tabpanel"
-                         aria-labelledby="nav-home-tab">
-                        <p>Опис</p>
+                    <div class="tab-pane fade show active padding-small" id="nav-additional-info" role="tabpanel"
+                         aria-labelledby="nav-additional-info-tab">
+                        <div id="additionalContent">
+                            {% autoescape off %}
+                            <p>{{ post.content }}</p>
+                            {% endautoescape %}
+                        </div>
                     </div>
                     <div class="tab-pane fade padding-small" id="nav-information" role="tabpanel"
                          aria-labelledby="nav-information-tab">
