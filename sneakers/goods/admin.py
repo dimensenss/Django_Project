@@ -54,7 +54,7 @@ class SneakersAdminForm(forms.ModelForm):
 @admin.register(Sneakers)
 class SneakersAdmin(admin.ModelAdmin):
     form = SneakersAdminForm
-    list_display = ('id', 'title', 'get_html_main_photo', 'price', 'discount', 'time_create', 'is_published')
+    list_display = ('id', 'title', 'get_html_main_photo', 'sell_price', 'discount', 'time_create', 'is_published')
     list_display_links = ('id', 'title')
     inlines = [SneakersImageInline, SneakersVariationInline]
     search_fields = ('id', 'title', 'content')

@@ -1,8 +1,12 @@
 import django_filters
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Field, HTML
+from django import forms
 from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField, F
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models.functions import Concat
 from django_filters import CharFilter
+from django_filters.widgets import RangeWidget
 from taggit.models import Tag
 
 from sneakers.settings import MEDIA_URL
@@ -13,7 +17,6 @@ class DataMixin:
     paginate_by = 4
 
     def get_user_context(self, **kwargs):
-
         context = kwargs
         if 'request' not in context:
             context['request'] = self.request
@@ -21,7 +24,8 @@ class DataMixin:
         cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)  # Исключить катгорию "Нет категории"
         context['cats'] = cats
 
-        recently_viewed_qs = Sneakers.objects.filter(slug__in=context['request'].session.get("recently_viewed", [])).annotate(
+        recently_viewed_qs = Sneakers.objects.filter(
+            slug__in=context['request'].session.get("recently_viewed", [])).annotate(
             sneakers_first_image=F("first_image__image"))
         # recently_viewed_qs = sorted(recently_viewed_qs, key=lambda x: context['request'].session[x.slug])
 
@@ -31,14 +35,15 @@ class DataMixin:
 
 class SneakersFilter(django_filters.FilterSet):
     title_search = CharFilter(method='title_content_filter', label='Назва складається з', )
+
     price__gte = django_filters.NumberFilter(
-        field_name='price',
+        field_name='sell_price',
         lookup_expr='gte',
         label='Ціна від:',
     )
 
     price__lte = django_filters.NumberFilter(
-        field_name='price',
+        field_name='sell_price',
         lookup_expr='lte',
         label='Ціна до:',
     )
@@ -70,5 +75,20 @@ class SneakersFilter(django_filters.FilterSet):
 
     class Meta:
         model = Sneakers
-        fields = {'price': ['gte', 'lte'],
-                  'tags': ['exact']}
+        fields = {
+            'tags': ['exact'],
+            'price': ['gte', 'lte'],
+
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SneakersFilter, self).__init__(*args, **kwargs)
+
+        # Переопределите порядок полей так, чтобы price_gte и price_lte были последними
+        self.filters['title_search'].field.widget.attrs.update({'class': 'form-control mb-2'})
+        self.filters['tags'].field.widget.attrs.update({'class': 'form-control mb-2'})
+        self.filters['order_by'].field.widget.attrs.update({'class': 'form-control mb-2'})
+
+        # # Установите цену от и до в конец списка
+        # self.filters.move_to_end('price__gte')
+        # self.filters.move_to_end('price__lte')

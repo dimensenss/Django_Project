@@ -1,7 +1,7 @@
 import datetime
 
 from django.contrib import messages
-from django.db.models import Prefetch, F
+from django.db.models import Prefetch, F, Min, Max
 
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -24,6 +24,10 @@ class SneakersHome(DataMixin, ListView):
     def get_queryset(self):
         queryset = Sneakers.objects.filter(is_published=1).annotate(
             sneakers_first_image=F("first_image__image"))
+        self.aggregate_data = queryset.aggregate(
+            min_price=Min('sell_price'),
+            max_price=Max('sell_price')
+        )
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -32,9 +36,11 @@ class SneakersHome(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
-
         c_def = self.get_user_context(title='Shop home',
-                                      filter=self.sneakers_filter)
+                                      filter=self.sneakers_filter,
+                                      min_price=int(self.aggregate_data['min_price']),
+                                      max_price=int(self.aggregate_data['max_price']))
+
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -69,7 +75,7 @@ class SneakersCategories(DataMixin, ListView):
     model = Sneakers  # модель
     template_name = 'goods/index.html'
     context_object_name = 'sneakers'
-    allow_empty = False
+    allow_empty = True
     sneakers_filter = None
 
     def get_queryset(self):
@@ -80,6 +86,11 @@ class SneakersCategories(DataMixin, ListView):
         _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"))
 
+        self.aggregate_data = _queryset.aggregate(
+            min_price=Min('sell_price'),
+            max_price=Max('sell_price')
+        )
+
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.sneakers_filter.qs
 
@@ -89,7 +100,9 @@ class SneakersCategories(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         c_def = self.get_user_context(cats=cats,
-                                      filter=self.sneakers_filter)
+                                      filter=self.sneakers_filter,
+                                      min_price=int(self.aggregate_data['min_price']),
+                                      max_price=int(self.aggregate_data['max_price']))
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -121,8 +134,6 @@ from dal import autocomplete
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-
-
         qs = Category.objects.all()
 
         if self.q:

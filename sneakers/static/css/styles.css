@@ -142,6 +142,15 @@ footer {
     text-decoration: line-through; /* Зачеркнутый текст для исходной цены */
     margin-left: 5px; /* Внешний отступ слева */
 }
+.usual-price{
+    font-size: 2.5rem; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    color: #000000; /* Цвет текста */
+    text-decoration: none; /* Убрать подчеркивание, если это гиперссылка */
+    margin-right: 10px; /* Внешний отступ справа */
+}
+
+
 
 .navbar-dark .navbar-nav a.nav-link {
     color: #dcdcdc;

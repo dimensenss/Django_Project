@@ -379,3 +379,48 @@ document.addEventListener("DOMContentLoaded", function() {
         loaderWrapper.style.display = "none";
     }
 });
+
+
+$(document).ready(function() {
+    // var div_id_price__gte = $("#div_id_price__gte"); // Замените "myBlockId" на ID вашего блока
+    // div_id_price__gte.addClass("d-none");
+    // var div_id_price__lte = $("#div_id_price__lte"); // Замените "myBlockId" на ID вашего блока
+    // div_id_price__lte.addClass("d-none");
+
+    var priceRange = $("#slider-range");
+    var priceInput = $("#amount");
+    var priceMinInput = $("#id_price__gte");  // Assuming your form has id_price__gte
+    var priceMaxInput = $("#id_price__lte");  // Assuming your form has id_price__lte
+
+    var value_gte =  parseInt($(priceInput).data("value_gte"));
+    var value_lte = parseInt($(priceInput).data("value_lte"));
+
+    var min_price = $(priceRange).data("min-price");
+    var max_price =  $(priceRange).data("max-price");
+
+    if ((isNaN(value_gte) || value_gte === -1) && (isNaN(value_lte) || value_lte === -1)) {
+        value_gte = min_price;
+        value_lte = max_price;
+    }
+
+    if ((isNaN(min_price) || min_price === -1) && (isNaN(max_price) || max_price === -1)) {
+        min_price = 0;
+        max_price = 20000;
+    }
+    priceRange.slider({
+        range: true,
+        min: min_price,
+        max: max_price,
+
+        values: [value_gte, value_lte],
+        slide: function(event, ui) {
+            priceInput.val("$" + ui.values[0] + " - $" + ui.values[1]);
+            priceMinInput.val(ui.values[0]);
+            priceMaxInput.val(ui.values[1]);
+        }
+    });
+
+    priceInput.val(
+        "$" + priceRange.slider("values", 0) + " - $" + priceRange.slider("values", 1)
+    );
+});

@@ -1,4 +1,5 @@
 from django import template
+from django.db.models import Min, Max
 from django.utils.http import urlencode
 
 from goods.models import *
@@ -65,9 +66,6 @@ def get_breadcrumbs(category):
 def get_products_by_tag(post):
     queryset = Sneakers.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).distinct()
     return queryset
-
-
-
 
 
 

@@ -30,47 +30,37 @@
                     </a>
 
 
-                    {#                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"#}
-                    {#                         aria-labelledby="offcanvasExampleLabel">#}
-                    {#                        <div class="offcanvas-header">#}
-                    {#                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>#}
-                    {##}
-                    {#                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"#}
-                    {#                                    aria-label="Close"></button>#}
-                    {#                        </div>#}
-                    {##}
-                    {#                        <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">#}
-                    {#                            {{ filter.form|crispy }}#}
-                    {#                            <button type="submit" class="btn btn-primary mt-2">#}
-                    {#                                Примінити фільтри#}
-                    {#                            </button>#}
-                    {#                        </form>#}
-                    {#                    </div>#}
-                    <!-- Ваш HTML-код -->
                     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
                          aria-labelledby="offcanvasExampleLabel">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
+
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                         </div>
 
-                        <form method="get" class="offcanvas-body" action="{% url 'goods:home' %}">
+                        <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">
                             {{ filter.form|crispy }}
+                            <div class="flex-row justify-content-between">
+                                {{ filter.form.price__gte }}
+                                {{ filter.form.price__lte }}
+                            </div>
 
-
-
-                            <!-- Конец блока для price range slider -->
-
+                            <p>
+                                <label for="amount">Ціна</label>
+                                <input type="text" id="amount" readonly data-value_gte="{{ request.GET.price__gte }}"
+                                       data-value_lte="{{ request.GET.price__lte }}"
+                                       style="border:0; font-weight:bold;">
+                            </p>
+                            <div id="slider-range" data-min-price="{{ min_price }}"
+                                 data-max-price="{{ max_price }}"></div>
                             <button type="submit" class="btn btn-primary mt-2">
                                 Примінити фільтри
                             </button>
                         </form>
+
                     </div>
-
-
                 </div>
-
             </div>
 
 

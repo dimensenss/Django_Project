@@ -51,8 +51,12 @@
                     <div class="product-price pt-3 pb-3">
                         {% if post.discount %}
                             <span class="discount">{{ post.discount }} $</span>
+                            <span class="price">{{ post.price }} $</span>
+                            {% else %}
+                            <span class="usual-price">{{ post.price }} $</span>
                         {% endif %}
-                        <span class="price">{{ post.price }} $</span>
+
+
                     </div>
                 {% autoescape off %}
                     <p>{{ post.content|truncatewords:24 }}
