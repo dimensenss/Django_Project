@@ -53,14 +53,21 @@ class SneakersFilter(django_filters.FilterSet):
             ('sell_price', 'sell_price'),
         ),
         field_labels={
-            'sell_price': 'Ціна',
-        }
+            'sell_price': 'Від дешевих до дорогих',
+            '-sell_price': 'Від дорогих до дешевих',
+        },
+        empty_label=None,
     )
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
         field_name='tags__name',
         to_field_name='name',
         label='Теги',
+    )
+
+    size = django_filters.CharFilter(
+        method='filter_size',
+        label='Розмір',
     )
 
     def title_content_filter(self, queryset, name, value):
@@ -73,6 +80,19 @@ class SneakersFilter(django_filters.FilterSet):
         return queryset.annotate(rank=SearchRank(vector, query, normalization=normalization)).filter(
             rank__gt=0).order_by("-rank")
 
+    def size_filter(self, queryset, name, value):
+        value = ' '.join(value.split())
+
+        if value:
+            sizes = value.split()
+            q_objects = Q()
+            for size in sizes:
+                q_objects |= Q(variations__size=size)
+
+            queryset = queryset.filter(q_objects)
+
+        return queryset.distinct()
+
     class Meta:
         model = Sneakers
         fields = {
@@ -83,12 +103,11 @@ class SneakersFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(SneakersFilter, self).__init__(*args, **kwargs)
+        # Добавьте класс стилей для фильтра price__gte
+        self.filters['price__gte'].field.widget = forms.HiddenInput()
+        self.filters['price__lte'].field.widget = forms.HiddenInput()
+        self.filters['title_search'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['order_by'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['size'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
 
-        # Переопределите порядок полей так, чтобы price_gte и price_lte были последними
-        self.filters['title_search'].field.widget.attrs.update({'class': 'form-control mb-2'})
-        self.filters['tags'].field.widget.attrs.update({'class': 'form-control mb-2'})
-        self.filters['order_by'].field.widget.attrs.update({'class': 'form-control mb-2'})
-
-        # # Установите цену от и до в конец списка
-        # self.filters.move_to_end('price__gte')
-        # self.filters.move_to_end('price__lte')

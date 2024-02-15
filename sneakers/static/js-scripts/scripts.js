@@ -338,6 +338,13 @@ $(document).ready(function () {
         // Другие параметры
     });
 });
+// $(document).ready(function () {
+//     $('#id_size').magicSuggest({
+//         // Настраивайте конфигурацию по мере необходимости
+//         placeholder: 'Введіть розміри',
+//         // Другие параметры
+//     });
+// });
 $(document).ready(function() {
     var btnTable = $("#btnSizesTable");
     var sizesTable = $("#sizesTable");
@@ -381,6 +388,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
 $(document).ready(function() {
     // var div_id_price__gte = $("#div_id_price__gte"); // Замените "myBlockId" на ID вашего блока
     // div_id_price__gte.addClass("d-none");
@@ -389,8 +397,10 @@ $(document).ready(function() {
 
     var priceRange = $("#slider-range");
     var priceInput = $("#amount");
-    var priceMinInput = $("#id_price__gte");  // Assuming your form has id_price__gte
-    var priceMaxInput = $("#id_price__lte");  // Assuming your form has id_price__lte
+    var priceMinInput1 = $("#id_price__gte");
+    var priceMaxInput1 = $("#id_price__lte");
+    var priceMinInput = $("#id_price__gte1");
+    var priceMaxInput = $("#id_price__lte1");
 
     var value_gte =  parseInt($(priceInput).data("value_gte"));
     var value_lte = parseInt($(priceInput).data("value_lte"));
@@ -398,15 +408,42 @@ $(document).ready(function() {
     var min_price = $(priceRange).data("min-price");
     var max_price =  $(priceRange).data("max-price");
 
+    if (priceMinInput.val() === "" || priceMaxInput.val() === "") {
+        console.log(1);
+        priceMinInput.val(min_price);
+        priceMaxInput.val(max_price);
+
+    }
+
+    if (priceMinInput1.val() === "" || priceMaxInput1.val() === "") {
+        console.log(1);
+        priceMinInput1.val(min_price);
+        priceMaxInput1.val(max_price);
+
+    }
+
+
+    if (parseInt(priceMinInput1.val()) < min_price || parseInt(priceMaxInput1.val()) > max_price) {
+        console.log(2);
+        priceMinInput.val(min_price);
+        priceMaxInput.val(max_price);
+        priceMinInput1.val(min_price);
+        priceMaxInput1.val(max_price);
+        value_gte = min_price;
+        value_lte = max_price;
+    }
     if ((isNaN(value_gte) || value_gte === -1) && (isNaN(value_lte) || value_lte === -1)) {
+        console.log(3);
         value_gte = min_price;
         value_lte = max_price;
     }
 
     if ((isNaN(min_price) || min_price === -1) && (isNaN(max_price) || max_price === -1)) {
+        console.log(4);
         min_price = 0;
         max_price = 20000;
     }
+
     priceRange.slider({
         range: true,
         min: min_price,
@@ -415,6 +452,8 @@ $(document).ready(function() {
         values: [value_gte, value_lte],
         slide: function(event, ui) {
             priceInput.val("$" + ui.values[0] + " - $" + ui.values[1]);
+            priceMinInput1.val(ui.values[0]);
+            priceMaxInput1.val(ui.values[1]);
             priceMinInput.val(ui.values[0]);
             priceMaxInput.val(ui.values[1]);
         }

@@ -2,6 +2,7 @@
 {% load static %}
 {% load sneakers_tags %}
 {% load crispy_forms_tags %}
+{% load spurl %}
 
 
 {% block content %}
@@ -10,8 +11,61 @@
     <section class="py-0">
         <div class="container px-4 px-lg-5 mt-5">
 
+                <div class="d-flex justify-content-end align-items-baseline">
+<div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Ціна
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="input-group-prices">
+                                <input type="number" value = "{{ request.GET.price__gte }}" name="price__gte1" step="any" class="form-control mb-2 price_input"
+                                       id="id_price__gte1">
+                                -
+                                <input type="number" value = "{{ request.GET.price__lte }}" name="price__lte1" step="any" class="form-control mb-2 price_input"
+                                       id="id_price__lte1">
+                                <button type="submit" class="btn btn-secondary mb-2">
+                                    Ок
+                                </button>
+                            </div>
+
+{#                            <p>#}
+{#                                <label for="amount"></label>#}
+{#                                <input type="text" id="amount" readonly#}
+{#                                       data-value_gte="{{ request.GET.price__gte }}"#}
+{#                                       data-value_lte="{{ request.GET.price__lte }}"#}
+{#                                       style="border:0; font-weight:bold;">#}
+{#                            </p>#}
+                            <div id="slider-range" data-min-price="{{ min_price }}"
+                                 data-max-price="{{ max_price }}"></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    <form method="get" class="offcanvas-body" action="{{ request.get_full_path }}">
+
+
+        <div class="d-flex mb-3 justify-content-between align-items-center">
+            {{ filter.form.order_by }}
+            {{ filter.form.price__gte }}
+            {{ filter.form.price__lte }}
+            <label for="size">Оберіть розміри</label>
+            {{ filter.form.size }}
+
+
+            <button type="submit" class="btn btn-primary">
+                Примінити фільтри
+            </button>
+        </div>
+    </form>
+
+</div>
+
+
             <div class="row">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-center">
                     {% if request.GET.title_search %}
                         <h4>Результати пошуку "<span class="text-success"> {{ request.GET.title_search }} </span>"&nbsp:
                         </h4>
@@ -22,45 +76,46 @@
                     {% if not sneakers %}
                         <h4>Нічого не знайдено</h4>
                     {% endif %}
-
-                    <a class="custom-btn btn-1 a-light" data-bs-toggle="offcanvas" href="#offcanvasExample"
-                       role="button"
-                       aria-controls="offcanvasExample" type="Submit">
-                        Фільтри
-                    </a>
-
-
-                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-                         aria-labelledby="offcanvasExampleLabel">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
-
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                        </div>
-
-                        <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">
-                            {{ filter.form|crispy }}
-                            <div class="flex-row justify-content-between">
-                                {{ filter.form.price__gte }}
-                                {{ filter.form.price__lte }}
-                            </div>
-
-                            <p>
-                                <label for="amount">Ціна</label>
-                                <input type="text" id="amount" readonly data-value_gte="{{ request.GET.price__gte }}"
-                                       data-value_lte="{{ request.GET.price__lte }}"
-                                       style="border:0; font-weight:bold;">
-                            </p>
-                            <div id="slider-range" data-min-price="{{ min_price }}"
-                                 data-max-price="{{ max_price }}"></div>
-                            <button type="submit" class="btn btn-primary mt-2">
-                                Примінити фільтри
-                            </button>
-                        </form>
-
-                    </div>
                 </div>
+            </div>
+            {#<a class="custom-btn btn-1 a-light" data-bs-toggle="offcanvas" href="#offcanvasExample"#}
+            {#                       role="button"#}
+            {#                       aria-controls="offcanvasExample" type="Submit">#}
+            {#                        Фільтри#}
+            {#                    </a>#}
+
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+                 aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Накласти фільтри</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+
+                {#                <form method="get" class="offcanvas-body" action="{{ request.get_full_path }} ">#}
+                {#                    {{ filter.form|crispy }}#}
+                {#                            {{ filter.form.title_search|crispy }}#}
+                {#                            {{ filter.form.tags }}#}
+
+                {#                            <div class="input-group">#}
+                {#                                {{ filter.form.price__gte }}#}
+                {#                                {{ filter.form.price__lte }}#}
+                {#                            </div>#}
+                {#                    <p>#}
+                {#                        <label for="amount">Ціна</label>#}
+                {#                        <input type="text" id="amount" readonly data-value_gte="{{ request.GET.price__gte }}"#}
+                {#                               data-value_lte="{{ request.GET.price__lte }}"#}
+                {#                               style="border:0; font-weight:bold;">#}
+                {#                    </p>#}
+                {#                    <div id="slider-range" data-min-price="{{ min_price }}"#}
+                {#                         data-max-price="{{ max_price }}"></div>#}
+                <button type="submit" class="btn btn-primary mt-2">
+                    Примінити фільтри
+                </button>
+                </form>
+
             </div>
 
 
