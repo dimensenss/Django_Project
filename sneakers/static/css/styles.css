@@ -214,7 +214,9 @@ footer {
         max-height: 350px;
         overflow-y: scroll;
     }
+
 }
+
 
 @media only screen and (min-width: 992px) and (max-width: 1140px) {
     .dropdown:hover .dropdown-menu-navbar {
@@ -271,7 +273,6 @@ footer {
     background: rgb(255, 0, 0);
     background: linear-gradient(0deg, rgb(210, 29, 29) 0%, rgb(203, 0, 0) 100%);
     border: none;
-    margin-left: 0.5em;
 }
 
 .btn-1:hover {
@@ -868,12 +869,11 @@ table {
     color: #007bff; /* Цвет прелоадера, можно изменить */
 }
 .price_input{
-    width: 62px;
-    height: 62px;
+    width: 82px;
+    height: auto;
     padding-left: 8px;
     padding-right: 8px;
     margin-right: 4px;
-    margin-left: 4px;
     border-radius: 10px;
 }
 .input-group-prices{
@@ -881,8 +881,6 @@ table {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .custom-form-control {
@@ -901,4 +899,70 @@ table {
     appearance: none;
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+input, select{
+    height: 32px;
+}
+
+.sidebar {
+    display: none;
+    flex-shrink: 0;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+
+.filter-offcanvas-form input, select {
+    width: 100%;
+}
+
+
+.filter-btn{
+    margin-bottom: 8px;
+    display: none;
+}
+@media (min-width: 1024px) {
+    .sidebar {
+        display: block;
+    }
+    .content_type_catalog {
+    width: calc(100% - 250px);
+}
+    .layout {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+}
+
+@media (max-width: 1024px) {
+    .filter-btn{
+        display: block;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+.layout {
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+    max-width: 1600px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .layout {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .filter-btn{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+}
+.layout_with_sidebar {
+    display: flex;
+    flex-direction: row-reverse;
 }

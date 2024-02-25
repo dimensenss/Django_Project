@@ -338,6 +338,14 @@ $(document).ready(function () {
         // Другие параметры
     });
 });
+
+// $(document).ready(function () {
+//     $('#id_brand').magicSuggest({
+//         // Настраивайте конфигурацию по мере необходимости
+//         placeholder: 'Введіть бренди',
+//         // Другие параметры
+//     });
+// });
 // $(document).ready(function () {
 //     $('#id_size').magicSuggest({
 //         // Настраивайте конфигурацию по мере необходимости
@@ -345,121 +353,90 @@ $(document).ready(function () {
 //         // Другие параметры
 //     });
 // });
-$(document).ready(function() {
+$(document).ready(function () {
     var btnTable = $("#btnSizesTable");
     var sizesTable = $("#sizesTable");
     var btnAdditionalContent = $("#btnAdditionalContent");
     var additionalContent = $("#additionalContent");
 
     if (btnTable.length && sizesTable.length) {
-        btnTable.on("click", function() {
-            // Открываем вкладку "Information" и после этого прокручиваем
+        btnTable.on("click", function () {
+            // Show the "Information" tab
             $("#nav-information-tab").tab('show');
-            scrollToElement(sizesTable);
+            // Wait for the tab to be fully shown, then scroll
+            $('#nav-information-tab').on('shown.bs.tab', function (e) {
+                scrollToElement(sizesTable);
+            });
         });
     }
 
     if (btnAdditionalContent.length && additionalContent.length) {
-        btnAdditionalContent.on("click", function() {
-            // Открываем вкладку "Additional information" и после этого прокручиваем
+        btnAdditionalContent.on("click", function () {
+            // Show the "Additional information" tab
             $("#nav-additional-info-tab").tab('show');
-            scrollToElement(additionalContent);
+            // Wait for the tab to be fully shown, then scroll
+            $('#nav-additional-info-tab').on('shown.bs.tab', function (e) {
+                scrollToElement(additionalContent);
+            });
         });
     }
 
     function scrollToElement(element) {
-        // Получаем позицию элемента
         var targetOffset = element.offset().top;
-
-        // Получаем высоту навигационной панели (если она есть)
         var navbarHeight = $('.navbar').outerHeight() || 0;
-
-        // Анимируем прокрутку с учетом высоты навигационной панели
         $('html, body').animate({
             scrollTop: targetOffset - navbarHeight
-        }, 800);
+        }, 600);
     }
 });
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var loaderWrapper = document.getElementById("loader-wrapper");
     if (loaderWrapper) {
         loaderWrapper.style.display = "none";
     }
 });
 
+$(document).ready(function () {
+    var priceMinInputLg =  document.getElementById("id_price__gte");
+    var priceMaxInputLg =  document.getElementById("id_price__lte");
+    var priceMinInputSm =  document.getElementById("id_price__gte_sm");
+    var priceMaxInputSm =  document.getElementById("id_price__lte_sm");
 
+    if (priceMinInputLg && priceMaxInputLg && priceMinInputSm && priceMaxInputSm) {
+        priceMinInputSm.value =  parseInt(priceMinInputLg.value);
+        priceMaxInputSm.value =  parseInt(priceMaxInputLg.value);
 
-$(document).ready(function() {
-    // var div_id_price__gte = $("#div_id_price__gte"); // Замените "myBlockId" на ID вашего блока
-    // div_id_price__gte.addClass("d-none");
-    // var div_id_price__lte = $("#div_id_price__lte"); // Замените "myBlockId" на ID вашего блока
-    // div_id_price__lte.addClass("d-none");
-
-    var priceRange = $("#slider-range");
-    var priceInput = $("#amount");
-    var priceMinInput1 = $("#id_price__gte");
-    var priceMaxInput1 = $("#id_price__lte");
-    var priceMinInput = $("#id_price__gte1");
-    var priceMaxInput = $("#id_price__lte1");
-
-    var value_gte =  parseInt($(priceInput).data("value_gte"));
-    var value_lte = parseInt($(priceInput).data("value_lte"));
-
-    var min_price = $(priceRange).data("min-price");
-    var max_price =  $(priceRange).data("max-price");
-
-    if (priceMinInput.val() === "" || priceMaxInput.val() === "") {
-        console.log(1);
-        priceMinInput.val(min_price);
-        priceMaxInput.val(max_price);
-
-    }
-
-    if (priceMinInput1.val() === "" || priceMaxInput1.val() === "") {
-        console.log(1);
-        priceMinInput1.val(min_price);
-        priceMaxInput1.val(max_price);
-
+        initializeSlider("slider-range-sm", priceMinInputSm, priceMaxInputSm);
+        initializeSlider("slider-range-lg", priceMinInputLg, priceMaxInputLg);
+    } else {
+        return;
     }
 
 
-    if (parseInt(priceMinInput1.val()) < min_price || parseInt(priceMaxInput1.val()) > max_price) {
-        console.log(2);
-        priceMinInput.val(min_price);
-        priceMaxInput.val(max_price);
-        priceMinInput1.val(min_price);
-        priceMaxInput1.val(max_price);
-        value_gte = min_price;
-        value_lte = max_price;
-    }
-    if ((isNaN(value_gte) || value_gte === -1) && (isNaN(value_lte) || value_lte === -1)) {
-        console.log(3);
-        value_gte = min_price;
-        value_lte = max_price;
-    }
+     function initializeSlider(sliderId, priceMinInput, priceMaxInput) {
+        var priceRange = document.getElementById(sliderId);
+        var min_price = parseInt($(priceRange).data("min-price"));
+        var max_price = parseInt($(priceRange).data("max-price"));
 
-    if ((isNaN(min_price) || min_price === -1) && (isNaN(max_price) || max_price === -1)) {
-        console.log(4);
-        min_price = 0;
-        max_price = 20000;
-    }
-
-    priceRange.slider({
-        range: true,
-        min: min_price,
-        max: max_price,
-
-        values: [value_gte, value_lte],
-        slide: function(event, ui) {
-            priceInput.val("$" + ui.values[0] + " - $" + ui.values[1]);
-            priceMinInput1.val(ui.values[0]);
-            priceMaxInput1.val(ui.values[1]);
-            priceMinInput.val(ui.values[0]);
-            priceMaxInput.val(ui.values[1]);
+        if (isNaN(parseInt(priceMinInput.value)) && isNaN(parseInt(priceMinInput.value))) {
+            priceMinInput.value = min_price;
+            priceMaxInput.value = max_price;
         }
-    });
 
-    priceInput.val(
-        "$" + priceRange.slider("values", 0) + " - $" + priceRange.slider("values", 1)
-    );
+        if (parseInt(priceMinInput.value) > parseInt(priceMaxInput.value) || parseInt(priceMinInput.value) < 0) {
+            priceMinInput.value = min_price;
+            priceMaxInput.value = max_price;
+        }
+
+        $("#" + sliderId).slider({
+            range: true,
+            min: min_price,
+            max: max_price,
+            values: [parseInt(priceMinInput.value), parseInt(priceMaxInput.value)],
+            slide: function (event, ui) {
+                priceMinInput.value = ui.values[0];
+                priceMaxInput.value = ui.values[1];
+            }
+        });
+    }
 });

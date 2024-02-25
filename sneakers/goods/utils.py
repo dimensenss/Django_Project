@@ -65,8 +65,15 @@ class SneakersFilter(django_filters.FilterSet):
         label='Теги',
     )
 
+    brand = django_filters.ModelMultipleChoiceFilter(
+        queryset=Brand.objects.all(),
+        method='brand_filter',
+        label='Бренд',
+    )
+
+
     size = django_filters.CharFilter(
-        method='filter_size',
+        method='size_filter',
         label='Розмір',
     )
 
@@ -93,21 +100,28 @@ class SneakersFilter(django_filters.FilterSet):
 
         return queryset.distinct()
 
+    def brand_filter(self, queryset, name, value):
+        brand_ids = [brand.id for brand in value]
+        if brand_ids:
+            queryset = queryset.filter(Q(brand__id__in=brand_ids))
+        return queryset
+
     class Meta:
         model = Sneakers
         fields = {
-            'tags': ['exact'],
-            'price': ['gte', 'lte'],
-
         }
 
     def __init__(self, *args, **kwargs):
         super(SneakersFilter, self).__init__(*args, **kwargs)
         # Добавьте класс стилей для фильтра price__gte
-        self.filters['price__gte'].field.widget = forms.HiddenInput()
-        self.filters['price__lte'].field.widget = forms.HiddenInput()
+        # self.filters['price__gte'].field.widget = forms.HiddenInput()
+        # self.filters['price__lte'].field.widget = forms.HiddenInput()
         self.filters['title_search'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
         self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['brand'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
         self.filters['order_by'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
         self.filters['size'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['price__gte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
+        self.filters['price__lte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
+        self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
 

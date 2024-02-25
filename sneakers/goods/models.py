@@ -30,6 +30,8 @@ class Sneakers(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers',
                             verbose_name='Категорія')
+    brand = models.ForeignKey('Brand', blank=True, null=True, on_delete=models.SET_NULL, related_name='brand', verbose_name='Бренд')
+
     tags = TaggableManager(blank=True, verbose_name='Теги', help_text='')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
     first_image = models.OneToOneField(
@@ -131,3 +133,14 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = 'Фотографія'
         verbose_name_plural = 'Фотографії'
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Назва бренду')
+
+    class Meta:
+        verbose_name = 'Бренд'
+        verbose_name_plural = 'Бренди'
+
+    def __str__(self):
+        return self.name

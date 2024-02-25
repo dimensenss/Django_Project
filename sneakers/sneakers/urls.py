@@ -20,6 +20,11 @@ urlpatterns = [
         SneakersAutocomplete.as_view(),
         name='sneakers-autocomplete',
     ),
+    re_path(
+        r'^brands-autocomplete/$',
+        BrandsAutocomplete.as_view(),
+        name='brands-autocomplete',
+    ),
 
 
     path('', include('goods.urls', namespace='goods')),

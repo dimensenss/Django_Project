@@ -150,3 +150,13 @@ class SneakersAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(sneakers__title__istartswith=self.q)
 
         return qs
+
+
+class BrandsAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Brand.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs

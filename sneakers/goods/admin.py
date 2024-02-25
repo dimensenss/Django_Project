@@ -47,7 +47,8 @@ class SneakersAdminForm(forms.ModelForm):
         model = Sneakers
         fields = '__all__'
         widgets = {
-            'cat': autocomplete.ModelSelect2(url='category-autocomplete')
+            'cat': autocomplete.ModelSelect2(url='category-autocomplete'),
+            'brand': autocomplete.ModelSelect2(url='brands-autocomplete')
         }
 
 
@@ -60,9 +61,9 @@ class SneakersAdmin(admin.ModelAdmin):
     search_fields = ('id', 'title', 'content')
     list_editable = ('discount', 'is_published',)
     list_filter = ('is_published', 'time_create', 'discount')
-    prepopulated_fields = {'slug': ('title','sku')}
+    prepopulated_fields = {'slug': ('title', 'sku')}
     fields = (
-        ('get_html_main_photo',), 'title', 'sku', 'slug', 'cat', ('price', 'discount'), 'calculate_discount',
+        ('get_html_main_photo',), 'title', 'sku', 'slug', 'cat', 'brand', ('price', 'discount'), 'calculate_discount',
         'content', 'color', 'tags', 'is_published', 'time_create',
     )
     readonly_fields = ('get_html_main_photo', 'time_create', 'calculate_discount')
@@ -85,7 +86,7 @@ class SneakersAdmin(admin.ModelAdmin):
             discount = (obj.price - obj.discount) * 100 / obj.price
 
         if discount < 100:
-            s += f"Знижка: {discount} %"
+            s += f"Знижка: {round(discount, 2) } %"
         return s
 
     get_html_content.short_description = 'Опис'
@@ -110,3 +111,9 @@ class CategoryAdmin(DjangoMpttAdmin):
         return obj.product_count
 
     count_products.short_description = 'Кількість товарів'
+
+
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
