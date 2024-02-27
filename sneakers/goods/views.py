@@ -6,6 +6,7 @@ from django.db.models import Prefetch, F, Min, Max
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
+from django.views import View
 
 from sneakers.settings import MAX_RECENT_VIEWED_PRODUCTS
 from .models import *
@@ -28,6 +29,7 @@ class SneakersHome(DataMixin, ListView):
             min_price=Min('sell_price'),
             max_price=Max('sell_price')
         )
+        self.sizes = SneakersVariations.objects.all().values_list('size', flat=True).distinct()
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -39,7 +41,8 @@ class SneakersHome(DataMixin, ListView):
         c_def = self.get_user_context(title='Shop home',
                                       filter=self.sneakers_filter,
                                       min_price=int(self.aggregate_data['min_price']),
-                                      max_price=int(self.aggregate_data['max_price']))
+                                      max_price=int(self.aggregate_data['max_price']),
+                                      sizes=self.sizes)
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -88,9 +91,9 @@ class SneakersCategories(DataMixin, ListView):
 
         self.aggregate_data = _queryset.aggregate(
             min_price=Min('sell_price'),
-            max_price=Max('sell_price')
+            max_price=Max('sell_price'),
         )
-
+        self.sizes = SneakersVariations.objects.all().values_list('size', flat=True).distinct()
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.sneakers_filter.qs
 
@@ -102,7 +105,8 @@ class SneakersCategories(DataMixin, ListView):
         c_def = self.get_user_context(cats=cats,
                                       filter=self.sneakers_filter,
                                       min_price=int(self.aggregate_data['min_price']),
-                                      max_price=int(self.aggregate_data['max_price']))
+                                      max_price=int(self.aggregate_data['max_price']),
+                                      sizes=self.sizes)
 
         return dict(list(context.items()) + list(c_def.items()))
 

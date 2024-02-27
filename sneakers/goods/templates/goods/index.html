@@ -96,22 +96,72 @@
 
                         <div class="d-flex flex-column">
 
-                            <div class="d-flex flex-column">
-                                <label for="tags">Оберіть теги</label>
-                                {{ filter.form.tags }}
+                            <div class="accordion" id="accordionPanelBrand">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="panelsStayOpen-brand">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                                aria-controls="panelsStayOpen-collapseOne">
+                                            Бренд
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                                         aria-labelledby="panelsStayOpen-brand">
+                                        <div class="accordion-body">
+                                            {% for brand in filter.form.brand %}
+                                                <div class="row">
+                                                    <div class="col-md-2 py-1">
+                                                        {{ brand.tag }}
+
+                                                    </div>
+                                                    <div class="col-md-10 py-1">
+                                                        {{ brand.choice_label }}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="d-flex flex-column">
-                                <label for="brand">Оберіть бренд</label>
-                                {{ filter.form.brand }}
-                            </div>
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column py-2">
                                 <label for="order_by">Оберіть сортування</label>
                                 {{ filter.form.order_by }}
                             </div>
-                            <div class="d-flex flex-column">
-                                <label for="size">Оберіть розміри</label>
-                                {{ filter.form.size }}
+
+
+                            <div class="accordion  mb-2" id="accordionPanelSizes">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="panelsStayOpen-sizes">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
+                                                aria-controls="panelsStayOpen-collapseTwo">
+                                            Розміри
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+                                         aria-labelledby="panelsStayOpen-sizes">
+                                        <div class="accordion-body">
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex flex-wrap">
+                                                    {% for size in sizes %}
+                                                        <div class="form-element">
+                                                            <input type="checkbox" class="size-checkbox"
+                                                                   value="{{ size }}" id="size-{{ size }}">
+                                                            <label for="size-{{ size }}">
+                                                                <div class="title">
+                                                                    {{ size }}
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                {{ filter.form.size }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                             <div>
                                 <div class="d-flex flex-row justify-content-center align-items-center">
 
@@ -204,27 +254,119 @@
         </div>
 
         <form method="get" class="offcanvas-body filter-offcanvas-form" action="{{ request.get_full_path }} ">
-            <label for="order_by">Оберіть сортування</label>
-            {{ filter.form.order_by }}
-            <label for="size">Оберіть розміри</label>
-            {{ filter.form.size }}
 
 
-            <div class="input-group-prices">
-                <input type="number" name="price__gte" step="any"
-                       class="custom-form-control mb-2 price_input" id="id_price__gte_sm">
-                <input type="number" name="price__lte" step="any"
-                       class="custom-form-control mb-2 price_input" id="id_price__lte_sm">
-                <button type="submit" class="btn btn-secondary mb-2">
-                    Ок
-                </button>
-            </div>
-            <div class="row mx-1">
-                <div id="slider-range-sm" data-min-price="{{ min_price }}"
-                     data-max-price="{{ max_price }}">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                            Сортування
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                         data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="d-flex flex-column py-2">
+                                <label for="order_by">Оберіть сортування</label>
+                                {{ filter.form.order_by }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                aria-controls="flush-collapseTwo">
+                            Бренди
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                         data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <label for="id_brand">Оберіть бренди</label>
+                            {% for brand in filter.form.brand %}
+                                <div class="row">
+                                    <div class="col-2 py-1">
+                                        {{ brand.tag }}
 
+                                    </div>
+                                    <div class="col-10 py-1">
+                                        {{ brand.choice_label }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree">
+                            Ціна
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                         aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="input-group-prices">
+                                <input type="number" name="price__gte" step="any"
+                                       class="custom-form-control mb-2 price_input" id="id_price__gte_sm">
+                                <input type="number" name="price__lte" step="any"
+                                       class="custom-form-control mb-2 price_input" id="id_price__lte_sm">
+                                <button type="submit" class="btn btn-secondary mb-2">
+                                    Ок
+                                </button>
+                            </div>
+                            <div class="row mx-1 mb-2">
+                                <div id="slider-range-sm" data-min-price="{{ min_price }}"
+                                     data-max-price="{{ max_price }}">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional items start here -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                aria-controls="flush-collapseFour">
+                            Розміри
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                         data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <label for="size">Оберіть розміри</label>
+
+                            {{ filter.form.sizes }}
+
+                            <div class="d-flex flex-column">
+                                <div class="d-flex flex-wrap">
+                                    {% for size in sizes %}
+                                        <div class="form-element">
+                                            <input type="checkbox" class="sm-size-checkbox" value="{{ size }}"
+                                                   id="sizes-{{ size }}">
+                                            <label for="sizes-{{ size }}">
+                                                <div class="title">
+                                                    {{ size }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+{#                                {{ filter.form.size }}#}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <button type="submit" class="btn btn-primary mt-2">
                 Примінити фільтри
@@ -232,6 +374,5 @@
         </form>
 
     </div>
-
 {% endblock content %}
 

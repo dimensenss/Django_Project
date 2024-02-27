@@ -335,10 +335,17 @@ $(document).ready(function () {
     $('#id_tags').magicSuggest({
         // Настраивайте конфигурацию по мере необходимости
         placeholder: 'Введіть теги',
+        name: 'tags',
         // Другие параметры
     });
 });
-
+// $(document).ready(function () {
+//     console.log('ok')
+//             $("#id_brand").autocomplete({
+//                 source: "/brands-autocomplete-json/",
+//                 minLength: 2, // Minimum characters before triggering autocomplete
+//             });
+//         });
 // $(document).ready(function () {
 //     $('#id_brand').magicSuggest({
 //         // Настраивайте конфигурацию по мере необходимости
@@ -353,6 +360,105 @@ $(document).ready(function () {
 //         // Другие параметры
 //     });
 // });
+
+document.addEventListener('DOMContentLoaded', function () {
+    var checkboxes = document.querySelectorAll('.size-checkbox');
+    var selectedSizesInput = document.getElementById('id_size');
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateSelectedSizes();
+        });
+    });
+
+    // При загрузке страницы восстанавливаем выбранные чекбоксы
+    restoreSelectedSizes();
+
+    function updateSelectedSizes() {
+        var selectedSizes = Array.from(checkboxes)
+            .filter(function (checkbox) {
+                return checkbox.checked;
+            })
+            .map(function (checkbox) {
+                return checkbox.value;
+            })
+            .join(' ');
+
+        selectedSizesInput.value = selectedSizes;
+
+        // Сохраняем выбранные чекбоксы в localStorage
+        saveSelectedSizes(selectedSizes);
+    }
+
+    function saveSelectedSizes(selectedSizes) {
+        localStorage.setItem('selectedSizes', selectedSizes);
+    }
+
+    function restoreSelectedSizes() {
+        var savedSelectedSizes = localStorage.getItem('selectedSizes');
+        if (savedSelectedSizes) {
+            var savedSizesArray = savedSelectedSizes.split(' ');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = savedSizesArray.includes(checkbox.value);
+            });
+
+            updateSelectedSizes(); // Обновляем инпут после восстановления чекбоксов
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var checkboxes = document.querySelectorAll('.sm-size-checkbox');
+
+    var selectedSizesInput = document.getElementById('id_sizes');
+    // var selectedSizesInput = document.getElementById('id_size');
+    // selectedSizesInputSm.value =  parseInt(selectedSizesInput.value);
+
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateSelectedSizes();
+        });
+    });
+
+    // При загрузке страницы восстанавливаем выбранные чекбоксы
+    restoreSelectedSizes();
+
+    function updateSelectedSizes() {
+        var selectedSizes = Array.from(checkboxes)
+            .filter(function (checkbox) {
+                return checkbox.checked;
+            })
+            .map(function (checkbox) {
+                return checkbox.value;
+            })
+            .join(' ');
+
+        selectedSizesInput.value = selectedSizes;
+
+        // Сохраняем выбранные чекбоксы в localStorage
+        saveSelectedSizes(selectedSizes);
+    }
+
+    function saveSelectedSizes(selectedSizes) {
+        localStorage.setItem('selectedSizes', selectedSizes);
+    }
+
+    function restoreSelectedSizes() {
+        var savedSelectedSizes = localStorage.getItem('selectedSizes');
+        if (savedSelectedSizes) {
+            var savedSizesArray = savedSelectedSizes.split(' ');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = savedSizesArray.includes(checkbox.value);
+            });
+
+            updateSelectedSizes(); // Обновляем инпут после восстановления чекбоксов
+        }
+    }
+});
+
 $(document).ready(function () {
     var btnTable = $("#btnSizesTable");
     var sizesTable = $("#sizesTable");

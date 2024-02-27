@@ -32,7 +32,6 @@ class DataMixin:
         context['recently_viewed_qs'] = recently_viewed_qs
         return context
 
-
 class SneakersFilter(django_filters.FilterSet):
     title_search = CharFilter(method='title_content_filter', label='Назва складається з', )
 
@@ -63,19 +62,28 @@ class SneakersFilter(django_filters.FilterSet):
         field_name='tags__name',
         to_field_name='name',
         label='Теги',
-    )
 
+    )
     brand = django_filters.ModelMultipleChoiceFilter(
         queryset=Brand.objects.all(),
-        method='brand_filter',
-        label='Бренд',
+        widget=forms.CheckboxSelectMultiple
     )
-
 
     size = django_filters.CharFilter(
-        method='size_filter',
         label='Розмір',
+        method='filter_by_sizes'
     )
+    sizes = django_filters.CharFilter(
+        label='Розмір',
+        method='filter_by_sizes'
+    )
+
+
+    def filter_by_sizes(self, queryset, name, value):
+        if value:
+            value = value.split()
+            queryset = queryset.filter(variations__size__in=value).distinct()
+        return queryset
 
     def title_content_filter(self, queryset, name, value):
         if value.isdigit() and len(value) <= 5:
@@ -87,25 +95,6 @@ class SneakersFilter(django_filters.FilterSet):
         return queryset.annotate(rank=SearchRank(vector, query, normalization=normalization)).filter(
             rank__gt=0).order_by("-rank")
 
-    def size_filter(self, queryset, name, value):
-        value = ' '.join(value.split())
-
-        if value:
-            sizes = value.split()
-            q_objects = Q()
-            for size in sizes:
-                q_objects |= Q(variations__size=size)
-
-            queryset = queryset.filter(q_objects)
-
-        return queryset.distinct()
-
-    def brand_filter(self, queryset, name, value):
-        brand_ids = [brand.id for brand in value]
-        if brand_ids:
-            queryset = queryset.filter(Q(brand__id__in=brand_ids))
-        return queryset
-
     class Meta:
         model = Sneakers
         fields = {
@@ -113,14 +102,11 @@ class SneakersFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(SneakersFilter, self).__init__(*args, **kwargs)
-        # Добавьте класс стилей для фильтра price__gte
-        # self.filters['price__gte'].field.widget = forms.HiddenInput()
-        # self.filters['price__lte'].field.widget = forms.HiddenInput()
         self.filters['title_search'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
         self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
-        self.filters['brand'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
         self.filters['order_by'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
-        self.filters['size'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+        self.filters['size'].field.widget = forms.HiddenInput()
+        self.filters['sizes'].field.widget = forms.HiddenInput()
         self.filters['price__gte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['price__lte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})

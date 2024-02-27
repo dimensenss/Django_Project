@@ -432,7 +432,7 @@ footer {
 }
 
 .card-body {
-    padding: 0 0 0 1em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .card-body p {
@@ -886,8 +886,8 @@ table {
 .custom-form-control {
     display: flex;
     /* width: 100%; */
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
+    padding: 0.175rem 0.175rem 0.375rem 0.375rem;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
     color: #212529;
@@ -899,8 +899,9 @@ table {
     appearance: none;
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
 }
-input, select{
+select{
     height: 32px;
 }
 
@@ -914,6 +915,7 @@ input, select{
 
 .filter-offcanvas-form input, select {
     width: 100%;
+
 }
 
 
@@ -965,4 +967,68 @@ input, select{
 .layout_with_sidebar {
     display: flex;
     flex-direction: row-reverse;
+}
+
+
+.form-element {
+  position:relative;
+  width:54px;
+  height:34px;
+}
+.form-element input {
+  display:none;
+}
+.form-element label {
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  height:100%;
+  cursor:pointer;
+  border:2px solid #ddd;
+  background:#fff;
+  box-shadow:0px 5px 20px 2px rgba(0,0,0,0.1);
+  text-align:center;
+  transition:all 200ms ease-in-out;
+  border-radius:5px;
+}
+.form-element .title {
+  font-size:15px;
+  color:#555;
+  padding:5px 0px;
+  transition:all 200ms ease-in-out;
+}
+.form-element label:hover{
+    border:2px solid #949494;
+  background: #dedede;
+}
+.form-element label:before {
+  position:absolute;
+  width:18px;
+  height:18px;
+  top:8px;
+  left:8px;
+  background: #940221;
+  color:#fff;
+  text-align:center;
+  line-height:18px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50%;
+  opacity:0;
+  transform:scale(0.5);
+  transition:all 200ms ease-in-out;
+}
+.form-element input:checked + label:before {
+  opacity:1;
+  transform:scale(1);
+}
+.form-element input:checked + label .icon {
+  color: #0d80ff;
+}
+.form-element input:checked + label .title {
+  color: #0d80ff;
+}
+.form-element input:checked + label {
+  border:2px solid #0d80ff;
 }
