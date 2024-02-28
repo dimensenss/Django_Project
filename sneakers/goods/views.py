@@ -25,11 +25,6 @@ class SneakersHome(DataMixin, ListView):
     def get_queryset(self):
         queryset = Sneakers.objects.filter(is_published=1).annotate(
             sneakers_first_image=F("first_image__image"))
-        self.aggregate_data = queryset.aggregate(
-            min_price=Min('sell_price'),
-            max_price=Max('sell_price')
-        )
-        self.sizes = SneakersVariations.objects.all().values_list('size', flat=True).distinct()
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -40,9 +35,7 @@ class SneakersHome(DataMixin, ListView):
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
         c_def = self.get_user_context(title='Shop home',
                                       filter=self.sneakers_filter,
-                                      min_price=int(self.aggregate_data['min_price']),
-                                      max_price=int(self.aggregate_data['max_price']),
-                                      sizes=self.sizes)
+                                      )
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -83,17 +76,12 @@ class SneakersCategories(DataMixin, ListView):
 
     def get_queryset(self):
         cat_slug = self.kwargs['cat_slug'].split('/')[-1]
-        current_category = Category.objects.get(slug=cat_slug)
+        current_category = get_object_or_404(Category, slug=cat_slug)
 
         subcategories = current_category.get_descendants(include_self=True)
         _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"))
 
-        self.aggregate_data = _queryset.aggregate(
-            min_price=Min('sell_price'),
-            max_price=Max('sell_price'),
-        )
-        self.sizes = SneakersVariations.objects.all().values_list('size', flat=True).distinct()
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
         _queryset = self.sneakers_filter.qs
 
@@ -104,9 +92,7 @@ class SneakersCategories(DataMixin, ListView):
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         c_def = self.get_user_context(cats=cats,
                                       filter=self.sneakers_filter,
-                                      min_price=int(self.aggregate_data['min_price']),
-                                      max_price=int(self.aggregate_data['max_price']),
-                                      sizes=self.sizes)
+                                      )
 
         return dict(list(context.items()) + list(c_def.items()))
 

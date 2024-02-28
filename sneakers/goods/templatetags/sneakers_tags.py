@@ -21,6 +21,24 @@ def get_categories():
 @register.simple_tag(name='get_photos')
 def get_photos(post):
     return post.images.all()
+@register.simple_tag(name='get_all_sizes')
+def get_all_sizes():
+    return SneakersVariations.objects.all().values_list('size', flat=True).distinct()
+
+@register.simple_tag(name='get_min_max_prices', takes_context=True)
+def get_prices(context, queryset):
+    aggregate_data = Sneakers.objects.all().filter(is_published=True).aggregate(
+        min_price=Min('sell_price'),
+        max_price=Max('sell_price'),
+    )
+
+    min_price = int(aggregate_data['min_price']) if aggregate_data['min_price'] is not None else None
+    max_price = int(aggregate_data['max_price']) if aggregate_data['max_price'] is not None else None
+
+    context['min_price'] = min_price
+    context['max_price'] = max_price
+
+    return ''
 
 
 # @register.simple_tag(name='get_colors')

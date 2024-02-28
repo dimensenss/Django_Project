@@ -113,12 +113,16 @@ class Category(MPTTModel):
         verbose_name_plural = 'Категорії'
 
     def __str__(self):
-        return ''.join([ancestor.title + ' ' for ancestor in self.get_ancestors(include_self=True)])
+        return ''.join([ancestor.title + ' > ' for ancestor in self.get_ancestors(include_self=True)])[:-3]
 
     def get_absolute_url(self):
         # return '/category/'+'/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
         slug = '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
         return reverse_lazy('goods:show_cat', kwargs={'cat_slug': slug})
+
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = self.title
 
 
 class ProductImage(models.Model):

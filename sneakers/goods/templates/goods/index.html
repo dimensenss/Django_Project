@@ -143,6 +143,7 @@
                                         <div class="accordion-body">
                                             <div class="d-flex flex-column">
                                                 <div class="d-flex flex-wrap">
+                                                {% get_all_sizes as sizes %}
                                                     {% for size in sizes %}
                                                         <div class="form-element">
                                                             <input type="checkbox" class="size-checkbox"
@@ -171,6 +172,7 @@
                                         Ок
                                     </button>
                                 </div>
+                                {% get_min_max_prices sneakers %}
                                 <div class="row mx-1 mb-2">
                                     <div id="slider-range-lg" data-min-price="{{ min_price }}"
                                          data-max-price="{{ max_price }}"></div>

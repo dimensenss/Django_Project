@@ -412,9 +412,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var checkboxes = document.querySelectorAll('.sm-size-checkbox');
 
     var selectedSizesInput = document.getElementById('id_sizes');
-    // var selectedSizesInput = document.getElementById('id_size');
-    // selectedSizesInputSm.value =  parseInt(selectedSizesInput.value);
-
 
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
