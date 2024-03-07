@@ -1,10 +1,4 @@
-from random import randint
-
 from django.contrib import messages, auth
-from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import AnonymousUser
-from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.db import transaction

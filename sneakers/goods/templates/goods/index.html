@@ -195,6 +195,7 @@
 
         </div>
         <div class="container-fluid">
+        {% if recently_viewed_qs|length > 0 %}
             <h4>Переглянуті товари</h4>
 
             <div id="simple-scroll" class="scrolling-wrapper-flexbox">
@@ -243,7 +244,9 @@
                     {% endif %}
                 {% endfor %}
             </div>
+        {% endif %}
         </div>
+
     </section>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
