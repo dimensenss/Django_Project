@@ -1,14 +1,9 @@
-import datetime
-
 from django.contrib import messages
 from django.db.models import Prefetch, F, Min, Max
-
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.timezone import now
-from django.views import View
-
 from sneakers.settings import MAX_RECENT_VIEWED_PRODUCTS
+from .forms import ReviewForm
 from .models import *
 from django.views.generic import ListView, DetailView, CreateView
 from .utils import DataMixin, SneakersFilter
@@ -40,29 +35,25 @@ class SneakersHome(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-def about(request):
-    context = {
-        'title': 'About',
-    }
-    return render(request, 'goods/about.html', context=context)
-
-
-def shop(request):
-    return HttpResponse("Shop")
-
-
-def contacts(request):
-    return HttpResponse("contacts")
-
-
 def show_product(request, product_slug):
-    product = Sneakers.objects.prefetch_related('variations').annotate(
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = get_object_or_404(Sneakers, slug=product_slug)
+            review.save()
+
+    else:
+        form = ReviewForm()
+
+    product = Sneakers.objects.prefetch_related('variations', 'reviews__user').annotate(
             sneakers_first_image=F("first_image__image")).get(slug=product_slug)
 
     recently_viewed(request, product_slug)
     data = DataMixin().get_user_context(title=product.title, request=request)
 
-    context = {"post": product, **data}
+    context = {"post": product, 'form': form, **data}
 
     return render(request, "goods/product.html", context=context)
 
@@ -95,6 +86,14 @@ class SneakersCategories(DataMixin, ListView):
                                       )
 
         return dict(list(context.items()) + list(c_def.items()))
+
+
+def contacts(request):
+    return HttpResponse("contacts")
+
+
+def about(request):
+    return HttpResponse("about")
 
 
 def PageNotFound(request, exception):
@@ -150,3 +149,31 @@ class BrandsAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(name__istartswith=self.q)
 
         return qs
+
+
+# def create_review(request):
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.user = request.user
+#             review.product = get_object_or_404(Sneakers, slug=request.POST['product'])
+#             review.save()
+#             return redirect('goods:product', slug=product_slug)
+#
+#     else:
+#         form = ReviewForm()
+#
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'goods/product.html', context)
+
+
+
+def update_review(request):
+    ...
+
+
+def delete_review(request):
+    ...

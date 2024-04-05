@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from users.models import User
-
+from users.utils import validate_email
 
 
 class RegisterUserForm(UserCreationForm):
@@ -11,12 +11,13 @@ class RegisterUserForm(UserCreationForm):
     last_name = forms.CharField()
     password1 = forms.CharField()
     password2 = forms.CharField()
+
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # наследуем UserCreationForm
         self.fields['email'].required = True
         del self.fields['username']
 
@@ -30,16 +31,18 @@ class RegisterUserForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Такий email вже існує")
+        validate_email(email)
         return email
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField()
     password = forms.CharField()
+
     class Meta:
         model = User
         fields = ('username', 'password')
+
 
 class ProfileUserForm(UserChangeForm):
     image = forms.ImageField(required=False)
@@ -54,6 +57,10 @@ class ProfileUserForm(UserChangeForm):
         model = User
         fields = ('image', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'address')
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        validate_email(email)
+        return email
 
 
 class UserPasswordChangeForm(PasswordChangeForm):

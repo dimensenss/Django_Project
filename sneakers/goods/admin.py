@@ -117,3 +117,7 @@ class CategoryAdmin(DjangoMpttAdmin):
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'text')
+

@@ -1,1 +1,0 @@
-[{"model": "goods.category", "pk": 2, "fields": {"name": "Чоловіки", "slug": "men"}}, {"model": "goods.category", "pk": 3, "fields": {"name": "Жінки", "slug": "women"}}, {"model": "goods.category", "pk": 4, "fields": {"name": "Діти", "slug": "kids"}}]

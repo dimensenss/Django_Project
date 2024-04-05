@@ -2,6 +2,7 @@ from PIL import Image
 from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Avg
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse, reverse_lazy
@@ -48,6 +49,12 @@ class Sneakers(models.Model):
 
     def calculate_sell_price(self):
         return self.discount if self.discount else self.price
+
+    def calculate_rate(self):
+        average_rating = self.reviews.aggregate(Avg('rate'))['rate__avg']
+        if average_rating is not None:
+            return round(average_rating)
+        return 0
 
     def __str__(self):
         return self.title
@@ -130,8 +137,8 @@ class ProductImage(models.Model):
     image = ProcessedImageField(
         upload_to="product_images/%Y/%m/%d/",
         processors=[ResizeToFill(800, 800)],
-        format='JPEG',  # или 'PNG' в зависимости от ваших требований
-        options={'quality': 90}  # Качество изображения
+        format='JPEG',
+        options={'quality': 90}
     )
 
     class Meta:
@@ -148,3 +155,25 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Review(models.Model):
+    RATING_CHOICES = (
+        (1,'1'),
+        (2,'2'),
+        (3,'3'),
+        (4,'4'),
+        (5,'5'),
+    )
+    product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, default='Анонім', on_delete=models.SET_DEFAULT, related_name='reviews')
+    text = models.TextField(verbose_name='Текст', max_length=500)
+    date = models.DateTimeField(auto_now_add=True)
+    rate = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+
+    class Meta:
+        verbose_name = 'Відгук'
+        verbose_name_plural = 'Відгуки'
+
+    def __str__(self):
+        return self.text

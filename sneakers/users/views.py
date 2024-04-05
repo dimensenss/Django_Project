@@ -58,6 +58,8 @@ from users.models import User
 
 
 def LoginUser(request):
+    if request.user.is_authenticated:
+        return redirect('users:profile')
     if request.method == 'POST':
         form = LoginUserForm(data=request.POST)
         if form.is_valid():
@@ -110,8 +112,7 @@ def RegisterUser(request):
 
                 if existing_orders:
                     for order in existing_orders:
-                        order.user = user
-                        order.save()
+                        order.update(user=user)
 
             messages.success(request, f"Ваш акаунт {user.username} зареєстровано")
             return HttpResponseRedirect(reverse('goods:home'))

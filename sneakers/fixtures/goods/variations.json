@@ -1,0 +1,209 @@
+[
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 10,
+    "fields": {
+      "sneakers": 3,
+      "size": "38",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 11,
+    "fields": {
+      "sneakers": 3,
+      "size": "39",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 12,
+    "fields": {
+      "sneakers": 3,
+      "size": "42",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 15,
+    "fields": {
+      "sneakers": 12,
+      "size": "41",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 16,
+    "fields": {
+      "sneakers": 12,
+      "size": "40",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 17,
+    "fields": {
+      "sneakers": 12,
+      "size": "39",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 18,
+    "fields": {
+      "sneakers": 12,
+      "size": "42",
+      "quantity": 4
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 19,
+    "fields": {
+      "sneakers": 12,
+      "size": "42.5",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 20,
+    "fields": {
+      "sneakers": 40,
+      "size": "41",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 21,
+    "fields": {
+      "sneakers": 40,
+      "size": "43",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 22,
+    "fields": {
+      "sneakers": 40,
+      "size": "38",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 23,
+    "fields": {
+      "sneakers": 41,
+      "size": "43",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 24,
+    "fields": {
+      "sneakers": 41,
+      "size": "42",
+      "quantity": 3
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 25,
+    "fields": {
+      "sneakers": 41,
+      "size": "40",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 26,
+    "fields": {
+      "sneakers": 42,
+      "size": "43",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 27,
+    "fields": {
+      "sneakers": 42,
+      "size": "42",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 28,
+    "fields": {
+      "sneakers": 42,
+      "size": "44",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 29,
+    "fields": {
+      "sneakers": 43,
+      "size": "38",
+      "quantity": 0
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 30,
+    "fields": {
+      "sneakers": 43,
+      "size": "37",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 31,
+    "fields": {
+      "sneakers": 43,
+      "size": "40",
+      "quantity": 1
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 32,
+    "fields": {
+      "sneakers": 44,
+      "size": "41",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 33,
+    "fields": {
+      "sneakers": 44,
+      "size": "42",
+      "quantity": 2
+    }
+  },
+  {
+    "model": "goods.sneakersvariations",
+    "pk": 34,
+    "fields": {
+      "sneakers": 44,
+      "size": "45",
+      "quantity": 1
+    }
+  }
+]

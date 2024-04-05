@@ -2,8 +2,9 @@
 {% load spurl %}
 {% load sneakers_tags %}
 
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
 <link rel="stylesheet" href="{% static 'css/product_style.css' %}">
 
 <section id="selling-product" class="my-2">
@@ -47,6 +48,18 @@
                 <div class="product-info">
                     <div class="element-header">
                         <h3 itemprop="name" class="display-6 fw-bold">{{ post.title }}</h3>
+                        {% if post.calculate_rate == 0 %}
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        {% else %}
+                            {% for _ in 'x'|rjust:post.calculate_rate %}
+                                <span class="readonly-star">★</span>
+                            {% endfor %}
+                        {% endif %}
+
                     </div>
                     <div class="product-price pt-3 pb-3">
                         {% if post.discount %}
@@ -55,8 +68,6 @@
                             {% else %}
                             <span class="usual-price">{{ post.price }} $</span>
                         {% endif %}
-
-
                     </div>
                 {% autoescape off %}
                     <p>{{ post.content|truncatewords:24 }}
@@ -196,168 +207,155 @@
                     </div>
                     <div class="tab-pane fade padding-small" id="nav-review" role="tabpanel"
                          aria-labelledby="nav-review-tab">
-                        <div class="review-box d-flex flex-wrap">
+                        <div class="d-flex flex-column py-2">
+                            {% for review in post.reviews.all %}
                             <div class="col-lg-6 d-flex flex-wrap">
                                 <div class="col-md-2 me-3 mb-3">
                                     <div class="image-holder">
-                                        <img src="images/review-item1.jpg" alt="review" class="img-fluid">
+                                        <img src="{% if review.user.image %}{% get_media_prefix %}{{ review.user.image }}{% else %}{% static 'images/profile-picture.svg' %}{% endif %}"
+                                             alt="review" class="img-fluid" style="height: 50px; width: 60px;">
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="review-content">
-                                        <div class="rating-container d-flex align-items-center mb-3">
-                                            <div class="rating" data-rating="1" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="2" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="3" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="4" onclick="rate(1)">
-                                                <svg class="star-half" width="16" height="16">
-                                                    <use xlink:href="#star-half"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="5" onclick="rate(1)">
-                                                <svg class="star-empty" width="16" height="16">
-                                                    <use xlink:href="#star-empty"></use>
-                                                </svg>
-                                            </div>
+                                        <div class="d-flex flex-row">
+                                        {% for _ in 'x'|rjust:review.rate %}
+                                              <span class="readonly-star">★</span>
+                                        {% endfor %}
                                         </div>
                                         <div class="review-header">
-                                            <span class="author-name">Mina Brown</span>
-                                            <span class="review-date">– 03/07/2023</span>
+                                            <span class="author-name">{{ review.user }}</span>
+                                            <span class="review-date">– {{ review.date }}</span>
                                         </div>
-                                        <p>Vitae tortor condimentum lacinia quis vel eros donec ac. Nam at lectus urna
-                                            duis convallis
-                                            convallis</p>
+                                        <p>{{ review.text}}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 d-flex flex-wrap">
-                                <div class="col-md-2 me-3 mb-3">
-                                    <div class="image-holder">
-                                        <img src="images/review-item2.jpg" alt="review" class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="review-content">
-                                        <div class="rating-container d-flex align-items-center mb-3">
-                                            <div class="rating" data-rating="1" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="2" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="3" onclick="rate(1)">
-                                                <svg class="star-fill" width="16" height="16">
-                                                    <use xlink:href="#star-fill"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="4" onclick="rate(1)">
-                                                <svg class="star-half" width="16" height="16">
-                                                    <use xlink:href="#star-half"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="5" onclick="rate(1)">
-                                                <svg class="star-empty" width="16" height="16">
-                                                    <use xlink:href="#star-empty"></use>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="review-header">
-                                            <span class="author-name">Jenny Rose</span>
-                                            <span class="review-date">– 03/06/2022</span>
-                                        </div>
-                                        <p>Vitae tortor condimentum lacinia quis vel eros donec ac. Nam at lectus urna
-                                            duis convallis
-                                            convallis</p>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
+                        {% if request.user.is_authenticated %}
                         <div class="add-review mt-5">
                             <h3>Add a review</h3>
                             <p>Your email address will not be published. Required fields are marked *</p>
-                            <form id="form" class="form-group">
 
-                                <div class="pb-3">
-                                    <div class="review-rating">
-                                        <span>Your rating *</span>
-                                        <div class="rating-container d-flex align-items-center">
-                                            <div class="rating" data-rating="1">
-                                                <svg width="24" height="24" class="text-primary">
-                                                    <use xlink:href="#star-solid"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="2">
-                                                <svg width="24" height="24" class="text-primary">
-                                                    <use xlink:href="#star-solid"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="3">
-                                                <svg width="24" height="24" class="text-primary">
-                                                    <use xlink:href="#star-solid"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="4">
-                                                <svg width="24" height="24" class="text-secondary">
-                                                    <use xlink:href="#star-solid"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="rating" data-rating="5">
-                                                <svg width="24" height="24" class="text-secondary">
-                                                    <use xlink:href="#star-solid"></use>
-                                                </svg>
-                                            </div>
-                                            <span class="rating-count">(3.5)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pb-3">
-                                    <input type="file" class="form-control" data-text="Choose your file">
-                                </div>
-                                <div class="pb-3">
-                                    <label>Your Review *</label>
-                                    <textarea class="form-control" placeholder="Write your review here"></textarea>
-                                </div>
-                                <div class="pb-3">
-                                    <label>Your Name *</label>
-                                    <input type="text" name="name" placeholder="Write your name here"
-                                           class="form-control">
-                                </div>
-                                <div class="pb-3">
-                                    <label>Your Email *</label>
-                                    <input type="text" name="email" placeholder="Write your email here"
-                                           class="form-control">
-                                </div>
-                                <div class="pb-3">
-                                    <label>
-                                        <input type="checkbox" required="">
-                                        <span class="label-body">Save my name, email, and website in this browser for the next
-                        time.</span>
-                                    </label>
-                                </div>
+<div class="half-star-ratings" data-rateyo-half-star="true"></div>
+                            <form id="review_form" class="form-group" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+{#                                <div class="pb-3">#}
+{#                                    <div class="review-rating">#}
+{#                                        <span>Your rating *</span>#}
+{#                                        <div class="rating-container d-flex align-items-center">#}
+{#                                            <div class="rating" data-rating="1">#}
+{#                                                <svg width="24" height="24" class="text-primary">#}
+{#                                                    <use xlink:href="#star-solid"></use>#}
+{#                                                </svg>#}
+{#                                            </div>#}
+{#                                            <div class="rating" data-rating="2">#}
+{#                                                <svg width="24" height="24" class="text-primary">#}
+{#                                                    <use xlink:href="#star-solid"></use>#}
+{#                                                </svg>#}
+{#                                            </div>#}
+{#                                            <div class="rating" data-rating="3">#}
+{#                                                <svg width="24" height="24" class="text-primary">#}
+{#                                                    <use xlink:href="#star-solid"></use>#}
+{#                                                </svg>#}
+{#                                            </div>#}
+{#                                            <div class="rating" data-rating="4">#}
+{#                                                <svg width="24" height="24" class="text-secondary">#}
+{#                                                    <use xlink:href="#star-solid"></use>#}
+{#                                                </svg>#}
+{#                                            </div>#}
+{#                                            <div class="rating" data-rating="5">#}
+{#                                                <svg width="24" height="24" class="text-secondary">#}
+{#                                                    <use xlink:href="#star-solid"></use>#}
+{#                                                </svg>#}
+{#                                            </div>#}
+{#                                            <span class="rating-count">(3.5)</span>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="pb-3">#}
+{#                                    <input type="file" class="form-control" data-text="Choose your file">#}
+{#                                </div>#}
+{#                                <input type="hidden" id = 'id_product_review' name = 'product_review' value="{{ post.slug}}">#}
+{#                                <div class="pb-3">#}
+{#                                    <label>Your Review *</label>#}
+{#                                    <textarea class="form-control" placeholder="Write your review here"></textarea>#}
+{#                                </div>#}
+                                <label for="id_text">Текст:</label>
+                                <textarea name="text" cols="40" rows="10" maxlength="500" required="" id="id_text"></textarea>
+
+                                <label for="id_rate">Rate:</label>
+
+<div class="rating">
+  <span class="star" data-value="1">★</span>
+  <span class="star" data-value="2">★</span>
+  <span class="star" data-value="3">★</span>
+  <span class="star" data-value="4">★</span>
+  <span class="star" data-value="5">★</span>
+</div>
+<select name="rate" required="" id="id_rate" style="display: none">
+  <option value="1">1 звезда</option>
+  <option value="2">2 звезды</option>
+  <option value="3">3 звезды</option>
+  <option value="4">4 звезды</option>
+  <option value="5">5 звезд</option>
+</select>
+
                                 <button type="submit" name="submit"
                                         class="btn btn-dark btn-large text-uppercase w-100">Submit
                                 </button>
                             </form>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+  const stars = document.querySelectorAll('.star');
+  const select = document.getElementById('id_rate');
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = parseInt(star.getAttribute('data-value'));
+      select.value = value.toString();
+      highlightStars(value);
+    });
+  });
+
+  function highlightStars(value) {
+    stars.forEach((star, index) => {
+      if (index < value) {
+        star.style.color = 'gold';
+      } else {
+        star.style.color = 'black';
+      }
+    });
+  }
+
+  select.addEventListener('change', () => {
+    const value = parseInt(select.value);
+    highlightStars(value);
+  });
+</script>
+
+<style>
+  .rating {
+    text-align: center;
+  }
+
+  .star {
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .readonly-star {
+    display: inline-block;
+    font-size: 20px;
+      color: gold;
+  }
+
+</style>

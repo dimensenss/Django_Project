@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 DEBUG_TOOLBAR_CONFIG = {
 
 }
-SITE_ID = 1
+# SITE_ID = 2
 # Application definition
 
 INSTALLED_APPS = [
