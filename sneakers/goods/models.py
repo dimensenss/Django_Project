@@ -53,7 +53,7 @@ class Sneakers(models.Model):
     def calculate_rate(self):
         average_rating = self.reviews.aggregate(Avg('rate'))['rate__avg']
         if average_rating is not None:
-            return round(average_rating)
+            return round(average_rating, 2)
         return 0
 
     def __str__(self):

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from users.models import User
-from users.utils import validate_email
+from users.utils import validate_email, validate_username
 
 
 class RegisterUserForm(UserCreationForm):
@@ -43,6 +43,11 @@ class LoginUserForm(AuthenticationForm):
         model = User
         fields = ('username', 'password')
 
+    def clean_username(self):
+        email = self.cleaned_data['username']
+        validate_username(email)
+        return email
+
 
 class ProfileUserForm(UserChangeForm):
     image = forms.ImageField(required=False)
@@ -59,8 +64,9 @@ class ProfileUserForm(UserChangeForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        validate_email(email)
+        validate_email(self, email)
         return email
+
 
 
 class UserPasswordChangeForm(PasswordChangeForm):

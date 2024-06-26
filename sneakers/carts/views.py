@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
+
 # Create your views here.
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from carts.models import Cart
 from carts.utils import get_user_carts
@@ -67,8 +68,15 @@ def cart_change(request):
     cart.save()
 
     user_carts = get_user_carts(request)
+    context = {"carts": user_carts}
+
+    # if referer page is create_order add key orders: True to context
+    referer = request.META.get('HTTP_REFERER')
+    if reverse('orders:create_order') in referer:
+        context["orders"] = True
+
     cart_items_html = render_to_string(
-        'carts/includes/included_cart.html', {'carts': user_carts}, request=request
+        'carts/includes/included_cart.html', context, request=request
     )
     response_data = {
         'cart_items_html': cart_items_html,
@@ -84,11 +92,18 @@ def cart_remove(request):
     cart.delete()
 
     user_carts = get_user_carts(request)
+    context = {"carts": user_carts}
+
+    # if referer page is create_order add key orders: True to context
+    referer = request.META.get('HTTP_REFERER')
+    if reverse('orders:create_order') in referer:
+        context["orders"] = True
+
     cart_items_html = render_to_string(
-        'carts/includes/included_cart.html', {'carts': user_carts}, request=request
+        'carts/includes/included_cart.html', context, request=request
     )
     response_data = {
-        'quantity_deleted':quantity_deleted,
+        'quantity_deleted': quantity_deleted,
         'message': 'Товар(и) видалено',
         'cart_items_html': cart_items_html,
     }

@@ -51,7 +51,14 @@ def show_product(request, product_slug):
             sneakers_first_image=F("first_image__image")).get(slug=product_slug)
 
     recently_viewed(request, product_slug)
-    data = DataMixin().get_user_context(title=product.title, request=request)
+
+    average_rating = product.reviews.aggregate(Avg('rate'))['rate__avg']
+    if average_rating is not None:
+        average_rating = round(average_rating, 1)
+    else:
+        average_rating = 0
+
+    data = DataMixin().get_user_context(title=product.title, request=request, rating=average_rating)
 
     context = {"post": product, 'form': form, **data}
 

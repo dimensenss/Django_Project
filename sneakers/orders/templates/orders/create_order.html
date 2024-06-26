@@ -40,7 +40,7 @@
 
         <div class="card mb-3">
             <div class="card-body">
-                <form action="{% url 'orders:create_order' %}" method="post">
+                <form action="{% url 'orders:create_order' %}" method="post" id="create_order_form">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-8">
@@ -96,7 +96,7 @@
                                 {% endif %}
                                 <label for="id_phone_number" class="form-label">Номер телефона:</label>
                                 <input type="text" class="form-control" id="id_phone_number" name="phone_number"
-                                       placeholder="098-765-43-21"
+                                       placeholder="(098) 000-0000"
                                        value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
                                        required>
                             </div>
