@@ -29,40 +29,53 @@ class SneakersHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
         c_def = self.get_user_context(title='Shop home',
-                                      filter=self.sneakers_filter,
-                                      )
+                                      filter=self.sneakers_filter)
 
         return dict(list(context.items()) + list(c_def.items()))
 
 
-def show_product(request, product_slug):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
+class SneakersDetail(DetailView):
+    template_name = "goods/product.html"
+    slug_url_kwarg = 'product_slug'
+    form_class = ReviewForm
+    context_object_name = 'post'
+
+    def get_object(self, queryset=None):
+        product = Sneakers.objects.prefetch_related('variations', 'reviews__user').annotate(
+            sneakers_first_image=F("first_image__image")).get(slug=self.kwargs.get(self.slug_url_kwarg))
+
+        recently_viewed(self.request, self.kwargs.get(self.slug_url_kwarg))
+        return product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        average_rating = self.object.reviews.aggregate(Avg('rate'))['rate__avg']
+
+        if average_rating is not None:
+            average_rating = round(average_rating, 1)
+        else:
+            average_rating = 0
+
+        c_def = DataMixin().get_user_context(title=self.object.title,
+                                             request=self.request,
+                                             rating=average_rating,
+                                             form=self.form_class)
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.product = get_object_or_404(Sneakers, slug=product_slug)
+            review.product = self.get_object()
             review.save()
+            messages.success(request, 'Ваш відгук опубліковано')
+            return redirect(self.request.path)
 
-    else:
-        form = ReviewForm()
-
-    product = Sneakers.objects.prefetch_related('variations', 'reviews__user').annotate(
-            sneakers_first_image=F("first_image__image")).get(slug=product_slug)
-
-    recently_viewed(request, product_slug)
-
-    average_rating = product.reviews.aggregate(Avg('rate'))['rate__avg']
-    if average_rating is not None:
-        average_rating = round(average_rating, 1)
-    else:
-        average_rating = 0
-
-    data = DataMixin().get_user_context(title=product.title, request=request, rating=average_rating)
-
-    context = {"post": product, 'form': form, **data}
-
-    return render(request, "goods/product.html", context=context)
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)
 
 
 class SneakersCategories(DataMixin, ListView):
@@ -121,7 +134,7 @@ def recently_viewed(request, product_slug):
             request.session["recently_viewed"].remove(product_slug)
         request.session["recently_viewed"].insert(0, product_slug)
         if len(request.session["recently_viewed"]) > MAX_RECENT_VIEWED_PRODUCTS:
-            del request.session["recently_viewed"][MAX_RECENT_VIEWED_PRODUCTS-1]
+            del request.session["recently_viewed"][MAX_RECENT_VIEWED_PRODUCTS - 1]
     request.session.modified = True
 
 
@@ -157,24 +170,6 @@ class BrandsAutocomplete(autocomplete.Select2QuerySetView):
 
         return qs
 
-
-# def create_review(request):
-#     if request.method == 'POST':
-#         form = ReviewForm(request.POST)
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             review.user = request.user
-#             review.product = get_object_or_404(Sneakers, slug=request.POST['product'])
-#             review.save()
-#             return redirect('goods:product', slug=product_slug)
-#
-#     else:
-#         form = ReviewForm()
-#
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'goods/product.html', context)
 
 
 

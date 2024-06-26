@@ -221,109 +221,12 @@
                         </div>
                         {% if request.user.is_authenticated %}
                         <div class="add-review mt-5">
-                            <h3>Add a review</h3>
-                            <p>Your email address will not be published. Required fields are marked *</p>
+                            <h3>Додати відгук</h3>
 
                             <div class="half-star-ratings" data-rateyo-half-star="true"></div>
                             <form id="review_form" class="form-group" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                {#
-                                <div class="pb-3">#}
-                                    {#
-                                    <div class="review-rating">#}
-                                        {# <span>Your rating *</span>#}
-                                        {#
-                                        <div class="rating-container d-flex align-items-center">#}
-                                            {#
-                                            <div class="rating" data-rating="1">#}
-                                                {#
-                                                <svg width="24" height="24" class="text-primary">#}
-                                                    {#
-                                                    <use xlink:href="#star-solid"></use>
-                                                    #}
-                                                    {#
-                                                </svg>
-                                                #}
-                                                {#
-                                            </div>
-                                            #}
-                                            {#
-                                            <div class="rating" data-rating="2">#}
-                                                {#
-                                                <svg width="24" height="24" class="text-primary">#}
-                                                    {#
-                                                    <use xlink:href="#star-solid"></use>
-                                                    #}
-                                                    {#
-                                                </svg>
-                                                #}
-                                                {#
-                                            </div>
-                                            #}
-                                            {#
-                                            <div class="rating" data-rating="3">#}
-                                                {#
-                                                <svg width="24" height="24" class="text-primary">#}
-                                                    {#
-                                                    <use xlink:href="#star-solid"></use>
-                                                    #}
-                                                    {#
-                                                </svg>
-                                                #}
-                                                {#
-                                            </div>
-                                            #}
-                                            {#
-                                            <div class="rating" data-rating="4">#}
-                                                {#
-                                                <svg width="24" height="24" class="text-secondary">#}
-                                                    {#
-                                                    <use xlink:href="#star-solid"></use>
-                                                    #}
-                                                    {#
-                                                </svg>
-                                                #}
-                                                {#
-                                            </div>
-                                            #}
-                                            {#
-                                            <div class="rating" data-rating="5">#}
-                                                {#
-                                                <svg width="24" height="24" class="text-secondary">#}
-                                                    {#
-                                                    <use xlink:href="#star-solid"></use>
-                                                    #}
-                                                    {#
-                                                </svg>
-                                                #}
-                                                {#
-                                            </div>
-                                            #}
-                                            {# <span class="rating-count">(3.5)</span>#}
-                                            {#
-                                        </div>
-                                        #}
-                                        {#
-                                    </div>
-                                    #}
-                                    {#
-                                </div>
-                                #}
-                                {#
-                                <div class="pb-3">#}
-                                    {# <input type="file" class="form-control" data-text="Choose your file">#}
-                                    {#
-                                </div>
-                                #}
-                                {# <input type="hidden" id='id_product_review' name='product_review'
-                                          value="{{ post.slug}}">#}
-                                {#
-                                <div class="pb-3">#}
-                                    {# <label>Your Review *</label>#}
-                                    {# <textarea class="form-control" placeholder="Write your review here"></textarea>#}
-                                    {#
-                                </div>
-                                #}
+
                                 <label for="id_text">Текст:</label>
                                 <textarea name="text" cols="40" rows="10" maxlength="500" required=""
                                           id="id_text"></textarea>
