@@ -7,9 +7,9 @@ from .views import *
 app_name = 'users'
 
 urlpatterns = [
-    path('login/', LoginUser, name='login'),
+    path('login/', UserLoginView.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
-    path('register/', RegisterUser, name='register'),
+    path('register/', RegisterUserView.as_view(), name='register'),
     path('profile/', ProfileUser.as_view(), name='profile'),
 
     path('password-change/', UserPasswordChange.as_view(), name='password_change'),

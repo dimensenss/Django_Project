@@ -79,7 +79,7 @@ class SneakersDetail(DetailView):
 
 
 class SneakersCategories(DataMixin, ListView):
-    model = Sneakers  # модель
+    queryset = Sneakers.objects.all().filter(is_published=True)
     template_name = 'goods/index.html'
     context_object_name = 'sneakers'
     allow_empty = True
@@ -90,7 +90,7 @@ class SneakersCategories(DataMixin, ListView):
         current_category = get_object_or_404(Category, slug=cat_slug)
 
         subcategories = current_category.get_descendants(include_self=True)
-        _queryset = Sneakers.objects.filter(cat__in=subcategories, is_published=True).select_related('cat').annotate(
+        _queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"))
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
@@ -102,8 +102,7 @@ class SneakersCategories(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
         c_def = self.get_user_context(cats=cats,
-                                      filter=self.sneakers_filter,
-                                      )
+                                      filter=self.sneakers_filter)
 
         return dict(list(context.items()) + list(c_def.items()))
 

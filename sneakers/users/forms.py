@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from users.models import User
@@ -66,6 +68,19 @@ class ProfileUserForm(UserChangeForm):
         email = self.cleaned_data['email']
         validate_email(self, email)
         return email
+
+    def clean_phone_number(self):
+        data = self.cleaned_data['phone_number']
+        data = re.sub(r'\D', '', data)
+
+        if not data.isdigit():
+            raise forms.ValidationError("Номер телефона потрібен містити тільки цифри")
+
+        pattern = re.compile(r'^\d{10}$')
+        if not pattern.match(data):
+            raise forms.ValidationError("Невірний формат номера")
+
+        return data
 
 
 
