@@ -3,15 +3,16 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
+from django.core.cache import cache
 from django.db.models import Prefetch, F
 from django.shortcuts import redirect
-
 
 from django.urls import reverse_lazy, reverse
 
 from django.views.generic import CreateView, UpdateView
 
 from carts.models import Cart
+from common.mixins import CacheMixin
 from orders.models import Order, OrderItem
 from users.forms import RegisterUserForm, LoginUserForm, ProfileUserForm, UserPasswordChangeForm
 from goods.utils import DataMixin
@@ -55,6 +56,7 @@ class UserLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Авторизація'
         return context
+
 
 # def LoginUser(request):
 #     if request.user.is_authenticated:
@@ -118,6 +120,7 @@ class RegisterUserView(CreateView):
         context['title'] = 'Реєстрація'
         return context
 
+
 # def RegisterUser(request):
 #     if request.method == 'POST':
 #         form = RegisterUserForm(data=request.POST)
@@ -158,7 +161,7 @@ def logout_user(request):
     return redirect('goods:home')
 
 
-class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
+class ProfileUser(LoginRequiredMixin, CacheMixin, DataMixin, UpdateView):
     template_name = 'users/profile.html'
     form_class = ProfileUserForm
 
@@ -175,24 +178,19 @@ class ProfileUser(LoginRequiredMixin, DataMixin, UpdateView):
             Prefetch(
                 "orderitem_set",
                 queryset=OrderItem.objects.select_related("product__sneakers").annotate(
-                    sneakers_slug=F("product__sneakers__slug"), sneakers_first_image = F("product__sneakers__first_image__image")
+                    sneakers_slug=F("product__sneakers__slug"),
+                    sneakers_first_image=F("product__sneakers__first_image__image")
                 ),
             )
         ).order_by("-id")
-
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=f'Кабінет {self.get_object().username}', orders=orders)
+        c_def = self.get_user_context(title=f'Кабінет {self.get_object().username}',
+                                      orders=self.get_set_cache(orders, f'orders_list{self.request.user.id}', 60))
 
-        return dict(list(context.items())+list(c_def.items()))
-
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 class UserPasswordChange(PasswordChangeView):
     form_class = UserPasswordChangeForm
     success_url = reverse_lazy("users:password_change_done")
     template_name = "includes/password_change_form.html"
-
-
-
-
-

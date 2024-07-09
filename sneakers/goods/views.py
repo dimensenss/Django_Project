@@ -90,13 +90,14 @@ class SneakersCategories(DataMixin, ListView):
         current_category = get_object_or_404(Category, slug=cat_slug)
 
         subcategories = current_category.get_descendants(include_self=True)
-        _queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
+        queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"))
 
-        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=_queryset)
-        _queryset = self.sneakers_filter.qs
 
-        return _queryset
+        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
+        queryset = self.sneakers_filter.qs
+
+        return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

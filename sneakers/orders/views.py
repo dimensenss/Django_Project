@@ -1,9 +1,12 @@
 from django.contrib import messages, auth
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
+from django.views.generic import FormView
 
 from carts.models import Cart
 from goods.utils import DataMixin
@@ -12,17 +15,33 @@ from orders.models import Order, OrderItem
 from users.models import User
 
 
+# class CreateOrderView(LoginRequiredMixin, FormView):
+#     template_name = 'orders/create_order.html'
+#     form_class = CreateOrderForm
+#     success_url = reverse_lazy('users:profile')
+#
+#     def get_initial(self):
+#         initial = super().get_initial()
+#         initial['first_name'] = self.request.user.first_name
+#         initial['last_name'] = self.request.user.last_name
+#         initial['phone_number'] = self.request.user.phone_number
+#         initial['email'] = self.request.user.email
+#         return initial
+#     def form_valid(self, form):
+#         ...
+
+
+
 def create_order(request):
     if request.method == 'POST':
         form = CreateOrderForm(data=request.POST)
         if form.is_valid():
             try:
                 with transaction.atomic():
-
                     session_key = request.session.session_key
-
                     if request.user.is_authenticated:  # Авторизирован
                         user = request.user
+
                     elif User.objects.filter(email=form.cleaned_data['email']):  # Не авторизирован но есть аккаунт
                         messages.warning(request, 'Користувач з таким email вже існує. Будь ласка, увійдіть.')
                         return redirect('orders:create_order')
