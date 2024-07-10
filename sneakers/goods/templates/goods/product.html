@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load sneakers_tags %}
+{% load cache %}
 {% load static %}
 {% block header %}
 
@@ -7,8 +8,11 @@
 
 {% block content %}
     <section class="single-product">
+    {% cache 3600 cached_breadcrumbs post.cat %}
         {% get_breadcrumbs post.cat %}
+    {% endcache %}
         {% include 'goods/product_content_2.html' %}
+
     </section>
 
     <div class="container-fluid">

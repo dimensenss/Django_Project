@@ -32,7 +32,7 @@ class UserLoginView(LoginView):
     def get_success_url(self):
         redirect_page = self.request.POST.get('next', None)
         if redirect_page and redirect_page != reverse('users:logout'):
-            return redirect(redirect_page)
+            return redirect_page
         return reverse_lazy('goods:home')
 
     def form_valid(self, form):
