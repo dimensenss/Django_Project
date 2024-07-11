@@ -1,7 +1,10 @@
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.db.models import Prefetch, F, Min, Max
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.edit import FormMixin
+
 from sneakers.settings import MAX_RECENT_VIEWED_PRODUCTS
 from .forms import ReviewForm
 from .models import *
@@ -34,7 +37,7 @@ class SneakersHome(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class SneakersDetail(DetailView):
+class SneakersDetail(FormMixin, DetailView):
     template_name = "goods/product.html"
     slug_url_kwarg = 'product_slug'
     form_class = ReviewForm
@@ -64,18 +67,30 @@ class SneakersDetail(DetailView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.get_form()
         if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        try:
             review = form.save(commit=False)
-            review.user = request.user
+            if not self.request.user.is_authenticated:
+                raise ValidationError('Ви повинні авторизуватися')
+            review.user = self.request.user
             review.product = self.get_object()
             review.save()
-            messages.success(request, 'Ваш відгук опубліковано')
+            messages.success(self.request, 'Ваш відгук опубліковано')
             return redirect(self.request.path)
 
-        context = self.get_context_data()
-        context['form'] = form
-        return self.render_to_response(context)
+        except ValidationError:
+            messages.error(self.request, 'Ваш відгук не опубліковано')
+            return self.render_to_response({'form': form})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ваш відгук не опубліковано')
+        return self.render_to_response({'form': form})
 
 
 class SneakersCategories(DataMixin, ListView):
@@ -92,7 +107,6 @@ class SneakersCategories(DataMixin, ListView):
         subcategories = current_category.get_descendants(include_self=True)
         queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"))
-
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -169,8 +183,6 @@ class BrandsAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(name__istartswith=self.q)
 
         return qs
-
-
 
 
 def update_review(request):
