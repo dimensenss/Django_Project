@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db.models import Prefetch, F, Min, Max
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.views import View
 from django.views.generic.edit import FormMixin
 
 from sneakers.settings import MAX_RECENT_VIEWED_PRODUCTS
@@ -59,9 +61,12 @@ class SneakersDetail(FormMixin, DetailView):
         else:
             average_rating = 0
 
+        reviews = self.object.reviews.all().order_by('-date')
+
         c_def = DataMixin().get_user_context(title=self.object.title,
                                              request=self.request,
                                              rating=average_rating,
+                                             reviews=reviews,
                                              form=self.form_class)
 
         return dict(list(context.items()) + list(c_def.items()))
@@ -191,3 +196,21 @@ def update_review(request):
 
 def delete_review(request):
     ...
+
+
+class FilterReviewsView(View):
+    def get(self, request):
+        post_id = request.GET.get('post_id')
+        sort_by = request.GET.get('sort_by')
+        reviews = Review.objects.filter(product=post_id)
+
+        reviews = reviews.order_by(sort_by)
+
+        reviews_block_html = render_to_string(
+            'includes/reviews_block.html', {'reviews': reviews}, request=request
+        )
+        response_data = {
+            'reviews_block_html': reviews_block_html,
+        }
+
+        return JsonResponse(response_data)

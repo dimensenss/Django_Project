@@ -1,0 +1,20 @@
+
+{% for review in reviews %}
+    <div class="card mb-2">
+        <div class="d-flex justify-content-between"></div>
+        <h5 class="card-header ps-2">{{ review.user }}</h5>
+        <p class="font-weight-normal text-secondary ps-2 pt-2 m-0">{{ review.date }}</p>
+        <div class="card-body pt-0">
+            <div class="d-flex flex-row">
+                {% for _ in 'x'|rjust:review.rate %}
+                    <span class="readonly-star">★</span>
+                {% endfor %}
+            </div>
+            <blockquote class="blockquote mb-0">
+                <p>{{ review.text }}</p>
+            </blockquote>
+
+            <a href="#" class="text-primary">Відповісти</a>
+        </div>
+    </div>
+{% endfor %}
