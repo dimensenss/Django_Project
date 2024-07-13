@@ -15,7 +15,7 @@
 
     </section>
 
-    <div class="container-fluid">
+    <div class="container">
         <h4>Також вас можуть зацікавити</h4>
         {% get_products_by_tag post as query %}
         <div id="simple-scroll" class="scrolling-wrapper-flexbox">
@@ -64,7 +64,7 @@
             {% endfor %}
         </div>
 
-        <h4>Переглянуті товари</h4>
+        <h4 class="mt-2">Переглянуті товари</h4>
 
         <div id="simple-scroll" class="scrolling-wrapper-flexbox">
             {% for product in recently_viewed_qs %}

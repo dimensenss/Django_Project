@@ -148,7 +148,12 @@ class ProductImage(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=255, verbose_name='Назва бренду')
-
+    image = ProcessedImageField(
+        upload_to="brand_images/%Y/%m/%d/",
+        processors=[ResizeToFill(200, 100)],
+        format='JPEG',
+        options={'quality': 90}
+    )
     class Meta:
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренди'

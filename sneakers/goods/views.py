@@ -21,20 +21,26 @@ class SneakersHome(DataMixin, ListView):
     # allow_empty = False #если вернется пустой список из базы - ошибка 404
     tag = None
     sneakers_filter = None
+    paginate_by = 0
 
-    def get_queryset(self):
-        queryset = Sneakers.objects.filter(is_published=1).annotate(
-            sneakers_first_image=F("first_image__image"))
-
-        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
-        queryset = self.sneakers_filter.qs
-
-        return queryset
+    # def get_queryset(self):
+    #     queryset = Sneakers.objects.filter(is_published=1).annotate(
+    #         sneakers_first_image=F("first_image__image"))
+    #
+    #     self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
+    #     queryset = self.sneakers_filter.qs
+    #
+    #     return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
+        promo_products = self.model.objects.filter(is_published=1).annotate(
+            sneakers_first_image=F("first_image__image")).filter(discount__gt=0.0)
+        brands = Brand.objects.all()
         c_def = self.get_user_context(title='Shop home',
-                                      filter=self.sneakers_filter)
+                                      filter=self.sneakers_filter,
+                                      promo_products=promo_products,
+                                      brands=brands)
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -100,7 +106,7 @@ class SneakersDetail(FormMixin, DetailView):
 
 class SneakersCategories(DataMixin, ListView):
     queryset = Sneakers.objects.all().filter(is_published=True)
-    template_name = 'goods/index.html'
+    template_name = 'goods/categories.html'
     context_object_name = 'sneakers'
     allow_empty = True
     sneakers_filter = None
@@ -126,6 +132,27 @@ class SneakersCategories(DataMixin, ListView):
 
         return dict(list(context.items()) + list(c_def.items()))
 
+
+class SneakersSearch(DataMixin, ListView):
+    queryset = Sneakers.objects.all().filter(is_published=True)
+    template_name = 'goods/categories.html'
+    context_object_name = 'sneakers'
+    allow_empty = True
+    sneakers_filter = None
+
+    def get_queryset(self):
+        queryset = super().get_queryset().annotate(
+            sneakers_first_image=F("first_image__image"))
+        self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
+        queryset = self.sneakers_filter.qs
+
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(filter=self.sneakers_filter)
+
+        return dict(list(context.items()) + list(c_def.items()))
 
 def contacts(request):
     return HttpResponse("contacts")

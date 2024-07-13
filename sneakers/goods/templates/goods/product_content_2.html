@@ -278,27 +278,30 @@
                             </div>
                         {% endif %}
 
+                        {% if reviews %}
+                            <div class="d-flex flex-column py-2">
 
-                        <div class="d-flex flex-column py-2">
+                                <div class="d-flex justify-content-end">
+                                    <div class="col-3 my-2">
+                                        <input type="hidden" value="{{ post.id }}" id="post_id">
+                                        <select class="form-select me-2" id="reviews_sort">
+                                            <option value="-date" selected>Нові</option>
+                                            <option value="date">Старі</option>
+                                            <option value="-rate">Найкращі</option>
+                                            <option value="rate">Найгірші</option>
 
-                            <div class="d-flex justify-content-end">
-                                <div class="col-3 my-2">
-                                <input type="hidden" value="{{ post.id }}" id="post_id">
-                                <select class="form-select me-2" id="reviews_sort">
-                                    <option value="-date" selected>Нові</option>
-                                    <option value="date">Старі</option>
-                                    <option value="-rate">Найкращі</option>
-                                    <option value="rate">Найгірші</option>
-
-                                </select>
+                                        </select>
                                     </div>
-                            </div>
+                                </div>
 
-                            <div id="reviews-container">
-                                {% include 'includes/reviews_block.html' %}
-                            </div>
+                                <div id="reviews-container">
+                                    {% include 'includes/reviews_block.html' %}
+                                </div>
 
-                        </div>
+                            </div>
+                        {% else %}
+                            <h3 class="text-center m-2">Відгуків поки немає, станьте першим</h3>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -9,7 +9,7 @@ app_name = 'goods'
 
 urlpatterns = [
     path('', SneakersHome.as_view(), name='home'),  # http://127.0.0.1:8000/
-    path('search/', SneakersHome.as_view(), name='search'),
+    path('search/', SneakersSearch.as_view(), name='search'),
     path('about/', about, name='about'),
     path('contacts/', contacts, name='contacts'),
     re_path(r'^category/(?P<cat_slug>[-\w/]+)/$', SneakersCategories.as_view(), name='show_cat'),

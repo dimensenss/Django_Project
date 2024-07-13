@@ -9,217 +9,67 @@
     <!-- Section-->
 
     <section class="py-0">
-
-        <div class="row">
-            <div class="d-flex justify-content-center">
-                <h4>{% if request.GET.title_search %}Результати пошуку "
-                    <span class="text-success">{{ request.GET.title_search }}</span>"&nbsp;{% endif %}</h4>
-
-                {% if not sneakers %}
-                    <h4>Нічого не знайдено</h4>
-                {% endif %}
-            </div>
-        </div>
-
-
-        <div class="text-center">
-            {% if request.path == '/' %}
-                <h1>Популярні товари</h1>
-            {% endif %}
-
-        </div>
-
-        <div class="filter-btn">
-            <a class="custom-btn btn-1 a-light" data-bs-toggle="offcanvas" href="#offcanvasExample"
-               role="button"
-               aria-controls="offcanvasExample" type="Submit">
-                Фільтри
-            </a>
-        </div>
-
         <div class="layout layout_with_sidebar">
             <section class="content_type_catalog">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for item in sneakers %}
-                        {% if item.is_published %}
-                            <div class="col mb-5">
-                                <div class="card h-100 my-card">
-                                    <!-- Product image-->
-                                    {% if item.images %}
-
-                                        <a class="a-dark" href="{{ item.get_absolute_url }}">
-                                            <img class="card-img-top image-container-img image-s"
-                                                 src="{% get_media_prefix %}{{ item.sneakers_first_image }}"
-                                                 alt="{{ item.title|truncatechars:24 }}"/>
-                                        </a>
-                                    {% else %}
-                                        <a class="a-dark" href="{{ item.get_absolute_url }}">
-                                            <img class="card-img-top"
-                                                 src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                                                 alt="{{ item.title }}"/>
-                                        </a>
-                                    {% endif %}
-                                    <!-- Product details-->
-                                    <span class="card-body">
-                                        <div class="text-center">
-                                            <!-- Product name-->
-                                            <h3><a class="a-dark"
-                                                   href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
-                                            <!-- Product price-->
-                                        </div>
-                                        <div class="me-auto d-flex justify-content-between">
-                                            <div>
-                                                {% if item.discount %}
-                                                    <p class="old-price">{{ item.price }} $</p>
-                                                    <p class="discount-price">{{ item.discount }} $</p>
-                                                {% else %}
-                                                    <p class="usual-price">{{ item.price }} $</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </span>
-                                    <!-- Product actions-->
-                                    <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
-                                        <p class="ventor-code">Артикул: {{ item.display_id }}</p>
-                                    </div>
-                                </div>
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active slide-item">
+                                <img src="{% static 'images/slide1.jpg' %}" class="d-block w-100" alt="...">
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </section>
-
-            <aside class="d-none d-lg-flex d-xl-flex d-xxl-flex">
-                <div class="sidebar">
-
-                    <form method="get" class="offcanvas-body py-0">
-
-
-                        <div class="d-flex flex-column">
-
-                            <div class="accordion" id="accordionPanelBrand">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="panelsStayOpen-brand">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                                                aria-controls="panelsStayOpen-collapseOne">
-                                            Бренд
-                                        </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                                         aria-labelledby="panelsStayOpen-brand">
-                                        <div class="accordion-body">
-                                            {% for brand in filter.form.brand %}
-                                                <div class="row">
-                                                    <div class="col-md-2 py-1">
-                                                        {{ brand.tag }}
-
-                                                    </div>
-                                                    <div class="col-md-10 py-1">
-                                                        {{ brand.choice_label }}
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="carousel-item slide-item">
+                                <img src="{% static 'images/slide2.jpg' %}" class="d-block w-100" alt="...">
                             </div>
-                            <div class="d-flex flex-column py-2">
-                                <label for="order_by">Оберіть сортування</label>
-                                {{ filter.form.order_by }}
-                            </div>
-
-
-                            <div class="accordion  mb-2" id="accordionPanelSizes">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="panelsStayOpen-sizes">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
-                                                aria-controls="panelsStayOpen-collapseTwo">
-                                            Розміри
-                                        </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
-                                         aria-labelledby="panelsStayOpen-sizes">
-                                        <div class="accordion-body">
-                                            <div class="d-flex flex-column">
-                                                <div class="d-flex flex-wrap">
-                                                    {% get_all_sizes as sizes %}
-                                                    {% for size in sizes %}
-                                                        <div class="form-element">
-                                                            <input type="checkbox" class="size-checkbox"
-                                                                   value="{{ size }}" id="size-{{ size }}">
-                                                            <label for="size-{{ size }}">
-                                                                <div class="title">
-                                                                    {{ size }}
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    {% endfor %}
-                                                </div>
-                                                {{ filter.form.size }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="d-flex flex-row justify-content-center align-items-center">
-
-                                    {{ filter.form.price__gte }}
-                                    {{ filter.form.price__lte }}
-                                    <button type="submit" class="btn btn-secondary mb-2">
-                                        Ок
-                                    </button>
-                                </div>
-                                {% get_min_max_prices sneakers %}
-                                <div class="row mx-1 mb-2">
-                                    <div id="slider-range-lg" data-min-price="{{ min_price }}"
-                                         data-max-price="{{ max_price }}"></div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary mb-2">
-                                    Примінити фільтри
-                                </button>
+                            <div class="carousel-item slide-item">
+                                <img src="{% static 'images/slide3.jpg' %}" class="d-block w-100" alt="...">
                             </div>
                         </div>
-
-                    </form>
-
-
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
                 </div>
-            </aside>
-        </div>
+                <div class="container-fluid m-0 p-0 mt-4">
+                    {% if recently_viewed_qs|length > 0 %}
+                        <h4>Останні переглянуті товари</h4>
 
-        </div>
-        <div class="container-fluid">
-            {% if recently_viewed_qs|length > 0 %}
-                <h4>Переглянуті товари</h4>
+                        <div id="simple-scroll" class="scrolling-wrapper-flexbox">
+                            {% for product in recently_viewed_qs %}
+                                {% if product.is_published %}
 
-                <div id="simple-scroll" class="scrolling-wrapper-flexbox">
-                    {% for product in recently_viewed_qs %}
-                        {% if product.is_published %}
+                                    <div class="card small-card">
+                                        <!-- Product image-->
+                                        {% if product.images %}
 
-                            <div class="card small-card">
-                                <!-- Product image-->
-                                {% if product.images %}
-
-                                    <a class="a-dark" href="{{ product.get_absolute_url }}">
-                                        <img class="card-img-top image-container-img "
-                                             src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
-                                             alt="{{ product.title }}"/>
-                                    </a>
-                                {% else %}
-                                    <a class="a-dark" href="{{ product.get_absolute_url }}">
-                                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                                             alt="{{ product.title }}"/>
-                                    </a>
-                                {% endif %}
-                                <!-- Product details-->
-                                <span class="card-body">
+                                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                                <img class="card-img-top image-container-img "
+                                                     src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
+                                                     alt="{{ product.title }}"/>
+                                            </a>
+                                        {% else %}
+                                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                                <img class="card-img-top"
+                                                     src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                     alt="{{ product.title }}"/>
+                                            </a>
+                                        {% endif %}
+                                        <!-- Product details-->
+                                        <span class="card-body">
                         <div class="d-flex justify-content-center">
                             <!-- Product name-->
                             <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
@@ -236,17 +86,107 @@
                             </div>
                         </div>
                     </span>
-                                <!-- Product actions-->
-                                <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
-                                    <p class="ventor-code">Артикул: {{ product.display_id }}</p>
-                                </div>
-                            </div>
+                                        <!-- Product actions-->
+                                        <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
+                                            <p class="ventor-code">Артикул: {{ product.display_id }}</p>
+                                        </div>
+                                    </div>
 
-                        {% endif %}
-                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+
+                <div class="container-fluid m-0 p-0 mt-4">
+                    {% if recently_viewed_qs|length > 0 %}
+                        <h4>Акційні товари</h4>
+
+                        <div id="simple-scroll" class="scrolling-wrapper-flexbox">
+                            {% for product in promo_products %}
+                                {% if product.is_published %}
+
+                                    <div class="card small-card">
+                                        <!-- Product image-->
+                                        {% if product.images %}
+
+                                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                                <img class="card-img-top image-container-img "
+                                                     src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
+                                                     alt="{{ product.title }}"/>
+                                            </a>
+                                        {% else %}
+                                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                                <img class="card-img-top"
+                                                     src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                     alt="{{ product.title }}"/>
+                                            </a>
+                                        {% endif %}
+                                        <!-- Product details-->
+                                        <span class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <!-- Product name-->
+                            <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                            <!-- Product price-->
+                        </div>
+                        <div class="me-auto d-flex justify-content-between">
+                            <div>
+                                {% if product.discount %}
+                                    <p class="old-price">{{ product.price }} $</p>
+                                    <p class="discount-price">{{ product.discount }} $</p>
+                                {% else %}
+                                    <p class="usual-price">{{ product.price }} $</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </span>
+                                        <!-- Product actions-->
+                                        <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
+                                            <p class="ventor-code">Артикул: {{ product.display_id }}</p>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+            <div class="brands-list">
+                {% for brand in brands %}
+            <li class="brand-item">
+                <a href="{% url 'goods:search'%}?brand={{ brand.id }} " class="brand-link">
+                    <img src="{{ brand.image.url }}" alt="" class="brand-picture">
+                </a>
+            </li>
+            {% endfor %}
+            </div>
+            </section>
+
+
+            <aside class="d-none d-lg-flex d-xl-flex d-xxl-flex">
+                <div class="sidebar">
+
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row align-items-baseline"><i class="fa-solid fa-image"></i>
+                            <p class="ms-2">Category</p></div>
+                        <div class="d-flex flex-row align-items-baseline"><i class="fa-solid fa-image"></i>
+                            <p class="ms-2">Category</p></div>
+                        <div class="d-flex flex-row align-items-baseline"><i class="fa-solid fa-image"></i>
+                            <p class="ms-2">Category</p></div>
+                        <div class="d-flex flex-row align-items-baseline"><i class="fa-solid fa-image"></i>
+                            <p class="ms-2">Category</p></div>
+                        <div class="d-flex flex-row align-items-baseline"><i class="fa-solid fa-image"></i>
+                            <p class="ms-2">Category</p></div>
+                    </div>
+
+
+                </div>
+            </aside>
         </div>
+
+        </div>
+
 
     </section>
 
