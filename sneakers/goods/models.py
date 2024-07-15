@@ -43,6 +43,11 @@ class Sneakers(models.Model):
         verbose_name='Перше зображення'
     )
 
+    def in_stock(self):
+        if self.variations.all().total_quantity() > 0:
+            return True
+        return False
+
     def save(self, *args, **kwargs):
         self.sell_price = self.calculate_sell_price()
         super().save(*args, **kwargs)

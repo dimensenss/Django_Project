@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.db.models import Prefetch, F, Min, Max
+from django.db.models import Prefetch, F, Min, Max, Sum
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -106,7 +106,7 @@ class SneakersDetail(FormMixin, DetailView):
 
 class SneakersCategories(DataMixin, ListView):
     queryset = Sneakers.objects.all().filter(is_published=True)
-    template_name = 'goods/categories.html'
+    template_name = 'goods/catalog.html'
     context_object_name = 'sneakers'
     allow_empty = True
     sneakers_filter = None
@@ -117,7 +117,8 @@ class SneakersCategories(DataMixin, ListView):
 
         subcategories = current_category.get_descendants(include_self=True)
         queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
-            sneakers_first_image=F("first_image__image"))
+            sneakers_first_image=F("first_image__image"),
+            total_quantity=Sum('variations__quantity'))
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -135,7 +136,7 @@ class SneakersCategories(DataMixin, ListView):
 
 class SneakersSearch(DataMixin, ListView):
     queryset = Sneakers.objects.all().filter(is_published=True)
-    template_name = 'goods/categories.html'
+    template_name = 'goods/catalog.html'
     context_object_name = 'sneakers'
     allow_empty = True
     sneakers_filter = None

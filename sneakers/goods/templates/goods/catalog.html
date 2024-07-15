@@ -15,7 +15,8 @@
                 {% if not sneakers %}
                     {% if request.GET.title_search %}
                         <h3 class="m-4">
-                            За запитом <span class="text-secondary">"{{ request.GET.title_search }}"</span> нічого не знайдено</h3>
+                            За запитом <span class="text-secondary">"{{ request.GET.title_search }}"</span> нічого не
+                            знайдено</h3>
                     {% else %}
                         <h3 class="m-4">
                             Поки що немає товару
@@ -29,7 +30,6 @@
 
             </div>
         </div>
-
 
 
         <div class="filter-btn">
@@ -46,7 +46,7 @@
                     {% for item in sneakers %}
                         {% if item.is_published %}
                             <div class="col mb-5">
-                                <div class="card h-100 my-card">
+                                <div class="card h-100 my-card {% if item.total_quantity <= 0 %}out-of-stock{% endif %}">
                                     <!-- Product image-->
                                     {% if item.images %}
 
@@ -70,6 +70,7 @@
                                                    href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
                                             <!-- Product price-->
                                         </div>
+
                                         <div class="me-auto d-flex justify-content-between">
                                             <div>
                                                 {% if item.discount %}
@@ -80,6 +81,15 @@
                                                 {% endif %}
                                             </div>
                                         </div>
+                                        {% if item.total_quantity <= 0 %}
+                                            <p class="text-secondary">Немає на складі </p>
+                                        {% elif item.total_quantity < 3 %}
+                                            <p class="text-danger">Закінчується </p>
+                                        {% else %}
+                                            <p class="text-success">Є в наявності </p>
+                                        {% endif %}
+
+
                                     </span>
                                     <!-- Product actions-->
                                     <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
@@ -229,6 +239,10 @@
                             <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                             <!-- Product price-->
                         </div>
+
+
+
+
                         <div class="me-auto d-flex justify-content-between">
                             <div>
                                 {% if product.discount %}
@@ -243,6 +257,7 @@
                                 <!-- Product actions-->
                                 <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
                                     <p class="ventor-code">Артикул: {{ product.display_id }}</p>
+
                                 </div>
                             </div>
 
