@@ -24,14 +24,14 @@
                                     aria-label="Slide 3"></button>
                         </div>
                         <div class="carousel-inner">
-                            <div class="carousel-item active slide-item">
-                                <img src="{% static 'images/slide1.jpg' %}" class="d-block w-100" alt="...">
+                            <div class="carousel-item active slide-item ">
+                                <img src="{% static 'images/slide1.jpg' %}" class="d-block w-100 rounded" alt="...">
                             </div>
-                            <div class="carousel-item slide-item">
-                                <img src="{% static 'images/slide2.jpg' %}" class="d-block w-100" alt="...">
+                            <div class="carousel-item slide-item ">
+                                <img src="{% static 'images/slide2.jpg' %}" class="d-block w-100 rounded" alt="...">
                             </div>
-                            <div class="carousel-item slide-item">
-                                <img src="{% static 'images/slide3.jpg' %}" class="d-block w-100" alt="...">
+                            <div class="carousel-item slide-item ">
+                                <img src="{% static 'images/slide3.jpg' %}" class="d-block w-100 rounded" alt="...">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -135,43 +135,41 @@
 
 
         <section class="container-fluid mt-3 px-3 m-0 p-0">
-            <ul class="d-flex flex-column flex-md-row w-100 p-0">
-                <li class="banner-item col-12 col-md-4 text-center border rounded">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <img src="{% static 'images/card-image6.jpg' %}" alt="Жінки" class="img-fluid">
-                        <h3>Жінкам</h3>
+            <ul class="d-flex flex-column flex-md-row w-100 p-0 gap-3">
+                <li class="banner-item text-center rounded flex-fill">
+                    <a href="#" class="text-decoration-none text-dark ">
+                        <div class="img-container">
+                            <img src="{% static 'images/women.jpg' %}" alt="Жінки" class="img-fluid">
+                        </div>
+                        <h3 class="text-overlay m-0">Жінкам</h3>
                     </a>
                 </li>
-                <li class="banner-item col-12 col-md-4 text-center border rounded">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <img src="{% static 'images/card-image2.jpg' %}" alt="Чоловікам" class="img-fluid">
-                        <h3>Чоловікам</h3>
+                <li class="banner-item text-center rounded flex-fill">
+                    <a href="#" class="text-decoration-none text-dark ">
+                        <div class="img-container">
+                            <img src="{% static 'images/man.webp' %}" alt="Чоловікам" class="img-fluid">
+                        </div>
+                        <h3 class="text-overlay m-0">Чоловікам</h3>
                     </a>
                 </li>
-                <li class="banner-item col-12 col-md-4 text-center border rounded">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <img src="{% static 'images/card-image3.jpg' %}" alt="Дітям" class="img-fluid">
-                        <h3>Дітям</h3>
+                <li class="banner-item text-center rounded flex-fill">
+                    <a href="#" class="text-decoration-none text-dark ">
+                        <div class="img-container">
+                            <img src="{% static 'images/diti.jpg' %}" alt="Дітям" class="img-fluid">
+                        </div>
+                        <h3 class="text-overlay m-0">Дітям</h3>
                     </a>
                 </li>
             </ul>
         </section>
 
 
-        <div class="main-product-list">
-
-            {# Start recent products #}
-            {% get_horizontal_products_list recently_viewed_qs 'Останні переглянуті товари' %}
-            {# End recent products #}
-
-            {# Start promo products #}
-            {% get_horizontal_products_list promo_products 'Акційні товари' %}
-            {#  End promo products #}
-
+        <div class="main-product-list ">
             {# Start brand list #}
-            <div class="brands-list">
+        <h2 class="text-center mt-3">Популярні бренди</h2>
+            <div class="brands-list border rounded px-2 py-2">
                 {% for brand in brands %}
-                    <li class="brand-item">
+                    <li class="brand-item ">
                         <a href="{% url 'goods:search' %}?brand={{ brand.id }} " class="brand-link">
                             <img src="{{ brand.image.url }}" alt="" class="brand-picture">
                         </a>
@@ -179,6 +177,18 @@
                 {% endfor %}
             </div>
             {# End brand list #}
+
+            {# Start promo products #}
+            {% get_horizontal_products_list promo_products 'Акційні товари' %}
+            {#  End promo products #}
+
+            {# Start recent products #}
+            {% get_horizontal_products_list recently_viewed_qs 'Останні переглянуті товари' %}
+            {# End recent products #}
+
+
+
+
         </div>
 
 
