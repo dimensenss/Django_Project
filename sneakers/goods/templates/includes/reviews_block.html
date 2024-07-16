@@ -1,20 +1,132 @@
+<div class="card mb-2">
 
-{% for review in reviews %}
-    <div class="card mb-2">
-        <div class="d-flex justify-content-between"></div>
-        <h5 class="card-header ps-2">{{ review.user }}</h5>
-        <p class="font-weight-normal text-secondary ps-2 pt-2 m-0">{{ review.date }}</p>
-        <div class="card-body pt-0">
-            <div class="d-flex flex-row">
-                {% for _ in 'x'|rjust:review.rate %}
-                    <span class="readonly-star">★</span>
-                {% endfor %}
-            </div>
-            <blockquote class="blockquote mb-0">
-                <p>{{ review.text }}</p>
-            </blockquote>
+    <h3 class="card-header p-3 ps-2 m-0 p-0">Відгуки покупців про {{ post.title }}</h3>
 
-            <a href="#" class="text-primary">Відповісти</a>
+    <div class="card-body pt-0">
+        <div class="d-flex align-items-baseline ">
+            {% if rating == 0 %}
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+            {% else %}
+                <span>
+                                {% for _ in 'x'|rjust:rating %}
+                                    <span class="readonly-star">★</span>
+                                {% endfor %}
+                                  </span>
+            {% endif %}
+            <p class="m-0 ms-2 ">
+                {{ post.reviews.all.count }} відгуків
+            </p>
         </div>
+
+        {% if request.user.is_authenticated %}
+            <div class="add-review mt-2">
+
+                <div class="card">
+                    <div class="card-header ps-2">
+                        <h4>Додайте ваш відгук</h4>
+                    </div>
+
+                    <div class="card-body ">
+                        <div class="half-star-ratings" data-rateyo-half-star="true"></div>
+
+                        <form id="review_form" class="form-group" method="post"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="id_text">Ваші враження:</label>
+                                <textarea class='form-control' name="text" rows="3" required=""
+                                          id="id_text"></textarea>
+                            </div>
+
+                            <div class="d-flex align-items-baseline ">
+                                <label for="id_rate" class="pe-2">Рейтинг:</label>
+                                <div class="rating">
+                                    <span class="star" data-value="1">★</span>
+                                    <span class="star" data-value="2">★</span>
+                                    <span class="star" data-value="3">★</span>
+                                    <span class="star" data-value="4">★</span>
+                                    <span class="star" data-value="5">★</span>
+                                </div>
+                                <select name="rate" required="" id="id_rate" style="display: none">
+                                    <option value="1">1 звезда</option>
+                                    <option value="2">2 звезды</option>
+                                    <option value="3">3 звезды</option>
+                                    <option value="4">4 звезды</option>
+                                    <option value="5">5 звезд</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" name="submit"
+                                    class="btn btn-dark btn-large mt-2">Відправити
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+            <div class="mb-1 mt-2">
+                <p>Зареєструйтеся, щоб залишити відгук</p>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                <a class="btn btn-secondary me-3 pb-1" href="{% url 'users:login' %}" role="button">Вхід</a>
+                <a class="btn btn-secondary pb-1" href="{% url 'users:register' %}">Реєстрація</a>
+            </div>
+        {% endif %}
     </div>
-{% endfor %}
+</div>
+
+
+
+{% if reviews %}
+    <div class="d-flex flex-column py-2">
+
+        <div class="d-flex justify-content-end">
+            <div class="col-3 my-2">
+                <input type="hidden" value="{{ post.id }}" id="post_id">
+                <select class="form-select me-2" id="reviews_sort">
+                    <option value="-date" selected>Нові</option>
+                    <option value="date">Старі</option>
+                    <option value="-rate">Найкращі</option>
+                    <option value="rate">Найгірші</option>
+
+                </select>
+            </div>
+        </div>
+
+        <div id="reviews-container">
+            {% for review in reviews %}
+                <div class="card mb-2">
+                    <div class="d-flex justify-content-between"></div>
+                    <h5 class="card-header ps-2">{{ review.user }}</h5>
+                    <p class="font-weight-normal text-secondary ps-2 pt-2 m-0">{{ review.date }}</p>
+                    <div class="card-body pt-0">
+                        <div class="d-flex flex-row">
+                            {% for _ in 'x'|rjust:review.rate %}
+                                <span class="readonly-star">★</span>
+                            {% endfor %}
+                        </div>
+                        <blockquote class="blockquote mb-0">
+                            <p>{{ review.text }}</p>
+                        </blockquote>
+
+                        <a href="#" class="text-primary">Відповісти</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% else %}
+    <h3 class="text-center m-2">Відгуків поки немає, станьте першим</h3>
+{% endif %}
+
+
+

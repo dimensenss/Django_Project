@@ -1089,9 +1089,30 @@ select {
     height: 44px;
 }
 
-/*.slide-item {*/
-/*    height: 400px;*/
-/*}*/
+
+
+
+.main-product-list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.banner-item img {
+
+    padding: 10px;
+}
+
+.banner-item img:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease-in-out;
+}
+
+.out-of-stock {
+    opacity: 0.5;
+
+}
 
 .brands-list {
     display: flex;
@@ -1145,13 +1166,4 @@ select {
     flex-direction: column;
     padding-left: 16px;
     padding-right: 16px;
-}
-
-.banner-item img {
-
-    padding: 10px;
-}
-.out-of-stock {
-    opacity: 0.5;
-
 }

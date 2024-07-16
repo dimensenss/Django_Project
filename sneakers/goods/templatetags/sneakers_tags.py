@@ -1,11 +1,12 @@
 from django import template
-from django.db.models import Min, Max
+from django.db.models import Min, Max, Sum, F
 from django.utils.http import urlencode
 
 from goods.models import *
 from goods.utils import DataMixin
 
 register = template.Library()
+
 
 @register.simple_tag()
 def get_menu():
@@ -21,9 +22,12 @@ def get_categories():
 @register.simple_tag(name='get_photos')
 def get_photos(post):
     return post.images.all()
+
+
 @register.simple_tag(name='get_all_sizes')
 def get_all_sizes():
     return SneakersVariations.objects.all().values_list('size', flat=True).distinct()
+
 
 @register.simple_tag(name='get_min_max_prices', takes_context=True)
 def get_prices(context, queryset):
@@ -52,14 +56,13 @@ def get_prices(context, queryset):
 #         return colors
 
 
-
 @register.inclusion_tag('goods/list_categories.html')
 def show_categories(sort=None):  # доделать
     if sort:
         cats = Category.objects.order_by(sort)
     else:
         cats = Category.objects.all()
-    return {'cats': cats,}
+    return {'cats': cats, }
 
 
 @register.inclusion_tag('includes/paginator.html', takes_context=True)
@@ -80,11 +83,18 @@ def get_breadcrumbs(category):
         'category': category
     }
 
+
 @register.simple_tag(name='get_products_by_tag')
 def get_products_by_tag(post):
-    queryset = Sneakers.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).distinct()
+    queryset = Sneakers.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).annotate(
+        sneakers_first_image=F("first_image__image"),
+        total_quantity=Sum('variations__quantity')).distinct()
     return queryset
 
 
-
-
+@register.inclusion_tag('includes/horizontal_products_list.html')
+def get_horizontal_products_list(products, title):
+    return {
+        'products': products,
+        'title': title
+    }

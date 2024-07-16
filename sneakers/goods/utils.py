@@ -2,7 +2,7 @@ import django_filters
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
 from django import forms
-from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField, F
+from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField, F, Sum
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models.functions import Concat
 from django_filters import CharFilter
@@ -13,6 +13,27 @@ from sneakers.settings import MEDIA_URL
 from .models import *
 
 
+def get_list_recently_viewed(context):
+    recently_viewed_data = context['request'].session.get("recently_viewed", [])
+    recently_viewed_slugs = [
+        product_date_dict['slug'] for product_date_dict in sorted(
+            recently_viewed_data,
+            key=lambda x: x['viewed_date'],
+            reverse=True
+        )]
+
+    recently_viewed_qs = Sneakers.objects.filter(slug__in=recently_viewed_slugs).annotate(
+        sneakers_first_image=F("first_image__image"),
+        total_quantity=Sum('variations__quantity')
+    )
+
+    sneakers_dict = {item.slug: item for item in recently_viewed_qs}
+    sorted_recently_viewed_qs = [
+        sneakers_dict[slug] for slug in recently_viewed_slugs if slug in sneakers_dict
+    ]
+    context['recently_viewed_qs'] = sorted_recently_viewed_qs
+
+
 class DataMixin:
     paginate_by = 4
 
@@ -21,16 +42,12 @@ class DataMixin:
         if 'request' not in context:
             context['request'] = self.request
 
-        cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)  # Исключить катгорию "Нет категории"
+        cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)
         context['cats'] = cats
+        get_list_recently_viewed(context)
 
-        recently_viewed_qs = Sneakers.objects.filter(
-            slug__in=context['request'].session.get("recently_viewed", [])).annotate(
-            sneakers_first_image=F("first_image__image"))
-        # recently_viewed_qs = sorted(recently_viewed_qs, key=lambda x: context['request'].session[x.slug])
-
-        context['recently_viewed_qs'] = recently_viewed_qs
         return context
+
 
 class SneakersFilter(django_filters.FilterSet):
     title_search = CharFilter(method='title_content_filter', label='Назва складається з', )
@@ -78,7 +95,6 @@ class SneakersFilter(django_filters.FilterSet):
         method='filter_by_sizes'
     )
 
-
     def filter_by_sizes(self, queryset, name, value):
         if value:
             value = value.split()
@@ -110,4 +126,3 @@ class SneakersFilter(django_filters.FilterSet):
         self.filters['price__gte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['price__lte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
-

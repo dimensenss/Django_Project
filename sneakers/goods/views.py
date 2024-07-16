@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.models import Prefetch, F, Min, Max, Sum
@@ -35,7 +37,8 @@ class SneakersHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
         promo_products = self.model.objects.filter(is_published=1).annotate(
-            sneakers_first_image=F("first_image__image")).filter(discount__gt=0.0)
+            sneakers_first_image=F("first_image__image"),
+            total_quantity=Sum('variations__quantity')).filter(discount__gt=0.0)
         brands = Brand.objects.all()
         c_def = self.get_user_context(title='Shop home',
                                       filter=self.sneakers_filter,
@@ -53,21 +56,17 @@ class SneakersDetail(FormMixin, DetailView):
 
     def get_object(self, queryset=None):
         product = Sneakers.objects.prefetch_related('variations', 'reviews__user').annotate(
-            sneakers_first_image=F("first_image__image")).get(slug=self.kwargs.get(self.slug_url_kwarg))
+            sneakers_first_image=F("first_image__image"),
+            total_quantity=Sum('variations__quantity')).get(slug=self.kwargs.get(self.slug_url_kwarg))
 
         recently_viewed(self.request, self.kwargs.get(self.slug_url_kwarg))
         return product
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        average_rating = self.object.reviews.aggregate(Avg('rate'))['rate__avg']
+        average_rating = round(self.object.reviews.aggregate(Avg('rate'))['rate__avg'] or 0, 1)
 
-        if average_rating is not None:
-            average_rating = round(average_rating, 1)
-        else:
-            average_rating = 0
-
-        reviews = self.object.reviews.all().order_by('-date')
+        reviews = self.object.reviews.all().select_related('user').order_by('-date')
 
         c_def = DataMixin().get_user_context(title=self.object.title,
                                              request=self.request,
@@ -118,7 +117,8 @@ class SneakersCategories(DataMixin, ListView):
         subcategories = current_category.get_descendants(include_self=True)
         queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"),
-            total_quantity=Sum('variations__quantity'))
+            total_quantity=Sum('variations__quantity')
+            )
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -175,13 +175,16 @@ def signup_redirect(request):
 def recently_viewed(request, product_slug):
     if "recently_viewed" not in request.session:
         request.session["recently_viewed"] = []
-        request.session["recently_viewed"].append(product_slug)
-    else:
-        if product_slug in request.session["recently_viewed"]:
-            request.session["recently_viewed"].remove(product_slug)
-        request.session["recently_viewed"].insert(0, product_slug)
-        if len(request.session["recently_viewed"]) > MAX_RECENT_VIEWED_PRODUCTS:
-            del request.session["recently_viewed"][MAX_RECENT_VIEWED_PRODUCTS - 1]
+
+    viewed_product = {'slug': product_slug, 'viewed_date': datetime.now().isoformat()}
+
+    request.session["recently_viewed"] = [
+        product for product in request.session["recently_viewed"] if product['slug'] != product_slug
+    ]
+    request.session["recently_viewed"].insert(0, viewed_product)
+    if len(request.session["recently_viewed"]) > MAX_RECENT_VIEWED_PRODUCTS:
+        request.session["recently_viewed"].pop()
+
     request.session.modified = True
 
 

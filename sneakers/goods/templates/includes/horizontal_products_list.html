@@ -1,0 +1,63 @@
+{% load static %}
+
+<div class="container-fluid m-0 p-0 mt-4">
+    {% if products|length > 0 %}
+        <h4>{{ title }}</h4>
+
+        <div id="simple-scroll" class="scrolling-wrapper-flexbox">
+            {% for product in products %}
+                {% if product.is_published %}
+
+                    <div class="card small-card {% if product.total_quantity <= 0 %}out-of-stock{% endif %}">
+                        <!-- Product image-->
+                        {% if product.images %}
+
+                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                <img class="card-img-top image-container-img "
+                                     src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
+                                     alt="{{ product.title }}"/>
+                            </a>
+                        {% else %}
+                            <a class="a-dark" href="{{ product.get_absolute_url }}">
+                                <img class="card-img-top"
+                                     src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                     alt="{{ product.title }}"/>
+                            </a>
+                        {% endif %}
+                        <!-- Product details-->
+                        <span class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <!-- Product name-->
+                            <h3><a class="a-dark" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                            <!-- Product price-->
+                        </div>
+                        <div class="me-auto d-flex justify-content-between">
+                            <div>
+                                {% if product.discount %}
+                                    <p class="old-price">{{ product.price }} $</p>
+                                    <p class="discount-price">{{ product.discount }} $</p>
+                                {% else %}
+                                    <p class="usual-price">{{ product.price }} $</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                            {% if product.total_quantity <= 0 %}
+                                <p class="text-secondary">Немає на складі </p>
+                            {% elif product.total_quantity < 3 %}
+                                <p class="text-danger">Закінчується </p>
+                            {% else %}
+                                <p class="text-success">Є в наявності </p>
+                            {% endif %}
+
+                    </span>
+                        <!-- Product actions-->
+                        <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
+                            <p class="ventor-code">Артикул: {{ product.display_id }}</p>
+                        </div>
+                    </div>
+
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
