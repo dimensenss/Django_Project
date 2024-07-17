@@ -1092,82 +1092,86 @@ select {
 .slide-item img{
     max-height: 400px;
 }
-
-
-.main-product-list {
-    display: flex;
-    flex-direction: column;
-    padding-left: 16px;
-    padding-right: 16px;
+.banner-img {
+    max-height: 500px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 5px;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
-.banner-item {
-    overflow: hidden;
+
+.banner-img:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+
+}
+
+.banner-wrapper {
     position: relative;
-
+    flex: 1;
+    width: 100%;
+    max-height: 500px;
+    cursor: pointer;
 }
 
-.img-container {
-    overflow: hidden;
-    position: relative;
-    max-width: 500px;
-    max-height: 600px;
-
-}
-.img-container img {
-    transition: transform 0.5s ease;
-}
-
-.banner-item:hover .img-container img {
-    transform: scale(1.1);
-}
-
-.text-overlay {
+.banner-caption {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    z-index: 2;
-    text-align: center;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.5em;
 }
-.banner-item a {
-    display: block;
-    position: relative;
+
+@media (max-width: 768px) {
+    .banner-wrapper {
+        margin-bottom: 15px;
+        width: 100%;
+    }
 }
+
+@media (max-width: 992px) {
+    .banner-wrapper {
+        width: 100%;
+    }
+
+    .banner-img {
+        max-height: 400px; /* Adjust height for medium screens if needed */
+
+    }
+}
+
+
 
 .out-of-stock {
     opacity: 0.5;
-
 }
 
+/*brands*/
 .brands-list {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-}
-
-@media (max-width: 1024px) {
-    .brand-item {
-        width: 25%;
-    }
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
 }
 
 .brand-item {
-    width: 16.666%;
+    flex: 1 0 16.666%;
     list-style-type: none;
-    border-right: 1px solid #cccccc;
 
-}
-.brands-list .brand-item:last-child {
-    border-right: none;
+    transition: transform 0.3s;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
-@media (max-width: 1023px) {
-    .brand-link {
-        height: 44px;
-    }
+.brand-item:hover {
+    transform: translateY(-5px);
 }
 
 .brand-link {
@@ -1177,19 +1181,48 @@ select {
     justify-content: center;
     width: 100%;
     height: 60px;
-}
-
-@media (max-width: 1023px) {
-    .brand-picture {
-        max-height: 44px;
-        max-width: 105px;
-    }
+    text-decoration: none;
 }
 
 .brand-picture {
     max-width: 140px;
     max-height: 60px;
-    transition: all .3s linear;
+    transition: all 0.3s linear;
+}
+
+@media (max-width: 1024px) {
+    .brand-item {
+        flex: 1 0 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    .brand-item {
+        flex: 1 0 33.3333%;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-item {
+        flex: 1 0 50%;
+    }
+}
+
+@media (max-width: 360px) {
+    .brand-item {
+        flex: 1 0 100%;
+    }
+}
+
+@media (max-width: 1023px) {
+    .brand-link {
+        height: 44px;
+    }
+
+    .brand-picture {
+        max-height: 44px;
+        max-width: 105px;
+    }
 }
 
 .main-product-list {
@@ -1197,4 +1230,120 @@ select {
     flex-direction: column;
     padding-left: 16px;
     padding-right: 16px;
+}
+/*brands*/
+
+@media (min-width: 480px) {
+  .goods-tile_label {
+    height: 24px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+    line-height: 24px;
+  }
+}
+.goods-tile_label {
+position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 24px;
+    padding-top: 5px;
+
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 14px;
+  line-height: 16px;
+    margin-left: 8px;
+    margin-top: 8px;
+
+}
+.promo-label--red, .promo-label_type_action {
+  background-color: #ff0007;
+}
+.promo-label {
+  border-radius: 50px;
+  color: #fff;
+  display: inline-block;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+
+
+.carousel-item {
+    transition: transform 0.4s ease; /* Smooth fade transition */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    transition: transform 0.1s ease-in-out; /* Smooth icon transition */
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    transform: scale(1.1); /* Slightly enlarge icons on hover */
+}
+.catalog-top-panel{
+    margin-left: 2em;
+    margin-right: 1em;
+    margin-top: 0.5em;
+    align-content: baseline;
+    justify-content: space-between;
+}
+@media (max-width: 1023px) {
+    .catalog-top-panel{
+        margin-left: 1em;
+    }
+
+}
+@media (max-width: 768px) {
+    .catalog-top-panel{
+        margin-left: 0.5em;
+        justify-content: center;
+        text-align: center;
+    }
+
+}
+
+.catalog-white-btn {
+    background-color: white; /* Белый фон */
+    border: 2px solid #ccc; /* Серебристая обводка */
+    border-radius: 5px; /* Скругленные углы */
+    padding: 8px 16px; /* Отступы внутри кнопки */
+    font-size: 16px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень кнопки */
+    cursor: pointer; /* Курсор указателя */
+    text-decoration: none; /* Удалить подчеркивание */
+    transition: all 0.3s ease; /* Плавные переходы для всех свойств */
+    outline: none; /* Убирает контур при фокусировке */
+    width: 150px;
+    display: flex;
+
+
+}
+
+.catalog-white-btn:hover,
+.catalog-white-btn:focus {
+    background-color: #f0f0f0; /* Светлый фон при наведении */
+    border-color: #999; /* Тон более темной обводки при наведении */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень при наведении (фиксированная) */
+    color: #333; /* Цвет текста */
+}
+
+.сat-item {
+    list-style-type: none;
+    transition: transform 0.3s;
+    box-sizing: border-box;
+    padding: 0.5em;
+
+
+}
+.сat-item:hover {
+    transform: translateY(-1px) !important;
+}
+.btn-light:hover{
+    background: #dadada;
 }

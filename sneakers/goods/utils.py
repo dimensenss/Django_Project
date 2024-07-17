@@ -35,7 +35,7 @@ def get_list_recently_viewed(context):
 
 
 class DataMixin:
-    paginate_by = 4
+    paginate_by = 12
 
     def get_user_context(self, **kwargs):
         context = kwargs

@@ -9,6 +9,9 @@
                 {% if product.is_published %}
 
                     <div class="card small-card {% if product.total_quantity <= 0 %}out-of-stock{% endif %}">
+                        {% if product.discount %}
+                            <span class="goods-tile_label promo-label promo-label_type_action"> -{{ product.discount_info }}% </span>
+                        {% endif %}
                         <!-- Product image-->
                         {% if product.images %}
 

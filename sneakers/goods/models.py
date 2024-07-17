@@ -43,6 +43,14 @@ class Sneakers(models.Model):
         verbose_name='Перше зображення'
     )
 
+    @property
+    def discount_info(self):
+        discount = 100
+        if self.price:
+            discount = (self.price - self.discount) * 100 / self.price
+        return round(discount, 2) if discount < 100 else 0
+
+
     def in_stock(self):
         if self.variations.all().total_quantity() > 0:
             return True

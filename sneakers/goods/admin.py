@@ -81,12 +81,7 @@ class SneakersAdmin(admin.ModelAdmin):
 
     def calculate_discount(self, obj):
         s = f"Актуальна ціна: {obj.sell_price} \n "
-        discount = 100
-        if obj.price:
-            discount = (obj.price - obj.discount) * 100 / obj.price
-
-        if discount < 100:
-            s += f"Знижка: {round(discount, 2) } %"
+        s += f"Знижка: {obj.discount_info} %"
         return s
 
     get_html_content.short_description = 'Опис'

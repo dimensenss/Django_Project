@@ -521,6 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
 $(document).ready(function () {
     var priceMinInputLg =  document.getElementById("id_price__gte");
     var priceMaxInputLg =  document.getElementById("id_price__lte");

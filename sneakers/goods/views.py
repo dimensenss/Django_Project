@@ -112,9 +112,9 @@ class SneakersCategories(DataMixin, ListView):
 
     def get_queryset(self):
         cat_slug = self.kwargs['cat_slug'].split('/')[-1]
-        current_category = get_object_or_404(Category, slug=cat_slug)
+        self.current_category = get_object_or_404(Category, slug=cat_slug)
 
-        subcategories = current_category.get_descendants(include_self=True)
+        subcategories = self.current_category.get_descendants(include_self=True)
         queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"),
             total_quantity=Sum('variations__quantity')
@@ -128,8 +128,10 @@ class SneakersCategories(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         cats = Category.objects.get(slug=self.kwargs['cat_slug'].split('/')[-1])
+        cur_cat = self.current_category
         c_def = self.get_user_context(cats=cats,
-                                      filter=self.sneakers_filter)
+                                      filter=self.sneakers_filter,
+                                      cur_cat=cur_cat)
 
         return dict(list(context.items()) + list(c_def.items()))
 

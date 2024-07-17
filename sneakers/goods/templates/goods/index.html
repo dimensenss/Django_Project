@@ -11,7 +11,6 @@
     <section class="py-0">
         <div class="layout layout_with_sidebar">
             <section class="content_type_catalog">
-
                 {# Start banner #}
                 <div id="carouselExampleControls" class="carousel slide d-none d-md-block " data-bs-ride="carousel">
                     <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -55,118 +54,57 @@
                 <div class="sidebar me-3">
 
                     <div class="d-flex flex-column">
-                        <div class="accordion" id="accordionPanelCategory1">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-cat1">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseOne1" aria-expanded="true"
-                                            aria-controls="panelsStayOpen-collapseOne1">
-                                        Category
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-collapseOne1" class="accordion-collapse collapse "
-                                     aria-labelledby="panelsStayOpen-cat1">
-                                    <div class="accordion-body">
+                        <h3 class="p-0 mb-2">Популярні категорії</h3>
+                        <a href="{% url 'goods:show_cat' cat_slug='ch-povsyakdenne' %}" class="catalog-white-btn w-100 mb-3">
+                           Повсякденне для чоловіків
+                        </a>
+                        <a href="{% url 'goods:show_cat' cat_slug='zh-povsyakdenne' %}" class="catalog-white-btn w-100 mb-3">
+                           Повсякденне для жінок
+                        </a>
+                        <a href="{% url 'goods:show_cat' cat_slug='dlya-pidlitkiv' %}" class="catalog-white-btn w-100 mb-3">
+                           Взуття для підлітків
+                        </a>
+                        <a href="{% url 'goods:show_cat' cat_slug='ch-dlya-bigu' %}" class="catalog-white-btn w-100 mb-3">
+                           Чоловічі кросівки для бігу
+                        </a>
+                        <a href="{% url 'goods:show_cat' cat_slug='zh-dlya-trenuvann' %}" class="catalog-white-btn w-100 mb-3">
+                           Жіноче взуття для тренувань
+                        </a>
+                        <a href="{% url 'goods:show_cat' cat_slug='novinki' %}" class="catalog-white-btn w-100 mb-3">
+                           Нові колекції
+                        </a>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion" id="accordionPanelCategory2">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-cat2">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseOne2" aria-expanded="true"
-                                            aria-controls="panelsStayOpen-collapseOne2">
-                                        Category
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-collapseOne2" class="accordion-collapse collapse "
-                                     aria-labelledby="panelsStayOpen-cat2">
-                                    <div class="accordion-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion" id="accordionPanelCategory3">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-cat3">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseOne3" aria-expanded="true"
-                                            aria-controls="panelsStayOpen-collapseOne3">
-                                        Category
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-collapseOne3" class="accordion-collapse collapse "
-                                     aria-labelledby="panelsStayOpen-cat3">
-                                    <div class="accordion-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion" id="accordionPanelCategory4">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="panelsStayOpen-cat4">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseOne4" aria-expanded="true"
-                                            aria-controls="panelsStayOpen-collapseOne4">
-                                        Category
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-collapseOne4" class="accordion-collapse collapse "
-                                     aria-labelledby="panelsStayOpen-cat4">
-                                    <div class="accordion-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
-
                 </div>
             </aside>
         </div>
 
-
-        <section class="container-fluid mt-3 px-3 m-0 p-0">
-            <ul class="d-flex flex-column flex-md-row w-100 p-0 gap-3">
-                <li class="banner-item text-center rounded flex-fill">
-                    <a href="#" class="text-decoration-none text-dark ">
-                        <div class="img-container">
-                            <img src="{% static 'images/women.jpg' %}" alt="Жінки" class="img-fluid">
-                        </div>
-                        <h3 class="text-overlay m-0">Жінкам</h3>
+        <section
+                class="container-fluid mt-3 mb-2 px-2 m-0 p-0 d-flex flex-column flex-md-row justify-content-center align-items-center">
+            <div class="banner-wrapper position-relative mb-3 mb-md-0 mx-md-2">
+                <a href="{% url 'goods:show_cat' cat_slug='zhinki' %}">
+                <img src="{% static 'images/women.jpg' %}" alt="Жінкам" class="banner-img">
+                <div class="banner-caption">Жінкам</div>
                     </a>
-                </li>
-                <li class="banner-item text-center rounded flex-fill">
-                    <a href="#" class="text-decoration-none text-dark ">
-                        <div class="img-container">
-                            <img src="{% static 'images/man.webp' %}" alt="Чоловікам" class="img-fluid">
-                        </div>
-                        <h3 class="text-overlay m-0">Чоловікам</h3>
-                    </a>
-                </li>
-                <li class="banner-item text-center rounded flex-fill">
-                    <a href="#" class="text-decoration-none text-dark ">
-                        <div class="img-container">
-                            <img src="{% static 'images/diti.jpg' %}" alt="Дітям" class="img-fluid">
-                        </div>
-                        <h3 class="text-overlay m-0">Дітям</h3>
-                    </a>
-                </li>
-            </ul>
+            </div>
+            <div class="banner-wrapper position-relative mb-3 mb-md-0 mx-md-2">
+                <a href="{% url 'goods:show_cat' cat_slug='choloviki' %}">
+                <img src="{% static 'images/man.jpg' %}" alt="Чоловікам" class="banner-img">
+                <div class="banner-caption">Чоловікам</div>
+                </a>
+            </div>
+            <div class="banner-wrapper position-relative mb-3 mb-md-0 mx-md-2">
+                <a href="{% url 'goods:show_cat' cat_slug='diti' %}">
+                <img src="{% static 'images/diti.jpg' %}" alt="Дітям" class="banner-img">
+                <div class="banner-caption">Дітям</div>
+                </a>
+            </div>
         </section>
 
 
         <div class="main-product-list ">
             {# Start brand list #}
-        <h2 class="text-center mt-3">Популярні бренди</h2>
+            <h2 class="text-center mt-4">Популярні бренди</h2>
             <div class="brands-list border rounded px-2 py-2">
                 {% for brand in brands %}
                     <li class="brand-item ">
@@ -178,22 +116,15 @@
             </div>
             {# End brand list #}
 
-            {# Start promo products #}
+            {#  Start promo products #}
             {% get_horizontal_products_list promo_products 'Акційні товари' %}
-            {#  End promo products #}
+            {# End promo products #}
 
             {# Start recent products #}
             {% get_horizontal_products_list recently_viewed_qs 'Останні переглянуті товари' %}
             {# End recent products #}
-
-
-
-
         </div>
-
-
     </section>
-
 
 {% endblock content %}
 
