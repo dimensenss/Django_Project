@@ -98,3 +98,8 @@ def get_horizontal_products_list(products, title):
         'products': products,
         'title': title
     }
+
+@register.simple_tag(name='get_all_product_ids')
+def get_all_product_ids(products):
+    return list(products.values_list('id', flat=True))
+

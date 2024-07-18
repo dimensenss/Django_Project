@@ -42,7 +42,7 @@
                 {% for child in cur_cat.get_children %}
                     <li class="сat-item ">
                         <a href="{% url 'goods:show_cat' cat_slug=child.slug %}" class="catalog-white-btn text-center">
-                           {{ child.title }}
+                            {{ child.title }}
                         </a>
                     </li>
                 {% endfor %}
@@ -51,8 +51,8 @@
         {% endif %}
 
 
-        <div class="filter-btn">
-            <a class="btn btn-light border mt-4" data-bs-toggle="offcanvas" href="#offcanvasExample"
+        <div class="filter-btn col-md-4 ">
+            <a class="btn btn-light border mt-4 w-100" data-bs-toggle="offcanvas" href="#offcanvasExample"
                role="button"
                aria-controls="offcanvasExample" type="Submit">
                 Фільтри
@@ -63,67 +63,11 @@
             <section class="content_type_catalog">
 
 
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for item in sneakers %}
-                        {% if item.is_published %}
-                            <div class="col mb-5">
-                                <div class="card h-100 my-card {% if item.total_quantity <= 0 %}out-of-stock{% endif %}">
-                                    {% if item.discount %}
-                                        <span class="goods-tile_label promo-label promo-label_type_action"> -{{ item.discount_info }}% </span>
-                                    {% endif %}
-                                    <!-- Product image-->
-                                    {% if item.images %}
-
-                                        <a class="a-dark " href="{{ item.get_absolute_url }}">
-                                            <img class="card-img-top image-container-img image-s"
-                                                 src="{% get_media_prefix %}{{ item.sneakers_first_image }}"
-                                                 alt="{{ item.title|truncatechars:24 }}"/>
-                                        </a>
-                                    {% else %}
-                                        <a class="a-dark " href="{{ item.get_absolute_url }}">
-                                            <img class="card-img-top"
-                                                 src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                                                 alt="{{ item.title }}"/>
-                                        </a>
-                                    {% endif %}
-                                    <!-- Product details-->
-                                    <span class="card-body">
-                                        <div class="text-center">
-                                            <!-- Product name-->
-                                            <h3><a class="a-dark "
-                                                   href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
-                                            <!-- Product price-->
-
-                                        </div>
-
-                                        <div class="me-auto d-flex justify-content-between">
-                                            <div>
-                                                {% if item.discount %}
-                                                    <p class="old-price">{{ item.price }} $</p>
-                                                    <p class="discount-price">{{ item.discount }} $</p>
-                                                {% else %}
-                                                    <p class="usual-price">{{ item.price }} $</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        {% if item.total_quantity <= 0 %}
-                                            <p class="text-secondary">Немає на складі </p>
-                                        {% elif item.total_quantity < 3 %}
-                                            <p class="text-danger">Закінчується </p>
-                                        {% else %}
-                                            <p class="text-success">Є в наявності</p>
-                                        {% endif %}
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center "
+                     id="products-container">
+                    {% include 'includes/products_list.html' %}
 
 
-                                    </span>
-                                    <!-- Product actions-->
-                                    <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
-                                        <p class="ventor-code">Артикул: {{ item.display_id }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
             </section>
 
@@ -233,12 +177,11 @@
             </aside>
         </div>
 
-        {# Start recent products #}
+
+
 
         <div class="container-fluid px-4">
-
             {% get_horizontal_products_list recently_viewed_qs 'Останні переглянуті товари' %}
-
         </div>
         {# End recent products #}
 
@@ -375,4 +318,33 @@
 
     </div>
 {% endblock content %}
+{% block paginator %}
 
+{% endblock paginator %}
+<script>
+    $(document).on("click", "#load_more", function (e) {
+        e.preventDefault();
+        var load_more_url = $(this).attr("href");
+        var paginator = $(this).data("paginator");
+        console.log(paginator);
+
+        $.ajax({
+            type: "GET",
+            url: load_more_url,
+            data: {
+                paginator: paginator
+            },
+            success: function (data) {
+
+                var products_container = $("#products-container");
+                products_container.html(data.next_page_products);
+
+
+            },
+
+            error: function (data) {
+                console.log("Error load more");
+            },
+        });
+    });
+</script>

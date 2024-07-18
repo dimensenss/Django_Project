@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'spurl',
     'imagekit',
+    'django_htmx',
 
     'mptt',
     'django_mptt_admin',
@@ -94,6 +95,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     "allauth.account.middleware.AccountMiddleware",
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'sneakers.urls'

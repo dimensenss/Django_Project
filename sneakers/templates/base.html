@@ -17,7 +17,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}"/>
     <link href="{% static 'magicsuggest/magicsuggest.css' %}" rel="stylesheet">
 
-
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
 </head>
 <body>
@@ -33,14 +35,14 @@
     {% endblock nav %}
 
     {% block header %}
-{#        <header class="custom-header py-5">#}
-{#            <div class="container px-4 px-lg-5 my-5">#}
-{#                <div class="text-center text-light">#}
-{#                    <h1 class="display-4 fw-bolder">Shop in style{{ post }}</h1>#}
-{#                    <p class="lead fw-normal text-secondary-50 mb-0">With this shop hompeage template</p>#}
-{#                </div>#}
-{#            </div>#}
-{#        </header>#}
+        {#        <header class="custom-header py-5">#}
+        {#            <div class="container px-4 px-lg-5 my-5">#}
+        {#                <div class="text-center text-light">#}
+        {#                    <h1 class="display-4 fw-bolder">Shop in style{{ post }}</h1>#}
+        {#                    <p class="lead fw-normal text-secondary-50 mb-0">With this shop hompeage template</p>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </header>#}
     {% endblock header %}
 
     {% include "includes/notifications.html" %}
@@ -48,8 +50,9 @@
 
     {% endblock %}
 
-
+    {% block paginator %}
     {% show_paginator paginator.page_range page_obj %}
+    {% endblock paginator %}
 
     {% block footer %}
         <footer class="py-5 bg-dark navbar-fixed-bottom">
@@ -89,10 +92,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <script src="{% static 'magicsuggest/magicsuggest.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
     <script type="text/javascript" src="{% static 'js-scripts/scripts.js' %}"></script>
     <script src="{% static 'js-scripts/plugins.js' %}"></script>
     <script src="{% static 'js-scripts/product_script.js' %}"></script>
-
 
 
 </div>

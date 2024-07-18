@@ -16,9 +16,6 @@ urlpatterns = [
     path('product/<slug:product_slug>/', SneakersDetail.as_view(), name='product'),
     path('filtered-reviews', FilterReviewsView.as_view(), name='filtered_reviews'),
 
-    # path('create-review', create_review, name='create_review'),
-    # path('update-review', update_review, name='update_review'),
-    # path('delete-review', delete_review, name='delete_review'),
 
     path('social/signup/', signup_redirect, name='signup_redirect'),
 ]

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Prefetch, F, Min, Max, Sum
 from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -110,15 +111,19 @@ class SneakersCategories(DataMixin, ListView):
     allow_empty = True
     sneakers_filter = None
 
+    def get_template_names(self):
+        if self.request.htmx:
+            return 'includes/products_list.html'
+        return self.template_name
+
     def get_queryset(self):
         cat_slug = self.kwargs['cat_slug'].split('/')[-1]
         self.current_category = get_object_or_404(Category, slug=cat_slug)
-
         subcategories = self.current_category.get_descendants(include_self=True)
         queryset = super().get_queryset().filter(cat__in=subcategories).select_related('cat').annotate(
             sneakers_first_image=F("first_image__image"),
             total_quantity=Sum('variations__quantity')
-            )
+        )
 
         self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
         queryset = self.sneakers_filter.qs
@@ -132,7 +137,6 @@ class SneakersCategories(DataMixin, ListView):
         c_def = self.get_user_context(cats=cats,
                                       filter=self.sneakers_filter,
                                       cur_cat=cur_cat)
-
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -156,6 +160,7 @@ class SneakersSearch(DataMixin, ListView):
         c_def = self.get_user_context(filter=self.sneakers_filter)
 
         return dict(list(context.items()) + list(c_def.items()))
+
 
 def contacts(request):
     return HttpResponse("contacts")
