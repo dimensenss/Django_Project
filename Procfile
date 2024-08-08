@@ -1,1 +1,1 @@
-web: gunicorn sneakers/sneakers.wsgi
+web: gunicorn sneakers.sneakers.wsgi
