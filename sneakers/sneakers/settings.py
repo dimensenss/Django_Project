@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+import django_heroku
 import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -210,3 +212,4 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 LOGIN_REDIRECT_URL = '/'
 MAX_RECENT_VIEWED_PRODUCTS = 20
+django_heroku.settings(locals())
