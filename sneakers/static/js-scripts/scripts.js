@@ -226,6 +226,71 @@ $(document).ready(function ($) {
         }
     });
 
+    $(document).on("click", ".add-to-wish-list", function (e) {
+        e.preventDefault();
+
+        var goodsInWishListCount = $(".product_in_wish_list_count");
+        var wishCount = parseInt(goodsInWishListCount.first().text() || 0);
+
+        var $this = $(this);
+        var product_id = $this.data("product-id");
+        var add_to_wish_list_url = $this.attr("href");
+
+        console.log(product_id);
+        console.log(add_to_wish_list_url);
+
+        $.ajax({
+            type: "GET",
+            url: add_to_wish_list_url,
+            data: {
+                product_id: product_id,
+            },
+            success: function (data) {
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 1500);
+
+                wishCount = data.change_value + wishCount;
+                goodsInWishListCount.text(wishCount);
+
+                var WishListContainer = $(".wish-list-container");
+                if (WishListContainer.length > 0) {
+                    WishListContainer.html(data.wish_list_container);
+                }
+
+                // Обновляем класс иконки сердца и текст, если параграф существует
+                var wishIcon = $this.find('.wish-icon');
+                var parentParagraph = $this.closest('p.product-base-info');
+                if (parentParagraph.length > 0) {
+                    if (wishIcon.hasClass('fa-regular')) {
+                        wishIcon.removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
+                        parentParagraph.contents().filter(function () {
+                            return this.nodeType === 3; // Узел текста
+                        }).first().replaceWith('Видалити з бажаного ');
+                    } else {
+                        wishIcon.removeClass('fa-solid fa-heart').addClass('fa-regular fa-heart');
+                        parentParagraph.contents().filter(function () {
+                            return this.nodeType === 3; // Узел текста
+                        }).first().replaceWith('Додати в бажання &nbsp; ');
+                    }
+                } else {
+                    // Только переключаем иконку сердца, если параграфа нет
+                    if (wishIcon.hasClass('fa-regular')) {
+                        wishIcon.removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
+                    } else {
+                        wishIcon.removeClass('fa-solid fa-heart').addClass('fa-regular fa-heart');
+                    }
+                }
+            },
+
+            error: function (data) {
+                console.log("Ошибка при добавлении в список желаний");
+            },
+        });
+    });
+
 
     $("input[name='requires_delivery']").change(function () {
         var selectedValue = $(this).val();
@@ -316,7 +381,7 @@ $(document).ready(function ($) {
     //             });
     //         });
     //     });
-     // Форматирования ввода номера телефона в форме (xxx) xxx-хххx
+    // Форматирования ввода номера телефона в форме (xxx) xxx-хххx
     document.getElementById('id_phone_number').addEventListener('input', function (e) {
         var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
         e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -361,27 +426,7 @@ $(document).ready(function () {
         // Другие параметры
     });
 });
-// $(document).ready(function () {
-//     console.log('ok')
-//             $("#id_brand").autocomplete({
-//                 source: "/brands-autocomplete-json/",
-//                 minLength: 2, // Minimum characters before triggering autocomplete
-//             });
-//         });
-// $(document).ready(function () {
-//     $('#id_brand').magicSuggest({
-//         // Настраивайте конфигурацию по мере необходимости
-//         placeholder: 'Введіть бренди',
-//         // Другие параметры
-//     });
-// });
-// $(document).ready(function () {
-//     $('#id_size').magicSuggest({
-//         // Настраивайте конфигурацию по мере необходимости
-//         placeholder: 'Введіть розміри',
-//         // Другие параметры
-//     });
-// });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     var checkboxes = document.querySelectorAll('.size-checkbox');
@@ -523,14 +568,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 $(document).ready(function () {
-    var priceMinInputLg =  document.getElementById("id_price__gte");
-    var priceMaxInputLg =  document.getElementById("id_price__lte");
-    var priceMinInputSm =  document.getElementById("id_price__gte_sm");
-    var priceMaxInputSm =  document.getElementById("id_price__lte_sm");
+    var priceMinInputLg = document.getElementById("id_price__gte");
+    var priceMaxInputLg = document.getElementById("id_price__lte");
+    var priceMinInputSm = document.getElementById("id_price__gte_sm");
+    var priceMaxInputSm = document.getElementById("id_price__lte_sm");
 
     if (priceMinInputLg && priceMaxInputLg && priceMinInputSm && priceMaxInputSm) {
-        priceMinInputSm.value =  parseInt(priceMinInputLg.value);
-        priceMaxInputSm.value =  parseInt(priceMaxInputLg.value);
+        priceMinInputSm.value = parseInt(priceMinInputLg.value);
+        priceMaxInputSm.value = parseInt(priceMaxInputLg.value);
 
         initializeSlider("slider-range-sm", priceMinInputSm, priceMaxInputSm);
         initializeSlider("slider-range-lg", priceMinInputLg, priceMaxInputLg);
@@ -539,7 +584,7 @@ $(document).ready(function () {
     }
 
 
-     function initializeSlider(sliderId, priceMinInput, priceMaxInput) {
+    function initializeSlider(sliderId, priceMinInput, priceMaxInput) {
         var priceRange = document.getElementById(sliderId);
         var min_price = parseInt($(priceRange).data("min-price"));
         var max_price = parseInt($(priceRange).data("max-price"));
@@ -565,7 +610,4 @@ $(document).ready(function () {
             }
         });
     }
-$('.carousel').carousel()
-
-
 });

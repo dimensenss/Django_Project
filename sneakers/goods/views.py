@@ -2,38 +2,29 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Prefetch, F, Min, Max, Sum
-from django.http import HttpResponse, HttpResponseNotFound, Http404, JsonResponse
+from django.db.models import F, Sum
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic.edit import FormMixin
+from rest_framework.generics import ListAPIView
+from rest_framework.viewsets import ViewSet, ModelViewSet
 
 from sneakers.settings import MAX_RECENT_VIEWED_PRODUCTS
 from .forms import ReviewForm
+from .mixins import WishMixin
 from .models import *
-from django.views.generic import ListView, DetailView, CreateView
-from .utils import DataMixin, SneakersFilter
+from django.views.generic import ListView, DetailView
+
+from .serializers import SneakersSerializer
+from .utils import DataMixin, SneakersFilter, get_product_from_wishes
 
 
 class SneakersHome(DataMixin, ListView):
     model = Sneakers  # модель
-    template_name = 'goods/index.html'  # путь к шаблону (по умолчанию sneakers_list)
-    context_object_name = 'sneakers'  # имя коллекции для шаблона (по умолчанию objects_list)
-    # allow_empty = False #если вернется пустой список из базы - ошибка 404
-    tag = None
-    sneakers_filter = None
-    paginate_by = 0
-
-    # def get_queryset(self):
-    #     queryset = Sneakers.objects.filter(is_published=1).annotate(
-    #         sneakers_first_image=F("first_image__image"))
-    #
-    #     self.sneakers_filter = SneakersFilter(self.request.GET, queryset=queryset)
-    #     queryset = self.sneakers_filter.qs
-    #
-    #     return queryset
+    template_name = 'goods/index.html'
+    context_object_name = 'sneakers'
 
     def get_context_data(self, *, object_list=None, **kwargs):  # формирует контекст который передаеться в шаблон
         context = super().get_context_data(**kwargs)  # получить контекст который уже есть
@@ -42,14 +33,13 @@ class SneakersHome(DataMixin, ListView):
             total_quantity=Sum('variations__quantity')).filter(discount__gt=0.0)
         brands = Brand.objects.all()
         c_def = self.get_user_context(title='Shop home',
-                                      filter=self.sneakers_filter,
                                       promo_products=promo_products,
                                       brands=brands)
 
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class SneakersDetail(FormMixin, DetailView):
+class SneakersDetail(DataMixin, FormMixin, DetailView):
     template_name = "goods/product.html"
     slug_url_kwarg = 'product_slug'
     form_class = ReviewForm
@@ -69,7 +59,7 @@ class SneakersDetail(FormMixin, DetailView):
 
         reviews = self.object.reviews.all().select_related('user').order_by('-date')
 
-        c_def = DataMixin().get_user_context(title=self.object.title,
+        c_def = self.get_user_context(title=self.object.title,
                                              request=self.request,
                                              rating=average_rating,
                                              reviews=reviews,
@@ -147,6 +137,11 @@ class SneakersSearch(DataMixin, ListView):
     allow_empty = True
     sneakers_filter = None
 
+    def get_template_names(self):
+        if self.request.htmx:
+            return 'includes/products_list.html'
+        return self.template_name
+
     def get_queryset(self):
         queryset = super().get_queryset().annotate(
             sneakers_first_image=F("first_image__image"))
@@ -158,6 +153,7 @@ class SneakersSearch(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(filter=self.sneakers_filter)
+        context['is_search_page'] = True
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -195,47 +191,6 @@ def recently_viewed(request, product_slug):
     request.session.modified = True
 
 
-from dal import autocomplete
-
-
-class CategoryAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Category.objects.all()
-
-        if self.q:
-            qs = qs.filter(title__istartswith=self.q)
-
-        return qs
-
-
-class SneakersAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = SneakersVariations.objects.all()
-
-        if self.q:
-            qs = qs.filter(sneakers__title__istartswith=self.q)
-
-        return qs
-
-
-class BrandsAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Brand.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-
-        return qs
-
-
-def update_review(request):
-    ...
-
-
-def delete_review(request):
-    ...
-
-
 class FilterReviewsView(View):
     def get(self, request):
         post_id = request.GET.get('post_id')
@@ -252,3 +207,47 @@ class FilterReviewsView(View):
         }
 
         return JsonResponse(response_data)
+
+
+class AddToWishListView(DataMixin, WishMixin, View):
+    model = Sneakers
+
+    def get(self, request):
+        product_id = request.GET.get('product_id')
+        product = self.model.objects.get(id=product_id)
+
+        wish, is_created = self.get_wishes(request, product)
+
+        if not is_created:
+            wish.delete()
+            message = 'Товар видалено зі списку побажань'
+            change_value = -1
+        else:
+            message = 'Товар додано у список побажань'
+            change_value = 1
+
+        response_data = {
+            'message': message,
+            'change_value': change_value,
+            'wish_list_container': self.render_wishes(request),
+        }
+
+        return JsonResponse(response_data)
+
+
+class WishListView(DataMixin, ListView):
+    model = Sneakers
+    template_name = 'goods/wish_list.html'
+    context_object_name = 'wishes'
+
+    def get_queryset(self):
+        return get_product_from_wishes(self.request)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class TestProductsApiView(ModelViewSet):
+    queryset = Sneakers.objects.all()
+    serializer_class = SneakersSerializer

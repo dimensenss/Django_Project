@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'spurl',
     'imagekit',
     'django_htmx',
+    'rest_framework',
 
     'mptt',
     'django_mptt_admin',

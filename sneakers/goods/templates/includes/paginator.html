@@ -16,7 +16,7 @@
      </li>
     {% endif %}
 
-    {% for page in paginator %}
+    {% for page in paginator.page_range %}
       {% if page_obj.has_other_pages %}
         {% if page_obj.number == page %}
         <li class="page-item active" aria-current="page">

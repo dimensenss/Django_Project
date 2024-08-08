@@ -3,6 +3,7 @@
 {% load sneakers_tags %}
 {% load crispy_forms_tags %}
 {% load spurl %}
+{% load cache %}
 
 
 {% block content %}
@@ -66,8 +67,6 @@
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center "
                      id="products-container">
                     {% include 'includes/products_list.html' %}
-
-
                 </div>
             </section>
 
@@ -156,7 +155,7 @@
                                         Ок
                                     </button>
                                 </div>
-                                {% get_min_max_prices sneakers %}
+
                                 <div class="row mx-1 mb-2">
                                     <div id="slider-range-lg" data-min-price="{{ min_price }}"
                                          data-max-price="{{ max_price }}"></div>

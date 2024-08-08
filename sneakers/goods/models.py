@@ -31,7 +31,8 @@ class Sneakers(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Опубліковано')
     cat = models.ForeignKey('Category', models.SET_DEFAULT, default=0, related_name='sneakers',
                             verbose_name='Категорія')
-    brand = models.ForeignKey('Brand', blank=True, null=True, on_delete=models.SET_NULL, related_name='brand', verbose_name='Бренд')
+    brand = models.ForeignKey('Brand', blank=True, null=True, on_delete=models.SET_NULL, related_name='brand',
+                              verbose_name='Бренд')
 
     tags = TaggableManager(blank=True, verbose_name='Теги', help_text='')
     sell_price = models.DecimalField(default=0.0, max_digits=7, decimal_places=2, verbose_name='Актуальна ціна')
@@ -49,7 +50,6 @@ class Sneakers(models.Model):
         if self.price:
             discount = (self.price - self.discount) * 100 / self.price
         return round(discount, 2) if discount < 100 else 0
-
 
     def in_stock(self):
         if self.variations.all().total_quantity() > 0:
@@ -140,10 +140,6 @@ class Category(MPTTModel):
         slug = '/'.join([ancestor.slug for ancestor in self.get_ancestors(include_self=True)])
         return reverse_lazy('goods:show_cat', kwargs={'cat_slug': slug})
 
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = self.title
-
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='images')
@@ -167,6 +163,7 @@ class Brand(models.Model):
         format='JPEG',
         options={'quality': 90}
     )
+
     class Meta:
         verbose_name = 'Бренд'
         verbose_name_plural = 'Бренди'
@@ -177,11 +174,11 @@ class Brand(models.Model):
 
 class Review(models.Model):
     RATING_CHOICES = (
-        (1,'1'),
-        (2,'2'),
-        (3,'3'),
-        (4,'4'),
-        (5,'5'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
     )
     product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, default='Анонім', on_delete=models.SET_DEFAULT, related_name='reviews')
@@ -195,3 +192,28 @@ class Review(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class WishQuerySet(models.QuerySet):
+    def total_count(self):
+        return self.count()
+
+
+class Wish(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Користувач")
+    product = models.ForeignKey(Sneakers, on_delete=models.CASCADE, verbose_name="Товар")
+    session_key = models.CharField(max_length=32, null=True, blank=True)
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата додавання")
+
+    class Meta:
+        db_table = 'wish'
+        verbose_name = "Побажання"
+        verbose_name_plural = "Побажання"
+        unique_together = ('user', 'product', 'session_key')
+
+    objects = models.Manager()
+
+    def __str__(self):
+        if self.user:
+            return f"Бажання користувача {self.user.username} | Товар {self.product.title}"
+        return f"Анонімне бажання | Товар {self.product.title}"

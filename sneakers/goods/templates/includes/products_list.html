@@ -1,75 +1,89 @@
-{% load static %}
 {% load sneakers_tags %}
+{% load static %}
 
-{% for item in page_obj %}
-    {% if item.is_published %}
+{% for product in page_obj %}
+    {% if product.is_published %}
+
         <div class="col mb-5">
-            <div class="card h-100 my-card {% if item.total_quantity <= 0 %}out-of-stock{% endif %}">
-                {% if item.discount %}
-                    <span class="goods-tile_label promo-label promo-label_type_action"> -{{ item.discount_info }}% </span>
+            <div class="card h-100 my-card {% if product.total_quantity <= 0 %}out-of-stock{% endif %}">
+                {% if product.discount %}
+                    <span class="goods-tile_label promo-label promo-label_type_action"> -{{ product.discount_info }}% </span>
                 {% endif %}
                 <!-- Product image-->
-                {% if item.images %}
+                {% if product.images %}
 
-                    <a class="a-dark " href="{{ item.get_absolute_url }}">
+                    <a class="a-dark " href="{{ product.get_absolute_url }}">
                         <img class="card-img-top image-container-img image-s"
-                             src="{% get_media_prefix %}{{ item.sneakers_first_image }}"
-                             alt="{{ item.title|truncatechars:24 }}"/>
+                             src="{% get_media_prefix %}{{ product.sneakers_first_image }}"
+                             alt="{{ product.title|truncatechars:24 }}"/>
                     </a>
                 {% else %}
-                    <a class="a-dark " href="{{ item.get_absolute_url }}">
+                    <a class="a-dark " href="{{ product.get_absolute_url }}">
                         <img class="card-img-top"
                              src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-                             alt="{{ item.title }}"/>
+                             alt="{{ product.title }}"/>
                     </a>
                 {% endif %}
                 <!-- Product details-->
                 <span class="card-body">
-                                        <div class="text-center">
-                                            <!-- Product name-->
-                                            <h3><a class="a-dark "
-                                                   href="{{ item.get_absolute_url }}">{{ item.title }}</a></h3>
-                                            <!-- Product price-->
+                    <div class="text-center">
+                        <!-- Product name-->
+                        <h3><a class="a-dark "
+                               href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                    </div>
 
-                                        </div>
+                    <div class="me-auto d-flex justify-content-between">
+                        <!-- Product price-->
+                        <div>
+                            {% if product.discount %}
+                                <p class="old-price">{{ product.price }} $</p>
+                                <p class="discount-price">{{ product.discount }} $</p>
+                            {% else %}
+                                <p class="usual-price">{{ product.price }} $</p>
+                            {% endif %}
+                        </div>
+                    </div>
 
-                                        <div class="me-auto d-flex justify-content-between">
-                                            <div>
-                                                {% if item.discount %}
-                                                    <p class="old-price">{{ item.price }} $</p>
-                                                    <p class="discount-price">{{ item.discount }} $</p>
-                                                {% else %}
-                                                    <p class="usual-price">{{ item.price }} $</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                    {% if item.total_quantity <= 0 %}
-                        <p class="text-secondary">Немає на складі </p>
-                    {% elif item.total_quantity < 3 %}
-                        <p class="text-danger">Закінчується </p>
-                    {% else %}
-                        <p class="text-success">Є в наявності</p>
-                    {% endif %}
+                    <div class="d-flex align-items-baselline justify-content-between">
+                        {% if product.total_quantity <= 0 %}
+                            <p class="text-secondary">Немає на складі </p>
+                        {% elif product.total_quantity < 3 %}
+                            <p class="text-danger">Закінчується </p>
+                        {% else %}
+                            <p class="text-success">Є в наявності</p>
+                        {% endif %}
 
+                        {% products_in_wishes_list request as products_in_wishes_list %}
+                        <a href="{% url 'goods:add_to_wish_list' %}" class="add-to-wish-list px-1 text-dark"
+                           data-product-id="{{ product.id }}">
+                             {% if product in products_in_wishes_list %}
+                                 <i class="fa-solid fa-heart wish-icon"></i>
+                             {% else %}
+                                 <i class="fa-regular fa-heart wish-icon"></i>
+                             {% endif %}
+                        </a>
+                    </div>
+                </span>
 
-                                    </span>
                 <!-- Product actions-->
                 <div class="d-flex card-footer border-top-0 bg-transparent justify-content-end">
-                    <p class="ventor-code">Артикул: {{ item.display_id }}</p>
+                    <p class="ventor-code">Артикул: {{ product.display_id }}</p>
                 </div>
             </div>
         </div>
     {% endif %}
 {% endfor %}
 
+
 {% if page_obj.has_next %}
     <div class="" id="load-more">
         <div class="d-flex justify-content-center row">
             <button class="btn btn-light border"
-                    hx-get="{% url 'goods:show_cat' cat_slug=cur_cat.slug %}?page={{ page_obj.next_page_number }}{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"
+                    hx-get="{% if not is_search_page %}{% url 'goods:show_cat' cat_slug=cur_cat.slug %}{% else %}{% url 'goods:search' %}{% endif %}?page={{ page_obj.next_page_number }}{% if request.GET %}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"
                     hx-target="#load-more"
                     hx-swap="outerHTML">Завантажити ще
             </button>
         </div>
     </div>
 {% endif %}
+

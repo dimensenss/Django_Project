@@ -1,17 +1,12 @@
 import django_filters
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field, HTML
 from django import forms
-from django.db.models import Count, Q, Value, Subquery, OuterRef, CharField, F, Sum
+from django.db.models import Count, Value, F, Sum, Min, Max
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.db.models.functions import Concat
 from django_filters import CharFilter
-from django_filters.widgets import RangeWidget
 from taggit.models import Tag
-
-from sneakers.settings import MEDIA_URL
+from dal import autocomplete
+from datetime import datetime
 from .models import *
-
 
 def get_list_recently_viewed(context):
     recently_viewed_data = context['request'].session.get("recently_viewed", [])
@@ -34,6 +29,55 @@ def get_list_recently_viewed(context):
     context['recently_viewed_qs'] = sorted_recently_viewed_qs
 
 
+def get_user_wishes(request):
+    if request.user.is_authenticated:
+        return Wish.objects.filter(user=request.user,
+                                   product__is_published=True).order_by('id').select_related('product').annotate(
+            product_slug=F("product__slug"),
+        )
+
+    if not request.session.session_key:
+        request.session.create()
+
+    return Wish.objects.filter(session_key=request.session.session_key, product__is_published=True).order_by('id').select_related('product').annotate(
+        product_slug=F("product__slug"),
+
+    )
+
+
+def get_product_from_wishes(request):
+    if request.user.is_authenticated:
+        return Sneakers.objects.filter(is_published=1).annotate(
+            sneakers_first_image=F("first_image__image"),
+            total_quantity=Sum('variations__quantity')).filter(wish__user=request.user)
+    else:
+        session_key = request.session.session_key
+        return Sneakers.objects.filter(is_published=1).annotate(
+            sneakers_first_image=F("first_image__image"),
+            total_quantity=Sum('variations__quantity')).filter(wish__session_key=session_key)
+
+
+def get_product_list_from_wishes(request):
+    if request.user.is_authenticated:
+        return Sneakers.objects.filter(wish__user=request.user)
+    else:
+        session_key = request.session.session_key
+        return Sneakers.objects.filter(wish__session_key=session_key)
+
+
+def get_min_max_prices(context):
+    aggregate_data = Sneakers.objects.all().filter(is_published=True).aggregate(
+        min_price=Min('sell_price'),
+        max_price=Max('sell_price'),
+    )
+
+    min_price = int(aggregate_data['min_price']) if aggregate_data['min_price'] is not None else 0
+    max_price = int(aggregate_data['max_price']) if aggregate_data['max_price'] is not None else 100_000
+
+    context['min_price'] = min_price
+    context['max_price'] = max_price
+
+
 class DataMixin:
     paginate_by = 4
 
@@ -45,6 +89,7 @@ class DataMixin:
         cats = Category.objects.annotate(len=Count('sneakers')).filter(id__gte=1)
         context['cats'] = cats
         get_list_recently_viewed(context)
+        get_min_max_prices(context)
 
         return context
 
@@ -113,8 +158,7 @@ class SneakersFilter(django_filters.FilterSet):
 
     class Meta:
         model = Sneakers
-        fields = {
-        }
+        fields = {}
 
     def __init__(self, *args, **kwargs):
         super(SneakersFilter, self).__init__(*args, **kwargs)
@@ -126,3 +170,33 @@ class SneakersFilter(django_filters.FilterSet):
         self.filters['price__gte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['price__lte'].field.widget.attrs.update({'class': 'custom-form-control mb-2 price_input'})
         self.filters['tags'].field.widget.attrs.update({'class': 'custom-form-control mb-2'})
+
+
+class CategoryAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Category.objects.all()
+
+        if self.q:
+            qs = qs.filter(title__istartswith=self.q)
+
+        return qs
+
+
+class SneakersAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = SneakersVariations.objects.all()
+
+        if self.q:
+            qs = qs.filter(sneakers__title__istartswith=self.q)
+
+        return qs
+
+
+class BrandsAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Brand.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs

@@ -90,6 +90,7 @@
 
 
                     {% user_carts request as carts %}
+                    {% user_wishes request as wishes %}
                     <li class="nav-item">
 
                         <a type="button" class="a-dark nav-link btn-outline " data-bs-toggle="modal"
@@ -100,11 +101,18 @@
 
                     </li>
                     <li class="nav-item">
+                    <a href="{% url 'goods:wish_list' %}"  class="a-dark nav-link btn-outline">
+                            <i class="fa-solid fa-heart"></i>
+                            <span class="badge bg-secondary text-white ms-1 rounded-pill  product_in_wish_list_count">{{ wishes|length }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a type="button" class="a-dark nav-link btn-outline" data-bs-toggle="modal"
                            data-bs-target="#reg-modal">
                             <i class="fa-solid fa-user"></i>
                         </a>
                     </li>
+
                 </ul>
             </div>
 

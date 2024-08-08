@@ -1,8 +1,8 @@
-<div class="card mb-2">
+<div class="border border-top-0 rounded mb-2 p-3 ps-2">
 
-    <h3 class="card-header p-3 ps-2 m-0 p-0">Відгуки покупців про {{ post.title }}</h3>
+    <h3 class="m-0 p-0">Відгуки покупців про {{ post.title }}</h3>
 
-    <div class="card-body pt-0">
+    <div class="pt-0">
         <div class="d-flex align-items-baseline ">
             {% if rating == 0 %}
                 <i class="fa-regular fa-star"></i>
@@ -12,10 +12,10 @@
                 <i class="fa-regular fa-star"></i>
             {% else %}
                 <span>
-                                {% for _ in 'x'|rjust:rating %}
-                                    <span class="readonly-star">★</span>
-                                {% endfor %}
-                                  </span>
+                    {% for _ in 'x'|rjust:rating %}
+                        <span class="readonly-star">★</span>
+                    {% endfor %}
+                </span>
             {% endif %}
             <p class="m-0 ms-2 ">
                 {{ post.reviews.all.count }} відгуків
