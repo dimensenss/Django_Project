@@ -17,7 +17,7 @@ from imagekit.processors import ResizeToFill
 
 User = get_user_model()
 
-
+#comm
 class Sneakers(models.Model):
     title = models.CharField(max_length=255, verbose_name='Назва')
     sku = models.CharField(max_length=255, verbose_name='Артикул', blank=True, null=True, unique=True)
